@@ -1,21 +1,75 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Illuminate\Http\Request;
 
 
-Route::post('add', 'CartController@addItem');
-Route::get('get/{rowId}', 'CartController@addItem');
+// aqui esta la documentecion de la herramienta, la necesitgaras para mostrar en las vistas los totales, el tax (iva), y demas cosas ===> https://github.com/Crinsane/LaravelShoppingcart
 
-Route::get('myaccount', function () {
-	return view('myaccount');
+// RUTA PARA AÑADIR UN ELEMENTO AL CARRITO.
+Route::post('add', function(Request $req){
+
+	$id    = $req->input('id');
+	$name  = $req->input('name');
+	$qty   = $req->input('qty');
+	$price = $req->input('price');
+
+	Cart::add(['id' => $id, 'name' => $name, 'qty' => $qty, 'price' => $price]);
+
+	return redirect('test');
+
 });
 
+// RUTA PARA MOSTRAR UN ELEMENTO DEL CARRO EN PARTICULAR
+Route::get('get/{rowId}', function($rowId){
+
+	$item = Cart::get($rowId);
+
+	// return view('', ['item' => $item]);
+
+});
+
+// RUTA QUE MUESTRA TODOS LOS ELEMENTOS DENTRO DEL CARRITO
+Route::get('allitems', function(){
+
+	$items = Cart::content();
+
+	return view('test', ['items' => $items]);
+
+});
+
+
+Route::post('edititem', function(Request $req, $rowId) {
+
+	$rowId = $req->input('rowid');
+
+	$name  = $req->input('name');
+	$qty   = $req->input('qty');
+	$price = $req->input('price');
+
+	Cart::update($rowId, ['name' => $name, 'qty' => $qty, 'price' => $price]);
+
+	// return redirect('somewhere');
+
+});
+
+Route::post('deleteitem', function (Request $req){
+
+	$rowId = $req->input('rowid');
+
+	Cart::remove($rowId);
+
+	// return redirect('somewhere');
+
+});
+
+
+
+
+
+Route::get('test', function () {
+
+	$items = Cart::content();
+
+	return view('test', ['items' => $items]);
+
+});
