@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
@@ -53,14 +55,21 @@ class RegisterController extends Controller
 
     protected function create(array $data)
     {
-    	dd($data);
+    	People::create([
+    		'pin' 		 => $data['pin'],
+    		'first_name' => $data['nombre'],
+    		'last_name'  => $data['apellido'],
+    		'email' 	 => $data['email'],
+    		'phone' 	 => $data['telefono'],
+    		'address' 	 => $data['direccion']
+    	]);
 
-    	$peopleid;
+    	$peopleid = DB::select("SELECT MAX(id) as lastid FROM people");
 
         return User::create([
-            'user' => $data['user'],
-            'password' => bcrypt($data['clave']),
-            'people_id' => $peopleid,
+            'user' 	    => $data['user'],
+            'password'  => bcrypt($data['clave']),
+            'people_id' => $peopleid[0]->lastid,
         ]);
     }
 

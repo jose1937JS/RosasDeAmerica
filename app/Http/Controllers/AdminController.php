@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 use App\Product;
 use App\Category;
@@ -14,7 +15,7 @@ class AdminController extends Controller
 {
 	public function __construct()
 	{
-		$this->middleware('auth');
+		$this->middleware('isAdmin');
 	}
 
 	public function index()
@@ -100,8 +101,9 @@ class AdminController extends Controller
 		$product = new Product();
 
 		$product->product 	  = $req->input('producto');
-		$product->description = $req->input('descripcion');
 		$product->quantity 	  = $req->input('cantidad');
+		$product->description = $req->input('descripcion');
+		$product->image 	  = $req->file('image')->store('');
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
 
@@ -115,13 +117,18 @@ class AdminController extends Controller
 		$id = $req->input('idproducto');
 		$product = Product::find($id);
 
+		$oldfile = $product->image;
+
 		$product->product 	  = $req->input('producto');
-		$product->description = $req->input('descripcion');
 		$product->quantity 	  = $req->input('cantidad');
+		$product->description = $req->input('descripcion');
+		$product->image 	  = $req->file('image')->store('');
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
 
 		$product->save();
+
+		Storage::delete($oldfile);
 
 		return redirect('admin');
 	}

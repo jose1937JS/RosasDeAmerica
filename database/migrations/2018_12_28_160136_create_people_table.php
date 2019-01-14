@@ -15,18 +15,13 @@ class CreatePeopleTable extends Migration
     {
         Schema::create('people', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('pin', 10);
+            $table->string('pin', 10)->unique;
             $table->string('first_name', 64);
             $table->string('last_name', 64);
-            $table->string('email', 64);
-            $table->string('phone', 15)->nullable();
+            $table->string('email', 64)->unique;
+            $table->string('phone', 15);
             $table->string('address', 128);
-            // $table->unsignedInteger('state_id');
-            // $table->unsignedInteger('city_id');
             $table->timestamps();
-
-            // $table->foreign('state_id')->references('id')->on('states');
-            // $table->foreign('city_id')->references('id')->on('cities');
         });
     }
 

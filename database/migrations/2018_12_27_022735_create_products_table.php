@@ -17,8 +17,9 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('product', 128);
             $table->string('description', 255);
-            $table->tinyInteger('quantity')->unsigned();
-            $table->double('price');
+            $table->string('image', 255);
+            $table->smallInteger('quantity')->unsigned();
+            $table->decimal('price', 6, 2);
             $table->unsignedInteger('category_id');
             $table->timestamps();
 

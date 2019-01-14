@@ -10,8 +10,6 @@ $factory->define(App\People::class, function (Faker $faker) {
     	'email' => $faker->safeEmail,
     	'phone' => $faker->e164PhoneNumber,
     	'address' => $faker->address,
-    	'city_id' => $faker->numberBetween(1, 20),
-    	'state_id' => $faker->numberBetween(1, 12),
     	'created_at' => $faker->dateTime
     ];
 });

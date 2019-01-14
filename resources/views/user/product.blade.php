@@ -14,7 +14,9 @@
 				<!--Grid column-->
 				<div class="col-md-6 mb-4">
 
-					<img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
+					<div class="view overlay zoom">
+						<img src='{{ asset("storage/$product->image") }}' class="img-fluid" alt="">
+					</div>
 
 				</div>
 				<!--Grid column-->
@@ -27,7 +29,7 @@
 
 						<div class="mb-3">
 							<a href="">
-								<span class="badge purple mr-1">Category</span>
+								<span class="badge purple mr-1">{{ $product->category->category }}</span>
 							</a>
 <!-- 							<a href="">
 								<span class="badge blue mr-1">New</span>
@@ -88,10 +90,9 @@
 				<!--Grid column-->
 				<div class="col-md-6 text-center">
 
-					<h4 class="my-4 h4">Additional information</h4>
+					<h4 class="my-4 h4">Información adicional</h4>
 
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit voluptates,
-					quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
+					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit voluptates, quibusdam officia. DESCARGAR UNAS IMAGENES TRANSPARENTES O DE FONDO BLANCO PARA PONER AQUI</p>
 
 				</div>
 				<!--Grid column-->
@@ -105,7 +106,7 @@
 				<!--Grid column-->
 				<div class="col-lg-4 col-md-12 mb-4">
 
-					<img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+					<img src="{{ asset('images/image.jpg') }}" class="img-fluid" alt="">
 
 				</div>
 				<!--Grid column-->
@@ -113,7 +114,7 @@
 				<!--Grid column-->
 				<div class="col-lg-4 col-md-6 mb-4">
 
-					<img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
+					<img src="{{ asset('images/image2.jpg') }}" class="img-fluid" alt="">
 
 				</div>
 				<!--Grid column-->
@@ -121,7 +122,7 @@
 				<!--Grid column-->
 				<div class="col-lg-4 col-md-6 mb-4">
 
-					<img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+					<img src="{{ asset('images/image3.jpg') }}" class="img-fluid" alt="">
 
 				</div>
 				<!--Grid column-->

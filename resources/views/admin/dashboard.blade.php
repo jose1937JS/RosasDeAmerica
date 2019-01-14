@@ -3,7 +3,10 @@
 
 @include('admin.navbar')
 
+
+
 <div class="container my-5">
+{{ Auth::user() }}
 	<div class="row">
 		<div class="col">
 
@@ -48,7 +51,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal editar prodicto -->
 <div class="modal fade" id="editproduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -58,7 +61,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{{ url('editproduct') }}" method="post">
+			<form action="{{ url('editproduct') }}" method="post" enctype="multipart/form-data">
 				@csrf
 
 				<input type="hidden" name="idproducto" id="idproducto">
@@ -108,6 +111,22 @@
 								@endforeach
 							</select>
 							<label>Categoria</label>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="col">
+							<div class="md-form">
+								<div class="file-field">
+									<div class="btn btn-primary btn-sm float-left">
+										<span>Escoge imagen</span>
+										<input type="file" name="image" accept="image/*" required>
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text" placeholder="Upload your image file">
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 

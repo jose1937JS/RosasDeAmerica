@@ -66,7 +66,7 @@
 
 
 
-<!-- Modal -->
+<!-- Modal añadir produco -->
 <div class="modal fade" id="addpmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -76,7 +76,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{{ url('addproduct') }}" method="post">
+			<form action="{{ url('addproduct') }}" method="post" enctype="multipart/form-data">
 				@csrf
 				<div class="modal-body">
 
@@ -84,15 +84,15 @@
 						<div class="col-md-8">
 							<div class="md-form">
 								<i class="fas fa-cubes prefix"></i>
-								<input type="text" class="form-control" id="producto" required>
+								<input type="text" name="producto" class="form-control validate" id="producto" maxlength="64" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
 								<label for="producto">Producto</label>
 							</div>
 						</div>
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-cubes prefix"></i>
-								<input type="number" min="0" class="form-control" id="cantidad" required>
-								<label for="cantidad">Cantidad</label>
+								<input type="number" min="0" placeholder="0" class="form-control validate" name="cantidad" id="cantidad" required>
+								<label for="cantidad">Cantidad disponible</label>
 							</div>
 						</div>
 					</div>
@@ -101,7 +101,7 @@
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-cubes prefix"></i>
-								<input type="text" class="form-control" id="descripcion" required>
+								<input type="text" class="form-control validate" name="descripcion" id="descripcion" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
 								<label for="descripcion">Descripción</label>
 							</div>
 						</div>
@@ -111,18 +111,34 @@
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-dollar prefix"></i>
-								<input type="text" class="form-control" id="precio" required>
-								<label for="precio">Precio</label>
+								<input type="text" class="form-control validate" name="precio" id="precio" placeholder="1234.56" pattern="^[\d]+(\.[\d]{2})?$" required>
+								<label for="precio">Precio por unidad</label>
 							</div>
 						</div>
 						<div class="col">
-							<select class="mdb-select md-form" id="categoria" required>
+							<select class="mdb-select md-form" name="categoria" id="categoria" required>
 								<option disabled selected>Selecciona una categoria</option>
 								@foreach( $categorias as $cat )
 									<option value="{{ $cat->id }}">{{ $cat->category }}</option>
 								@endforeach
 							</select>
 							<label>Categoria</label>
+						</div>
+					</div>
+
+					<div class="form-row">
+						<div class="col">
+							<div class="md-form">
+								<div class="file-field">
+									<div class="btn btn-primary btn-sm float-left">
+										<span>Escoge imagen</span>
+										<input type="file" name="image" accept="image/*" required>
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text" placeholder="Upload your image file">
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 

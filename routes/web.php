@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 
+use App\Http\Middleware\isAdmin;
+
 use App\User;
 
 
@@ -97,6 +99,10 @@ Route::get('checkout', function(Request $req) {
 
 Route::get('/','HomeController@index');
 
+// Route::get('password/reset/{token}', 'ReiniciarClaveController@showResetForm');
+// Route::post('clave/email', 'OlvidoClaveController@sendResetLinkEmail');
+// Route::post('password/reset', 'ReiniciarClaveController@reset');
+
 Route::get('login', 'LoginController@index')->name('login');
 Route::get('register', 'RegisterController@showRegistrationForm');
 Route::post('register', 'RegisterController@register');
@@ -109,10 +115,9 @@ Route::get('home', 'HomeController@home')->middleware('auth');
 Route::get('product/{id}', 'HomeController@product')->where('id', '^\d+$');
 Route::get('producto/{id}', 'HomeController@producto')->where('id', '^\d+$'); // wiht json respoonse
 
-Route::get('categories', 'HomeController@categories')->name('categories');
 Route::get('about', 'HomeController@about')->name('about');
 
-Route::get('admin', 'AdminController@index');
+Route::get('admin', 'AdminController@index')->middleware('isAdmin');
 Route::get('pedidos/{status}', 'AdminController@pedidos')->where('status', '^(pagado|despachado)$');
 
 Route::post('addcategoria', 'AdminController@addcategoria');
@@ -120,3 +125,6 @@ Route::post('addcompraproveedor', 'AdminController@addcompraproveedor');
 Route::post('addproduct', 'AdminController@addproduct');
 Route::post('editproduct/', 'AdminController@editproduct');
 Route::post('marcarcomodespachado', 'AdminController@marcarcomodespachado');
+
+Route::get('categoria/{category}', 'HomeController@categoria')->where('category', '^[a-z]+$');
+Route::post('busqueda', 'HomeController@busqueda');

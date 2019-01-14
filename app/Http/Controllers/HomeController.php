@@ -21,7 +21,7 @@ class HomeController extends Controller
 
 	public function index()
 	{
-		$products   = Product::all();
+		$products   = Product::paginate(6);
 		$categorias = Category::all();
 
 		return view('user.home')
@@ -31,7 +31,7 @@ class HomeController extends Controller
 
 	public function home()
 	{
-		$products   = Product::all();
+		$products   = Product::paginate(6);
 		$categorias = Category::all();
 
 		return view('user.home')
@@ -62,15 +62,43 @@ class HomeController extends Controller
 			'category_id' => $product->category_id
 		]);
 	}
-
-	public function categories()
-	{
-		return 'Categorias';
-	}
-
 	public function about()
 	{
-		return 'vista de acerca de (about)';
+		return view('user.nosotros');
+	}
+
+	// public function categories()
+	// {
+	// 	return 'Categorias';
+	// }
+
+	public function categoria($categoria)
+	{
+		$categorias  = Category::all();
+		$idcategoria = DB::table('categories')->select('id')->where('category', $categoria)->get();
+		$productos   = Product::where('category_id', $idcategoria[0]->id)->paginate(6);
+		// $productos = DB::table('products')
+		// 		->join('categories', 'categories.id', '=', 'products.category_id')
+		// 		->select('products.id', 'products.product', 'products.description', 'products.quantity', 'products.price', 'categories.category')
+		// 		->where('category_id', $idcategoria[0]->id)
+		// 		->get();
+
+		return view('user.home')
+				->with('products', $productos)
+				->with('categorias', $categorias);
+	}
+
+	public function busqueda(Request $req)
+	{
+		$categorias = Category::all();
+		$busqueda   = $req->input('search');
+
+		$producto = Product::where('product', $busqueda)->paginate(6);
+
+		return view('user.home')
+				->with('products', $producto)
+				->with('categorias', $categorias);
+
 	}
 
 	public function tarjeta(Request $req)

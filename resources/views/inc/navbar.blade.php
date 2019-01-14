@@ -14,15 +14,15 @@
 			<!-- Links -->
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-				<ul class="navbar-nav nav-flex-icons mr-auto">
+				<!-- <ul class="navbar-nav nav-flex-icons mr-auto">
+
+				</ul> -->
+
+				<!-- Right -->
+				<ul class="navbar-nav nav-flex-icons ml-auto">
 					<li class="nav-item">
 						<a class="nav-link waves-effect" href="{{ url('/') }}">
 							<i class="fas fa-cubes mr-2"></i>Productos
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link waves-effect" href="{{ route('categories') }}">
-							<i class="fas fa-tags mr-2"></i>Categorias
 						</a>
 					</li>
 					<li class="nav-item">
@@ -30,10 +30,6 @@
 							<i class="fas fa-users mr-2"></i>Nosotros
 						</a>
 					</li>
-				</ul>
-
-				<!-- Right -->
-				<ul class="navbar-nav nav-flex-icons ml-auto">
 				@guest
 					<li class="nav-item">
 						<a class="nav-link waves-effect" href="{{ route('login') }}">
@@ -41,6 +37,11 @@
 						</a>
 					</li>
 				@else
+					<li class="nav-item">
+						<a class="nav-link waves-effect" href="{{ url('profile') }}">
+							<i class="fas fa-user mr-2"></i>Perfil
+						</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link waves-effect" href="{{ route('checkout') }}">
 							<span class="badge red z-depth-1 mr-1" id="n" style="display: none;"></span>
