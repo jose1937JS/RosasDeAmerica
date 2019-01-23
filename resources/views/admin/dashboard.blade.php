@@ -6,7 +6,7 @@
 
 
 <div class="container my-5">
-{{ Auth::user() }}
+
 	<div class="row">
 		<div class="col">
 

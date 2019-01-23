@@ -116,10 +116,13 @@ Route::get('product/{id}', 'HomeController@product')->where('id', '^\d+$');
 Route::get('producto/{id}', 'HomeController@producto')->where('id', '^\d+$'); // wiht json respoonse
 
 Route::get('about', 'HomeController@about')->name('about');
+Route::get('profile', 'HomeController@profile')->middleware('auth');;
+Route::post('editprofile', 'HomeController@editprofile');
 
-Route::get('admin', 'AdminController@index')->middleware('isAdmin');
+Route::get('admin', 'AdminController@index');
 Route::get('pedidos/{status}', 'AdminController@pedidos')->where('status', '^(pagado|despachado)$');
 
+Route::get('compras', 'AdminController@proveedores');
 Route::post('addcategoria', 'AdminController@addcategoria');
 Route::post('addcompraproveedor', 'AdminController@addcompraproveedor');
 Route::post('addproduct', 'AdminController@addproduct');
@@ -128,3 +131,5 @@ Route::post('marcarcomodespachado', 'AdminController@marcarcomodespachado');
 
 Route::get('categoria/{category}', 'HomeController@categoria')->where('category', '^[a-z]+$');
 Route::post('busqueda', 'HomeController@busqueda');
+
+Route::post('instapago', 'HomeController@instapago');

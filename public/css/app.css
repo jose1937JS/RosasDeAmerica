@@ -7,8 +7,6 @@
 .page-footer {
 	background-color: #929FBA; }
 
-
-
 .centro {
 	display: flex;
 	align-items: center;
@@ -27,6 +25,7 @@
   }
 }
 
+* { font-size: 14px }
 
 .fixed-action-btn ul {
 	bottom: 0;

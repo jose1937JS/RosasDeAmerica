@@ -55,4 +55,18 @@ class LoginController extends Controller
         return $this->sendFailedLoginResponse($request);
 	}
 
+    protected function sendLoginResponse(Request $request)
+    {
+        $request->session()->regenerate();
+
+        $this->clearLoginAttempts($request);
+
+        if ($this->guard()->user()->user == 'admin')
+        {
+            return $this->authenticated( $request, $this->guard()->user()) ? : redirect()->intended('admin');
+        }
+
+        return $this->authenticated( $request, $this->guard()->user()) ? : redirect()->intended($this->redirectPath() );
+    }
+
 }

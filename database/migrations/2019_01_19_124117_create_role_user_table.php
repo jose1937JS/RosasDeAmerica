@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateShoppingTable extends Migration
+class CreateRoleUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateShoppingTable extends Migration
      */
     public function up()
     {
-        Schema::create('shopping', function (Blueprint $table) {
+         Schema::create('role_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('product', 64);
-            $table->tinyInteger('quantity');
-            $table->string('supplier');
-            $table->string('price');
-            $table->string('pay_method', 32);
+            $table->integer('role_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -31,6 +31,6 @@ class CreateShoppingTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shopping');
+        Schema::dropIfExists('role_user');
     }
 }

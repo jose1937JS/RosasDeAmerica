@@ -20,6 +20,11 @@
 				<span><i class="fas fa-chart-bar mr-2"></i>Inventario</span>
 			</a>
 		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url('compras') }}">
+				<span><i class="fas fa-chart-line mr-2"></i>Compras</span>
+			</a>
+		</li>
 		<!-- Dropdown -->
 		<li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" haspopup="true" aria-expanded="false"><i class="fas fa-cubes mr-2"></i> Pedidos</a>
@@ -38,10 +43,14 @@
 			</div>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="{{ url('') }}">
-				<span><i class="fas fa-power-off mr-2"></i> Logout</span>
-			</a>
+			<a class="nav-link" href="#"
+				onclick="event.preventDefault();document.getElementById('logout').submit();">
+				<i class="fas fa-power-off mr-2"></i>Salir
+            </a>
 		</li>
+        <form id="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+            {{ csrf_field() }}
+        </form>
 
 	</ul>
 
@@ -166,6 +175,7 @@
 				<div class="modal-body">
 					@csrf
 					<div class="md-form">
+						<i class="fas fa-clipboard-list prefix"></i>
 						<label for="categoria">Categoria</label>
 						<input type="text" id="categoria" name="categoria" class="form-control" required>
 					</div>
@@ -179,7 +189,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal compra progveedor -->
 <div class="modal fade" id="addcompramdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -217,6 +227,15 @@
 								<label for="proveedor">Proveedor</label>
 							</div>
 						</div>
+						<div class="col">
+							<div class="md-form">
+								<i class="fas fa-dollar prefix"></i>
+								<input type="text" name="precio" id="precio" class="form-control" placeholder="1234.56" required pattern="^[\d]+(\.[\d]{2})?$">
+								<label for="precio">Precio</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-row">
 						<div class="col">
 							<select class="mdb-select md-form" name="pay_method" id="pay_method" required>
 								<option selected disabled>Escoge un método de pago</option>

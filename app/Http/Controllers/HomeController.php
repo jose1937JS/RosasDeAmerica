@@ -1,5 +1,15 @@
 <?php
 
+
+// Requisitos para instapago
+// El Comercio debería cumplir con los siguientes requisitos para poder recibir pagos a travé de InstaPago:
+// * Dominio propio
+// * Certificado SSL
+// * Código fuente propio o acceso al mismo
+// * Alojamiento en servidor propio o terceros
+
+
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -11,6 +21,8 @@ use App\Product;
 use App\Category;
 use App\Sale;
 use App\ProductSale;
+use App\User;
+use App\People;
 
 class HomeController extends Controller
 {
@@ -62,15 +74,54 @@ class HomeController extends Controller
 			'category_id' => $product->category_id
 		]);
 	}
+
 	public function about()
 	{
 		return view('user.nosotros');
 	}
 
-	// public function categories()
-	// {
-	// 	return 'Categorias';
-	// }
+	public function profile()
+	{
+		$userid  = Auth()->user()->id;
+		$usuario = User::find($userid);
+
+		return view('user.profile')->with('user', $usuario);
+	}
+
+	public function editprofile(Request $req)
+	{
+		$peopleid = $req->input('personid');
+		$userid   = $req->input('userid');
+
+		$people = People::find($peopleid);
+		$user   = User::find($userid);
+
+		$req->validate([
+			'nombre'    => 'required|max:255|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+			'apellido'  => 'required|max:255|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+			'direccion' => 'required|max:255|string',
+			'telefono'  => 'required|string|max:11',
+			'email'     => 'required|string|email|max:255',
+			'user'      => 'required|string',
+			'clave'     => 'required|string|min:6|confirmed',
+		]);
+
+		$people->first_name = $req->input('nombre');
+		$people->last_name  = $req->input('apellido');
+		$people->email 		= $req->input('email');
+		$people->phone 		= $req->input('telefono');
+		$people->address 	= $req->input('direccion');
+
+		$people->save();
+
+		$user->user 	 = $req->input('user');
+		$user->password  = bcrypt($req->input('clave'));
+		$user->people_id = $peopleid;
+
+		$user->save();
+
+		return redirect('profile')->with('success', 'Perfil editado satisfactoriamente.');
+	}
 
 	public function categoria($categoria)
 	{
@@ -101,6 +152,7 @@ class HomeController extends Controller
 
 	}
 
+	//  Funcion q procesa la solicitud de la compra
 	public function tarjeta(Request $req)
 	{
 		$venta   = new Sale();
@@ -119,15 +171,12 @@ class HomeController extends Controller
 			}
 		}
 
-
-		// instapago API
-
 		$validatedData = $req->validate([
 			'people_id'   => 'required|integer',
 			'address_one' => 'required|string',
 			'address_two' => 'nullable|string',
 			'email' 	  => 'required|email',
-			'phone' 	  => 'nullable|digits:11',
+			'phone' 	  => 'nullable|digits_between:10,11',
 			'monto' 	  => 'required|numeric',
 			'pay_method'  => 'required|string',
 			'cc-number'   => 'required|digits_between:16,19',
@@ -136,8 +185,6 @@ class HomeController extends Controller
 			'vencimiento' => 'required|regex:/^[\d]{2}\/[\d]{2}$/',
 			'referencia'  => 'nullable|numeric'
 		]);
-
-		dd($validatedData);
 
 		$venta->people_id      = $req->input('people_id');
 		$venta->address_one    = $req->input('address_one');
@@ -173,7 +220,22 @@ class HomeController extends Controller
 		Cart::destroy();
 
 		// redirige a la vista checkut
-		return redirect('checkout');
+		return redirect('checkout')->with('success', 'Compra realizada satisfactoriamente.');
+	}
+
+	public function instapago(Request $req)
+	{
+		// Validando los campos para instapago
+
+		$validatedData = $req->validate([
+			'monto' 	  => 'required|numeric',
+			'cc_number'   => 'required|digits_between:16,19',
+			'cvc'   	  => 'required|digits:3',
+			'nameincard'  => 'required|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+			'vencimiento' => 'required|regex:/^[\d]{2}\/[\d]{2}$/',
+		]);
+
+		dd($validatedData);
 	}
 
 }

@@ -13,23 +13,27 @@ use App\Sale;
 
 class AdminController extends Controller
 {
-	public function __construct()
+	public function __construct(Request $request)
 	{
-		$this->middleware('isAdmin');
+		// $this->middleware('isAdmin');
+		$this->middleware('auth');
 	}
 
-	public function index()
+	public function index(Request $request)
 	{
-		$category = Category::all();
+		if ($request->user()->authorizeRoles(['admin']))
+		{
+			$category = Category::all();
 
-		$productos = DB::table('products')
-					->join('categories', 'products.category_id', '=', 'categories.id')
-					->select('products.id','products.product','products.price','products.quantity','categories.category')
-					->get();
+			$productos = DB::table('products')
+						->join('categories', 'products.category_id', '=', 'categories.id')
+						->select('products.id','products.product','products.price','products.quantity','categories.category')
+						->get();
 
-		return view('admin.dashboard')
-				->with('productos', $productos)
-				->with('categorias', $category);
+			return view('admin.dashboard')
+					->with('productos', $productos)
+					->with('categorias', $category);
+		}
 	}
 
 	public function pedidos($status)
@@ -62,6 +66,16 @@ class AdminController extends Controller
 				->with('categorias', $category);
 	}
 
+	public function proveedores(Request $req)
+	{
+		$compras  = Shopping::all();
+		$category = Category::all();
+
+		return view('admin.proveedores')
+			->with('compras', $compras)
+			->with('categorias', $category);
+	}
+
 	public function marcarcomodespachado(Request $req)
 	{
 		$sale = Sale::find($req->input('idsale'));
@@ -69,7 +83,7 @@ class AdminController extends Controller
 
 		$sale->save();
 
-		return redirect('pedidos/despachados');
+		return redirect('pedidos/despachado');
 	}
 
 	public function addcategoria(Request $req)
@@ -89,11 +103,12 @@ class AdminController extends Controller
 		$shopping->product    = $req->input('producto');
 		$shopping->quantity   = $req->input('cantidad');
 		$shopping->supplier   = $req->input('proveedor');
+		$shopping->price   	  = $req->input('precio');
 		$shopping->pay_method = $req->input('pay_method');
 
 		$shopping->save();
 
-		return redirect('admin');
+		return redirect('compras');
 	}
 
 	public function addproduct(Request $req)

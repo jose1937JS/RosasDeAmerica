@@ -168,16 +168,18 @@
 												</div> -->
 											</div>
 										</div>
-										<div class="row">
-											<div class="col d-flex justify-content-end">
-												<form action="{{ url('marcarcomodespachado') }}" method="post">
-													@csrf
-													<input type="hidden" name="idsale" value="{{ $v->id }}">
-													<button type="submit" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Marcar como despachado"><i class="fas fa-check"></i></button>
-												</form>
-											</div>
-										</div>
 
+										@if ( preg_match('/pedidos\/pagado/', url()->current()) )
+											<div class="row">
+												<div class="col d-flex justify-content-end">
+													<form action="{{ url('marcarcomodespachado') }}" method="post">
+														@csrf
+														<input type="hidden" name="idsale" value="{{ $v->id }}">
+														<button type="submit" class="btn btn-primary btn-sm mr-2" data-toggle="tooltip" title="Marcar como despachado"><i class="fas fa-check"></i></button>
+													</form>
+												</div>
+											</div>
+										@endif
 									</div>
 								</div>
 							</div>

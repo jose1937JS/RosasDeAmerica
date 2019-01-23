@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class isAdmin
 {
@@ -13,11 +14,10 @@ class isAdmin
 	* @param  \Closure  $next
 	* @return mixed
 	*/
-	public function handle($request, Closure $next)
+	public function handle($request, Closure $next, $role = null)
 	{
-		// if ( $request->user()->user == 'admin' )
-		// {
-  //           return redirect('admin');
+		// if (! $request->user()->hasRole($role)) {
+  //           return redirect('login');
   //       }
 
 		// return $next($request);

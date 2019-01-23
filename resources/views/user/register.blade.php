@@ -110,7 +110,7 @@
 				</div>
 				<div class="col">
 					<div class="md-form text-left">
-						<input type="text" id="clave" class="form-control" minlength="6" name="clave" required>
+						<input type="password" id="clave" class="form-control" minlength="6" name="clave" required>
 						<label for="clave">Contraseña *</label>
 						@if( $errors->has('clave') )
 							@foreach( $errors->get('clave') as $error )
@@ -121,7 +121,7 @@
 				</div>
 				<div class="col">
 					<div class="md-form text-left">
-						<input type="text" id="repclave" class="form-control" name="clave_confirmation" required>
+						<input type="password" id="repclave" class="form-control" name="clave_confirmation" required>
 						<label for="repclave">Repita contraseña *</label>
 					</div>
 				</div>

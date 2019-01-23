@@ -8,11 +8,18 @@
 	<main class="mt-5 pt-4">
 		<div class="container wow fadeIn">
 
-			<h2 class="my-5 h2 text-center">Checkout form</h2>
+		<br>
 
-			@if (session('errorcompra'))
+			@if ( session('errorcompra') )
 			    <div class="alert alert-danger alert-dismissible fade show my-3 z-depth-1" role="alert">
 					<i class="fas fa-bug mr-2"></i>{{ session('errorcompra') }}
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+			@elseif ( session('success') )
+				 <div class="alert alert-success alert-dismissible fade show my-3 z-depth-1" role="alert">
+					<i class="fas fa-check mr-2"></i>{{ session('success') }}
 					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -45,7 +52,7 @@
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
-									<form class="" method="post" action="{{ url('tarjeta') }}">
+									<form id="checkout_form" method="post" action="{{ url('tarjeta') }}">
 										@csrf
 
 										<input type="hidden" name="people_id" value="{{ Auth::user()->people_id }}">
@@ -176,8 +183,8 @@
 													@endif
 												</div>
 											</div>
-											<div class="col-md-3">image visa</div>
-											<div class="col-md-3">image master card</div>
+											<div class="col-md-3"><img class="img-fluid" src="{{ asset('images/visa.jpg') }}"></div>
+											<div class="col-md-3"><img class="img-fluid" style="height: 55px" src="{{ asset('images/mastercard.png') }}"></div>
 										</div>
 
 										<div class="form-row">
@@ -537,11 +544,10 @@
 				</div>
 
 				<div class="col-md-4 mb-4">
-
 					<!-- Heading -->
 					<div class="card">
 						<div class="card-header d-flex justify-content-between align-items-center">
-							<h3>Your Cart</h3>
+							<h3>Tu carrito</h3>
 							@if( $cantidad > 0 )
 								<h3><span class="badge badge-primary ">{{ $cantidad }}</span></h3>
 							@endif
