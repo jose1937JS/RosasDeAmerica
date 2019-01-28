@@ -4,7 +4,7 @@
 
 			<!-- Brand -->
 			<a class="navbar-brand waves-effect" href="">
-				<strong class="">Rosas de América</strong>
+				<h5><i class="fab fa-pagelines mr-3 fa-2x"></i> Floristeria Rosas de América</h5>
 			</a>
 
 			<!-- Collapse -->

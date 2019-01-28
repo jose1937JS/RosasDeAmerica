@@ -129,7 +129,12 @@ Route::post('addproduct', 'AdminController@addproduct');
 Route::post('editproduct/', 'AdminController@editproduct');
 Route::post('marcarcomodespachado', 'AdminController@marcarcomodespachado');
 
-Route::get('categoria/{category}', 'HomeController@categoria')->where('category', '^[a-z]+$');
+Route::get('categoria/{category}', 'HomeController@categoria')->where('category', '^[a-zA-Z]+$');
 Route::post('busqueda', 'HomeController@busqueda');
 
 Route::post('instapago', 'HomeController@instapago');
+
+Route::post('addsupplier', 'AdminController@addsupplier');
+
+
+Route::get('factura', 'HomeController@factura');

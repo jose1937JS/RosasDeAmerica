@@ -3,6 +3,7 @@
 
 @include('inc.navbar')
 
+<br>
 <div class="mt-5 pt-5">
 	<div class="container">
 
@@ -125,7 +126,7 @@
 						<div class="col">
 							<!-- First name -->
 							<div class="md-form">
-								<input type="text" id="nombre" class="form-control validate" name="nombre" pattern="^[a-zA-Záéíóú]+(?:\s?[a-zA-Záéíóú]\s?)+$"value="{{ $user->people->first_name }}" required>
+								<input type="text" id="nombre" class="form-control validate" name="nombre" pattern="^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$"value="{{ $user->people->first_name }}" required>
 								<label for="nombre">Nombre</label>
 								@if( $errors->has('nombre') )
 									@foreach( $errors->get('nombre') as $error )
@@ -137,7 +138,7 @@
 						<div class="col">
 							<!-- Last name -->
 							<div class="md-form">
-								<input type="text" id="apellido" name="apellido" class="form-control validate" pattern="^[a-zA-Záéíóú]+(?:\s?[a-zA-Záéíóú]\s?)+$" value="{{ $user->people->last_name }}" required>
+								<input type="text" id="apellido" name="apellido" class="form-control validate" pattern="^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$" value="{{ $user->people->last_name }}" required>
 								<label for="apellido">Apellido</label>
 								@if( $errors->has('apellido') )
 									@foreach( $errors->get('apellido') as $error )

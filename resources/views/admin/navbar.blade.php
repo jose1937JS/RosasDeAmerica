@@ -69,6 +69,7 @@
 		<li><a id="addpbtn" class="btn-floating red" data-toggle="tooltip" data-placement="left" title="Añadir producto"><i class="fas fa-cubes"></i></a></li>
 		<li><a id="addcatbtn" class="btn-floating yellow darken-1" data-toggle="tooltip" data-placement="left" title="Añadir categoria"><i class="fas fa-tags"></i></a></li>
 		<li><a id="addcomprabtn" class="btn-floating green" data-toggle="tooltip" data-placement="left" title="Registrar una compra al proveedor"><i class="fas fa-plus-square"></i></a></li>
+		<li><a id="addsupplierbtn" class="btn-floating blue" data-toggle="tooltip" data-placement="left" title="Registrar proveedor"><i class="fas fa-user-plus"></i></a></li>
 	</ul>
 </div>
 
@@ -161,7 +162,7 @@
 </div>
 
 
-<!-- Modal -->
+<!-- Modal añadir categoria -->
 <div class="modal fade" id="addcatmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -222,9 +223,13 @@
 					<div class="form-row">
 						<div class="col">
 							<div class="md-form">
-								<i class="fas fa-user prefix"></i>
-								<input type="text" name="proveedor" id="proveedor" class="form-control" required>
-								<label for="proveedor">Proveedor</label>
+								<i class="fas fa-user-circle prefix"></i>
+								<select name="proveedor" class="ml-5 mdb-select" required>
+									<option disabled selected>Selecciona un proveedor</option>
+									@foreach( $proveedores as $p )
+										<option value="{{ $p->id }}">{{ $p->name }}</option>
+									@endforeach
+								</select>
 							</div>
 						</div>
 						<div class="col">
@@ -247,6 +252,90 @@
 						</div>
 					</div>
 
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-md">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+<!-- Modal registrar proveedor-->
+<div class="modal fade" id="addsupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Registrar Proveedor</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form action="{{ url('addsupplier') }}" class="md-form" method="post">
+				<div class="modal-body">
+					@csrf
+					<div class="form-row">
+						<div class="col">
+							<i class="fas fa-user-circle prefix"></i>
+							<label for="name">Nombre</label>
+							<input type="text" id="name" name="name" class="form-control validate" pattern="^[a-zA-Z\.]+(?:\s?[a-zA-Z\.]\s?)+$" required>
+						</div>
+						<div class="col">
+							<i class="fas fa-envelope prefix"></i>
+							<label for="email">E-mail</label>
+							<input type="email" id="email" name="email" class="form-control validate"required>
+						</div>
+					</div>
+					<div class="form-row my-5">
+						<div class="col">
+							<i class="fas fa-phone prefix"></i>
+							<label for="phone">Teléfono</label>
+							<input type="text" id="phone" name="phone" class="form-control validate" minlength="10" maxlength="11" pattern="^[\d]{10,11}$" required>
+						</div>
+						<div class="col">
+							<i class="fas fa-id-card prefix"></i>
+							<label for="rif">RIF</label>
+							<input type="text" id="rif" name="rif" class="form-control validate" pattern="^(J-).+" required>
+						</div>
+					</div>
+					<div class="form-row">
+						<div class="col">
+							<i class="fas fa-road prefix"></i>
+							<label for="address">Dirección</label>
+							<input type="text" id="address" name="address" class="form-control validate" pattern="^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$" required>
+						</div>
+					</div>
+
+					@if( $proveedores->isNotEmpty() )
+						<div class="form-row mt-5">
+							<div class="col">
+								<h4 class="mb-3">Proveedores registrados</h4>
+								<table class="table table-sm table-hover table-bordered">
+									<thead>
+										<tr>
+											<th>NOMBRE</th>
+											<th>EMAIL</th>
+											<th>TELEFONO</th>
+											<th>RIF</th>
+											<th>DIRECCION</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach( $proveedores as $p )
+											<tr>
+												<td>{{ $p->name }}</td>
+												<td>{{ $p->email }}</td>
+												<td>{{ $p->phone }}</td>
+												<td>{{ $p->rif }}</td>
+												<td>{{ $p->address }}</td>
+											</tr>
+										@endforeach
+									</tbody>
+								</table>
+							</div>
+						</div>
+					@endif
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary btn-md">Guardar</button>

@@ -3,6 +3,10 @@
 
 /* ESTILOS PROPIOS */
 
+body {
+	background-color: #f9f9f9;
+}
+
 /* Footer color for sake of consistency with Navbar */
 .page-footer {
 	background-color: #929FBA; }
@@ -27,9 +31,9 @@
 
 * { font-size: 14px }
 
-.fixed-action-btn ul {
+/*.fixed-action-btn ul {
 	bottom: 0;
-}
+}*/
 
 table.dataTable thead .sorting,
 table.dataTable thead .sorting_asc,

@@ -1,5 +1,5 @@
 @include('inc.header')
-
+<br>
 <body class="grey lighten-3">
 
 @include('inc.navbar')
@@ -30,8 +30,9 @@
 
 				<div class="col-md-8 mb-4">
 					<div class="card">
-						<div class="card-header">
+						<div class="card-header d-flex justify-content-between">
 							<h3>Método de pago</h3>
+							<a class="btn btn-primary btn-md" href="{{ url('factura') }}"><i class="fas fa-file-pdf mr-2"></i>factura</a>
 						</div>
 						<div class="card-body">
 
@@ -44,10 +45,10 @@
 									<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
 									aria-selected="false"><i class="fas fa-exchange-alt mr-2"></i>Transferencia</a>
 								</li>
-								<li class="nav-item">
+								<!--<li class="nav-item">
 									<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
 									aria-selected="false"><i class="fas fa-mobile-alt mr-2"></i>Pago movil</a>
-								</li>
+								</li> -->
 							</ul>
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -529,13 +530,14 @@
 
 									</form>
 
-
 								</div>
 
-								<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+
+								{{-- Pago movil --}}
+								<!--<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 									de igual manera con esta forma de pago. campo para el numero de referencia y esas cosas.
 									{{ csrf_token() }}
-								</div>
+								</div>-->
 							</div>
 
 						</div>

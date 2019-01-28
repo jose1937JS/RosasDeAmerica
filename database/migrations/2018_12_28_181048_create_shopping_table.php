@@ -17,10 +17,12 @@ class CreateShoppingTable extends Migration
             $table->increments('id');
             $table->string('product', 64);
             $table->tinyInteger('quantity');
-            $table->string('supplier');
+            $table->unsignedInteger('supplier_id');
             $table->string('price');
             $table->string('pay_method', 32);
             $table->timestamps();
+
+            $table->foreign('supplier_id')->references('id')->on('suppliers');
         });
     }
 

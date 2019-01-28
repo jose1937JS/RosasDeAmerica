@@ -31,7 +31,7 @@
 									<td>{{ $p->id }}</td>
 									<td>{{ $p->product }}</td>
 									<td>{{ $p->quantity }}</td>
-									<td>{{ $p->supplier }}</td>
+									<td>{{ $p->supplier->name }}</td>
 									<td>{{ $p->price }}</td>
 									<td>{{ $p->pay_method }}</td>
 									{{-- <td class="text-center">

@@ -9,6 +9,7 @@ $(() => {
 	// console.log($('#dtBasicExample > label'))
 
 
+
 	$('#addpbtn').click(() => {
 		$('#addpmdl').modal()
 	})
@@ -19,6 +20,10 @@ $(() => {
 
 	$('#addcomprabtn').click(() => {
 		$('#addcompramdl').modal()
+	})
+
+	$('#addsupplierbtn').click(() => {
+		$('#addsupplier').modal()
 	})
 
 	$.ajax({
@@ -117,7 +122,7 @@ $(() => {
 		})
 	})
 
-	$('#checkout_form').submit(() => {
+	/*$('#checkout_form').submit(() => {
 		$.ajax({
 			url : 'http://127.0.0.1:8000/instapago',
 			method : 'post',
@@ -134,24 +139,24 @@ $(() => {
 			console.log(s)
 
 			// solicitud json a instapago
-			{
-				KeyId : 'Llave generada desde instapago',
-				PublicKeyId : 'Llave compartida (Enviada por correo electrónico al crear la cuenta en el portal de InstaPago)',
-				Amount : 'monto a debitar, usando . como separador decimal',
-				Description: 'descripcino de la operacion',
-				CardHolder: 'Nombre del tarjeta habiente',
-				CardHolderId : 'cedula del tarjeta habiente',
-				CardNumber: 'numero de la tarjeta de credito,'
-				CVC : 'codigo secreto de lq tarjeta',
-				ExpirationDate: 'fecha de expiracion de la tarjeta',
-				StatusId : 'estatus en q se creara la transaccion: 1: Retener (pre-autorización) o 2: Pagar (autorización).'
-				IP : 'direccin ip de la maquina'
-			}
+			// {
+			// 	KeyId : 'Llave generada desde instapago',
+			// 	PublicKeyId : 'Llave compartida (Enviada por correo electrónico al crear la cuenta en el portal de InstaPago)',
+			// 	Amount : 'monto a debitar, usando . como separador decimal',
+			// 	Description: 'descripcino de la operacion',
+			// 	CardHolder: 'Nombre del tarjeta habiente',
+			// 	CardHolderId : 'cedula del tarjeta habiente',
+			// 	CardNumber: 'numero de la tarjeta de credito,'
+			// 	CVC : 'codigo secreto de lq tarjeta',
+			// 	ExpirationDate: 'fecha de expiracion de la tarjeta',
+			// 	StatusId : 'estatus en q se creara la transaccion: 1: Retener (pre-autorización) o 2: Pagar (autorización).'
+			// 	IP : 'direccin ip de la maquina'
+			// }
 		})
 
 		.fail((e) => {
 			console.log(e)
 		})
-	})
+	})*/
 
 })

@@ -1,0 +1,76 @@
+*{
+	margin: 0;
+	border: 0;
+	box-sizing: border-box;
+}
+
+body. html
+{
+	font-size: 16px;
+	font-family: sans-serif;
+}
+
+/* Datos de la empresa. */
+header
+{
+	text-align: center;
+	font-size: 1.2em;
+}
+header p
+{
+	margin: 1rem auto;
+}
+
+footer
+{
+	text-align:center;
+	margin-top: 10rem;
+	font-size: 1.5rem;
+}
+
+/* Contenedor principal. */
+.container
+{
+	/*border: thin solid black;*/
+	margin: 2% 5%;
+	width: 90%;
+}
+
+/* Contenedor de las tablas superiores */
+.table-container
+{
+	background: #90caf9;
+	border-radius: .5rem;
+	margin: 2% auto;
+	height: 100%; 
+	text-align: left;
+
+}
+.table-container  table
+{ 
+	margin-top: 1rem;
+	text-align: left;
+	width: 100%;
+}
+.col-4
+{
+	width: 30.5%;
+}
+.date-table
+{
+
+	background: #90caf9;
+	border-radius: .5rem; 
+	text-align: left;
+	width: 100%;
+}
+.date-table thead
+{
+	height: 2rem;
+}
+.date-table td, .table-container td
+{
+	background: #e3f2fd;
+	height: 3rem;
+
+}

@@ -15,7 +15,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Gloudemans\Shoppingcart\Facades\Cart;
-// use Barryvdh\DomPDF\ServiceProvider as PDF;
+use Barryvdh\DomPDF\Facade as PDF;
+
+use Illuminate\Support\Facades\Auth;
 
 use App\Product;
 use App\Category;
@@ -179,10 +181,10 @@ class HomeController extends Controller
 			'phone' 	  => 'nullable|digits_between:10,11',
 			'monto' 	  => 'required|numeric',
 			'pay_method'  => 'required|string',
-			'cc-number'   => 'required|digits_between:16,19',
-			'cvc'   	  => 'required|digits:3',
-			'nameincard'  => 'required|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
-			'vencimiento' => 'required|regex:/^[\d]{2}\/[\d]{2}$/',
+			'cc-number'   => 'nullable|digits_between:16,19',
+			'cvc'   	  => 'nullable|digits:3',
+			'nameincard'  => 'nullable|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+			'vencimiento' => 'nullable|regex:/^[\d]{2}\/[\d]{2}$/',
 			'referencia'  => 'nullable|numeric'
 		]);
 
@@ -219,8 +221,9 @@ class HomeController extends Controller
 		//  Elimina los productos q estan en el carrito
 		Cart::destroy();
 
+
 		// redirige a la vista checkut
-		return redirect('checkout')->with('success', 'Compra realizada satisfactoriamente.');
+		return redirect('checkout')->with('success', 'La compra se ha realizado satisfactoriamente, recuerda descargar tu factura.');
 	}
 
 	public function instapago(Request $req)
@@ -236,6 +239,19 @@ class HomeController extends Controller
 		]);
 
 		dd($validatedData);
+	}
+
+	public function factura()
+	{
+		$id = Auth::user()->people_id;
+		$data['data'] = Sale::where('people_id', $id)->get();
+
+		$people = People::where('id', 1)->get();
+		$cedula = $people[0]->pin;
+
+		$pdf = PDF::loadView('pdf.compra');
+
+		return $pdf->download("compra.pdf");
 	}
 
 }

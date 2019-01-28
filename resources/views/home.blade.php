@@ -5,7 +5,7 @@
 	@include('navbar')
 
 	<div class="jumbotron mt-5">
-		{{ Auth::user()->user }}
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quaerat aliquam rerum eius, pariatur esse dolorem, quia, perferendis dolore quo facilis mollitia magnam officia porro modi, facere possimus molestiae nobis.
 	</div>
 
 <!--Main layout-->

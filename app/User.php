@@ -26,9 +26,12 @@ class User extends Authenticatable
 
 	public function roles()
     {
-        return $this
-        ->belongsToMany('App\Role')
-        ->withTimestamps();
+        return $this->belongsToMany('App\Role')->withTimestamps();
+    }
+
+    public function role_user()
+    {
+        return $this->hasMany('App\role_user');
     }
 
     public function hasRole($role)
@@ -60,7 +63,7 @@ class User extends Authenticatable
         if ($this->hasAnyRole($roles)) {
             return true;
         }
-        abort(401, 'Esta acción no está autorizada.');
+        abort(401, 'Este usuario no tiene permisos para entrar aquí.');
     }
 
 

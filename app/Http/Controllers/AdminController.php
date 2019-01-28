@@ -10,6 +10,7 @@ use App\Product;
 use App\Category;
 use App\Shopping;
 use App\Sale;
+use App\Supplier;
 
 class AdminController extends Controller
 {
@@ -24,6 +25,7 @@ class AdminController extends Controller
 		if ($request->user()->authorizeRoles(['admin']))
 		{
 			$category = Category::all();
+			$proveedores = Supplier::all();
 
 			$productos = DB::table('products')
 						->join('categories', 'products.category_id', '=', 'categories.id')
@@ -32,6 +34,7 @@ class AdminController extends Controller
 
 			return view('admin.dashboard')
 					->with('productos', $productos)
+					->with('proveedores', $proveedores)
 					->with('categorias', $category);
 		}
 	}
@@ -39,6 +42,7 @@ class AdminController extends Controller
 	public function pedidos($status)
 	{
 		$category = Category::all();
+		$proveedores = Supplier::all();
 
 		$products = DB::table('product_sales')
 					->select('product_sales.*', 'products.product')
@@ -63,6 +67,7 @@ class AdminController extends Controller
 
 		return view('admin.pedidos')
 				->with('ventas', $ventas)
+				->with('proveedores', $proveedores)
 				->with('categorias', $category);
 	}
 
@@ -70,9 +75,11 @@ class AdminController extends Controller
 	{
 		$compras  = Shopping::all();
 		$category = Category::all();
+		$proveedores = Supplier::all();
 
 		return view('admin.proveedores')
 			->with('compras', $compras)
+			->with('proveedores', $proveedores)
 			->with('categorias', $category);
 	}
 
@@ -100,11 +107,11 @@ class AdminController extends Controller
 	{
 		$shopping = new Shopping();
 
-		$shopping->product    = $req->input('producto');
-		$shopping->quantity   = $req->input('cantidad');
-		$shopping->supplier   = $req->input('proveedor');
-		$shopping->price   	  = $req->input('precio');
-		$shopping->pay_method = $req->input('pay_method');
+		$shopping->product     = $req->input('producto');
+		$shopping->quantity    = $req->input('cantidad');
+		$shopping->supplier_id = $req->input('proveedor');// iddelproveedor
+		$shopping->price   	   = $req->input('precio');
+		$shopping->pay_method  = $req->input('pay_method');
 
 		$shopping->save();
 
@@ -146,6 +153,21 @@ class AdminController extends Controller
 		Storage::delete($oldfile);
 
 		return redirect('admin');
+	}
+
+	public function addsupplier(Request $req)
+	{
+		$supplier = new Supplier();
+
+		$supplier->name    = $req->input('name');
+		$supplier->address = $req->input('address');
+		$supplier->phone   = $req->input('phone');
+		$supplier->email   = $req->input('email');
+		$supplier->rif     = $req->input('rif');
+
+		$supplier->save();
+
+		return back();
 	}
 
 }
