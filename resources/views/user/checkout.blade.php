@@ -32,7 +32,9 @@
 					<div class="card">
 						<div class="card-header d-flex justify-content-between">
 							<h3>Método de pago</h3>
-							<a class="btn btn-primary btn-md" href="{{ url('factura') }}"><i class="fas fa-file-pdf mr-2"></i>factura</a>
+							@if( session('success') )
+								<a class="btn btn-primary btn-md" href="{{ url('factura') }}"><i class="fas fa-file-pdf mr-2"></i>factura</a>
+							@endif
 						</div>
 						<div class="card-body">
 

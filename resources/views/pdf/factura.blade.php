@@ -11,7 +11,7 @@
 	box-sizing: border-box;
 }
 
-body. html
+body, html
 {
 	font-size: 16px;
 	font-family: sans-serif;
@@ -25,7 +25,7 @@ header
 }
 header p
 {
-	margin: 1rem auto;
+	/*margin: 1rem auto;*/
 }
 
 footer
@@ -47,26 +47,19 @@ footer
 .table-container
 {
 	background: #90caf9;
-	border-radius: .5rem;
-	margin: 2% auto;
-	height: 100%;
-	text-align: left;
-
+	border-radius: .5rem .5rem 0 0;
+	margin-top: 4%;
 }
-.table-container  table
+.table-container table
 {
 	margin-top: 1rem;
 	text-align: left;
 	width: 100%;
 }
-.col-4
-{
-	width: 30.5%;
-}
 .date-table
 {
 	background: #90caf9;
-	border-radius: .5rem;
+	border-radius: 0 0 .5rem .5rem;
 	text-align: left;
 	width: 100%;
 }
@@ -78,7 +71,10 @@ footer
 {
 	background: #e3f2fd;
 	height: 3rem;
+	padding-left: 8px:
 }
+
+th { padding-left: 8px: }
 
 	</style>
 </head>
@@ -88,8 +84,8 @@ footer
 		<header>
 			<!-- <p>FACTURA:</p> -->
 			<p>FLORISTERIA ROSAS DE AMÉRICA C.A</p>
-			<p>Calle 21, local 8 of Gold Avenue Center</p>
-			<p>Amsterdam, Holanda.</p>
+			<p>Avenida Santa Isabel, Sector Cementerio</p>
+			<p>San Juan de los Morros, Edo Guárico</p>
 		</header>
 
 		<div class="table-container">
@@ -99,16 +95,14 @@ footer
 					<tr>
 						<th>Facturar a:</th>
 						<th>Direccion de entrega:</th>
-						<th>N° de factura:</th>
 						<th>Fecha:</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>Deyker Alexander Gil Aponte.</td>
-						<td>Brookling New York, 1120. USA</td>
-						<td>952</td>
-						<td>03-02-1943</td>
+						<td>{{ $people[0]->pin.' - '.$people[0]->first_name.' '.$people[0]->last_name }}</td>
+						<td>{{ $people[0]->address.', '.$data[0]->sale->address_two }}</td>
+						<td>{{ $data[0]->created_at }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -116,14 +110,14 @@ footer
 			<table>
 				<thead>
 					<tr>
-						<th>Fecha de vencimiento:</th>
-						<th  class="col-4">N° de pedido:</th>
+						<th>N° de factura:</th>
+						<th>Método de pago:</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>03-02-1943</td>
-						<td  class="col-4">462</td>
+						<td>{{ $data[0]->sale->id }}</td>
+						<td>{{ $data[0]->sale->pay_method }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -134,44 +128,19 @@ footer
 				<tr>
 					<th>CANT:</th>
 					<th>DESCRIPCION:</th>
-					<th>PRECIO UNITARIO</th>
 					<th>PRECIO TOTAL:</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>2</td>
-					<td>Rosas Argentinas</td>
-					<td>5$</td>
-					<td>10$</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>Claveles Australianos</td>
-					<td>3$</td>
-					<td>15$</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>Cataleyas Colombianas</td>
-					<td>1.5$</td>
-					<td>4.5$</td>
-				</tr>
-				<tr>
-					<td>15</td>
-					<td>Margaritas</td>
-					<td>2$</td>
-					<td>30$</td>
-				</tr>
+				@foreach( $data as $d )
+					<tr>
+						<td>{{ $d->quantity }}</td>
+						<td>{{ $d->product->description }}</td>
+						<td>{{ $d->product->price }} BsS</td>
+					</tr>
+				@endforeach
 				<!-- Rows vacias para rellenar la tabla -->
 				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -179,9 +148,8 @@ footer
 				<!-- Final de las rows vacias para rellenar la tabla -->
 				<tr>
 					<td></td>
-					<td></td>
 					<td >TOTAL:</td>
-					<td>59.5$</td>
+					<td>{{ $data[0]->sale->amount }} BsS</td>
 				</tr>
 			</tbody>
 		</table>

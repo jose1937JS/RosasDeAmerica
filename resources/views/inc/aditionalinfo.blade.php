@@ -8,7 +8,7 @@
 
 		<h4 class="my-4 h4">Información adicional</h4>
 
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit voluptates, quibusdam officia. DESCARGAR UNAS IMAGENES TRANSPARENTES O DE FONDO BLANCO PARA PONER AQUI</p>
+		<p>Productos nuevos en Floristeria Rosas de América C.A</p>
 
 	</div>
 	<!--Grid column-->

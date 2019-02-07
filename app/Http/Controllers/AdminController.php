@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade as PDF;
 
 use App\Product;
 use App\Category;
@@ -114,8 +115,6 @@ class AdminController extends Controller
 		$shopping->pay_method  = $req->input('pay_method');
 
 		$shopping->save();
-
-		return redirect('compras');
 	}
 
 	public function addproduct(Request $req)
@@ -144,13 +143,20 @@ class AdminController extends Controller
 		$product->product 	  = $req->input('producto');
 		$product->quantity 	  = $req->input('cantidad');
 		$product->description = $req->input('descripcion');
-		$product->image 	  = $req->file('image')->store('');
+
+		if ( $req->file('image') )
+		{
+			Storage::delete($oldfile);
+			$product->image   = $req->file('image')->store('');
+		}
+		else {
+			$product->image   = $oldfile;
+		}
+
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
 
 		$product->save();
-
-		Storage::delete($oldfile);
 
 		return redirect('admin');
 	}
@@ -168,6 +174,15 @@ class AdminController extends Controller
 		$supplier->save();
 
 		return back();
+	}
+
+	public function compra()
+	{
+		$data['data'] = Shopping::all()->last();
+
+		$pdf = PDF::loadView('pdf.compra', $data);
+
+		return $pdf->download("reporte-compra.pdf");
 	}
 
 }

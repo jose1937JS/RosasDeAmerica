@@ -3,6 +3,7 @@
 <body>
 
 @include('inc.navbar')
+<br>
 
 <main class="mt-5 pt-5">
 	<div class="container wow fadeIn">
@@ -13,8 +14,14 @@
 					<div class="view overlay zoom ml-3 float-right">
 						<img src="{{ asset('images/49234229_1197835913703000_3831947010919890944_n.jpg') }}" class="img-thumbnail" style="width: 300px" alt="404">
 					</div>
-					<p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe omnis impedit, quisquam iste odio dignissimos. Placeat earum atque, porro. Quis blanditiis, non eos corporis recusandae deleniti consequuntur officia neque dolorum?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non est illo maiores magni eaque voluptatibus beatae velit vel veniam quos, vero fugit, voluptates nisi minima quaerat excepturi porro asperiores enim!</p>
-					<p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque, rerum officiis cum aspernatur incidunt reprehenderit expedita. Quia voluptatibus amet tenetur commodi, beatae explicabo nihil consequatur non recusandae corporis? Veniam, rem?</p>
+					<p class="text-justify">Creada en San Juan de los Morros, Venezuela en el año 2011 con la misión de prestar un servicio de altura, con innovación diaria y creatividad en los diseños, además de la garantía de un excelente servicio, con un equipo de trabajo que siempre ha tenido como meta, LA EXCELENCIA y la buena atención a sus clientes. Disponemos de servicio a nivel nacional a más de 10 estados, garantizando un 100% de satisfacción.</p>
+
+					<p class="text-justify">Ofrecemos frescura y puntualidad en todas nuestras entregas y garantizamos la calidad de nuestras creaciones florales y atención. Trabajamos con los mejores cultivos Colombianos, Ecuatorianos y Venezolanos, ofertando gran variedad de colores y matices en las diferentes flores y follajes con los que trabajamos.</p>
+
+					<p class="text-justify">La Floristeria Rosas de América expande su servicio a través de Internet desde 2018, y ha sido una de las floristerías pioneras en todo el centro del pais. La respuesta de los clientes no se ha hecho esperar, superando las expectativas , lo que ha llevado a mejorar cada vez más nuestro servicio. La receptividad ha sido la recompensa, por la facilidad de uso y el esmero que ponemos en el cuidado de nuestros clientes. Nuestro formato, espera complacer al usuario que nos visita y realiza sus compras por nuestro portal en Internet.</p>
+
+					<p class="text-justify">Si Usted tiene una pregunta específica acerca de nuestra empresa o los servicios provistos por nosotros, envíenos un comunicado y le haremos llegar la información solicitada a la brevedad posible.</p>
+
 				</div>
 			</div>
 		</div>

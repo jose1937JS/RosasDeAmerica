@@ -13,12 +13,12 @@
 				</div>
 				<div class="card-body">
 
+
 					<!--Accordion wrapper-->
 					@if ( count($ventas) > 0 )
 						<div class="accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
 
 						@foreach ( $ventas as $v )
-
 							<div class="card">
 
 								<div class="card-header" role="tab" id="heading-{{ $v->id }}">
@@ -158,14 +158,16 @@
 													</div>
 												</div>
 
-												<!-- <div class="row mb-3">
-													<div class="col-md-3">
-														<span class="font-weight-bold">Estado de venta:</span>
+												@if( $v->nro_referencia != '')
+													<div class="row mb-3">
+														<div class="col-md-3">
+															<span class="font-weight-bold">Código de la transferencia</span>
+														</div>
+														<div class="col">
+															<span>{{ $v->nro_referencia }}</span>
+														</div>
 													</div>
-													<div class="col">
-														<span>Lorem ipsum</span>
-													</div>
-												</div> -->
+												@endif
 											</div>
 										</div>
 

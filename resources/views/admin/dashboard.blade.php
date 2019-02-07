@@ -3,8 +3,6 @@
 
 @include('admin.navbar')
 
-
-
 <div class="container my-5">
 
 	<div class="row">
@@ -120,7 +118,7 @@
 								<div class="file-field">
 									<div class="btn btn-primary btn-sm float-left">
 										<span>Escoge imagen</span>
-										<input type="file" name="image" accept="image/*" required>
+										<input type="file" name="image" accept="image/*">
 									</div>
 									<div class="file-path-wrapper">
 										<input class="file-path validate" type="text" placeholder="Upload your image file">

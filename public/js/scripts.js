@@ -38,6 +38,32 @@ $(() => {
 		}
 	})
 
+	// $('#addcompraproveedor').submit(e => {
+	// 	e.preventDefault()
+
+	// 	$.ajax({
+	// 		method: 'get',
+	// 		url: 'http://127.0.0.1:8000/addcompraproveedor',
+	// 		data : $('#addcompraproveedor').serialize()
+	// 	})
+
+	// 	.done((d) => {
+
+	// 		$('#producto').val('')
+	// 		$('#cantidad').val('')
+	// 		$('#proveedor').val('')
+	// 		$('#precio').val('')
+	// 		$('#pay_method').val('')
+
+	// 		toastr.success('Registrado Correctamente')
+	// 	})
+
+	// 	.fail((e) => {
+	// 		console.log(e)
+	// 		toastr.error('Ha ocurrido un error.')
+	// 	})
+	// })
+
 	function ajax(id, producto, precio, cantidad)
 	{
 		let qty = 1

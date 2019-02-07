@@ -2,9 +2,9 @@
 
 <body>
 
-	@include('inc.navbar')
+@include('inc.navbar')
 
-<div class="container-fluid mt-5 pt-4 px-0">
+<div class="container-fluid mt-5 px-0">
 
 	<!--Carousel Wrapper-->
 	<div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
@@ -54,9 +54,13 @@
 	<!--/.Carousel Wrapper-->
 </div>
 
+
 <!--Main layout-->
 	<main>
 		<div class="container">
+
+			<h2 class="text-center my-5">Desarrollo web para la gestión administrativa de procesos, productos y requerimientos de la Floristeria Rosas de América C.A, San Juan de los Morros</h2>
+
 
 			<!--Navbar-->
 			<nav class="navbar navbar-expand-lg navbar-dark primary-color mt-3 mb-5">

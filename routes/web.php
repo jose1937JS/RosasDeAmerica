@@ -138,3 +138,4 @@ Route::post('addsupplier', 'AdminController@addsupplier');
 
 
 Route::get('factura', 'HomeController@factura');
+Route::get('compra', 'AdminController@compra');

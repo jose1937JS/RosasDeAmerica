@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('user', 32)->unique();
             $table->string('password', 128);
             $table->rememberToken();
+            $table->boolean('IsActivated')->default(1);
             $table->unsignedInteger('people_id');
             $table->timestamps();
 

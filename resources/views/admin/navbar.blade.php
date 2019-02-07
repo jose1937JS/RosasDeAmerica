@@ -39,7 +39,6 @@
 			<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-pdf mr-2"></i>Reportes</a>
 			<div class="dropdown-menu dropdown-primary dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item" href="{{ url('compra') }}">Compra</a>
-				<a class="dropdown-item" href="{{ url('venta') }}">Venta</a>
 			</div>
 		</li>
 		<li class="nav-item">
@@ -200,7 +199,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{{ url('addcompraproveedor') }}" method="post">
+			<form method="post" action="{{ url('addcompraproveedor') }}">
 				@csrf
 				<div class="modal-body">
 
@@ -224,7 +223,7 @@
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-user-circle prefix"></i>
-								<select name="proveedor" class="ml-5 mdb-select" required>
+								<select name="proveedor" class="ml-5 mdb-select" required id="proveedor">
 									<option disabled selected>Selecciona un proveedor</option>
 									@foreach( $proveedores as $p )
 										<option value="{{ $p->id }}">{{ $p->name }}</option>

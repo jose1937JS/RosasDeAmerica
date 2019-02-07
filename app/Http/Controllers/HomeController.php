@@ -223,35 +223,38 @@ class HomeController extends Controller
 
 
 		// redirige a la vista checkut
-		return redirect('checkout')->with('success', 'La compra se ha realizado satisfactoriamente, recuerda descargar tu factura.');
+		return redirect('checkout')->with('success', 'La compra se ha realizado satisfactoriamente, recuerda descargar tu factura en el botón temporal azul de abajo.');
 	}
 
-	public function instapago(Request $req)
-	{
-		// Validando los campos para instapago
+	// public function instapago(Request $req)
+	// {
+	// 	// Validando los campos para instapago
 
-		$validatedData = $req->validate([
-			'monto' 	  => 'required|numeric',
-			'cc_number'   => 'required|digits_between:16,19',
-			'cvc'   	  => 'required|digits:3',
-			'nameincard'  => 'required|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
-			'vencimiento' => 'required|regex:/^[\d]{2}\/[\d]{2}$/',
-		]);
+	// 	$validatedData = $req->validate([
+	// 		'monto' 	  => 'required|numeric',
+	// 		'cc_number'   => 'required|digits_between:16,19',
+	// 		'cvc'   	  => 'required|digits:3',
+	// 		'nameincard'  => 'required|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+	// 		'vencimiento' => 'required|regex:/^[\d]{2}\/[\d]{2}$/',
+	// 	]);
 
-		dd($validatedData);
-	}
+	// 	dd($validatedData);
+	// }
 
 	public function factura()
 	{
-		$id = Auth::user()->people_id;
-		$data['data'] = Sale::where('people_id', $id)->get();
+		$id = Sale::all()->last()->id;
+		$idpeople = Auth::user()->people_id;
 
-		$people = People::where('id', 1)->get();
+		$data['data']   = ProductSale::where('sale_id', $id)->get();
+		$data['people'] = People::where('id', $idpeople)->get();
+
+		$people = People::where('id', $idpeople)->get();
 		$cedula = $people[0]->pin;
 
-		$pdf = PDF::loadView('pdf.compra');
+		$pdf = PDF::loadView('pdf.factura', $data);
 
-		return $pdf->download("compra.pdf");
+		return $pdf->download("factura-$cedula.pdf");
 	}
 
 }
