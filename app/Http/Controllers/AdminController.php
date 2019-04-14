@@ -124,9 +124,14 @@ class AdminController extends Controller
 		$product->product 	  = $req->input('producto');
 		$product->quantity 	  = $req->input('cantidad');
 		$product->description = $req->input('descripcion');
-		$product->image 	  = $req->file('image')->store('');
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
+
+		if ($req->file('image')) {
+			$path = Storage::disk('public')->put('images', $req->file('image'));
+			// $product->fill(['file' => asset($path)])->save();
+			$product->image = $path;
+		}
 
 		$product->save();
 
@@ -140,6 +145,8 @@ class AdminController extends Controller
 
 		$oldfile = $product->image;
 
+		dd($oldfile);
+
 		$product->product 	  = $req->input('producto');
 		$product->quantity 	  = $req->input('cantidad');
 		$product->description = $req->input('descripcion');
@@ -147,10 +154,11 @@ class AdminController extends Controller
 		if ( $req->file('image') )
 		{
 			Storage::delete($oldfile);
-			$product->image   = $req->file('image')->store('');
+			$path = Storage::disk('public')->put('images', $req->file('image'));
+			$product->image = $path;
 		}
 		else {
-			$product->image   = $oldfile;
+			$product->image = $oldfile;
 		}
 
 		$product->price 	  = $req->input('precio');

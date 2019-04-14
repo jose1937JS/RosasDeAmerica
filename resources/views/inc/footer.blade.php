@@ -40,7 +40,7 @@
 		<!--Copyright-->
 		<div class="footer-copyright py-3">
 			© 2018 Copyright:
-			<span> Floristeria Rosas de América </span>
+			<span> Floristeria Rosas de América C.A</span>
 		</div>
 		<!--/.Copyright-->
 
