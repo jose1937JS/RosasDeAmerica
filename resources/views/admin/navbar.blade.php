@@ -1,4 +1,5 @@
 <!--Navbar-->
+
 <nav class="navbar navbar-expand-lg navbar-dark primary-color sticky-top">
 
 	<!-- Navbar brand -->
@@ -417,10 +418,10 @@
 
 					<div class="form-row mb-3	">
 						<div class="col-md-6 col-12">
-							<select class="mdb-select md-form" name="producto" id="pro1" required>
+							<select class="mdb-select md-form" name="producto" id="producto-0" required>
 								<option disabled selected>Producto</option>
-								@foreach( $categorias as $p )
-									<option value="{{ $p->id }}" data-precio="{{ $p->id }}">{{ $p->category }}</option>
+								@foreach( $products as $p )
+									<option value="{{ $p->id }}" data-precio="{{ $p->price }}">{{ $p->product }}</option>
 								@endforeach
 							</select>
 							<label>Producto</label>
@@ -428,7 +429,7 @@
 						<div class="col-md-4 col-9">
 							<div class="md-form">
 								<i class="fas fa-dollar prefix"></i>
-								<input type="text" class="form-control precio" placeholder="Precio" name="precio" readonly id="price"> <!--pattern="^[\d]+(\.[\d]{2})?$"  -->
+								<input type="text" class="form-control precio" placeholder="Precio" name="precio" readonly id="price-0"> <!--pattern="^[\d]+(\.[\d]{2})?$"  -->
 								<!-- <label for="precio">Precio</label> -->
 							</div>
 						</div>
@@ -438,7 +439,7 @@
 							</button>
 						</div>
 						<div class="col-1 d-flex align-items-center">
-							<button class="btn btn-sm btn-danger" type="button" id="elimelem">
+							<button class="btn btn-sm btn-danger" data-toggle="tooltip" title="Eliminar el último producto" type="button" id="elimelem">
 								<i class="fas fa-times"></i>
 							</button>
 						</div>

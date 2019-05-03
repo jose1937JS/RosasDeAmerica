@@ -28,7 +28,8 @@ class AdminController extends Controller
 	{
 		if ($request->user()->authorizeRoles(['admin']))
 		{
-			$category = Category::all();
+			$category 	 = Category::all();
+			$products    = Product::all();
 			$proveedores = Supplier::all();
 
 			$productos = DB::table('products')
@@ -39,14 +40,16 @@ class AdminController extends Controller
 			return view('admin.dashboard')
 					->with('productos', $productos)
 					->with('proveedores', $proveedores)
-					->with('categorias', $category);
+					->with('categorias', $category)
+					->with('products', $products);
 		}
 	}
 
 	public function pedidos($status)
 	{
-		$category = Category::all();
+		$category    = Category::all();
 		$proveedores = Supplier::all();
+		$products    = Product::all();
 
 		$products = DB::table('product_sales')
 					->select('product_sales.*', 'products.product')
@@ -72,19 +75,22 @@ class AdminController extends Controller
 		return view('admin.pedidos')
 				->with('ventas', $ventas)
 				->with('proveedores', $proveedores)
-				->with('categorias', $category);
+				->with('categorias', $category)
+				->with('products', $products);
 	}
 
 	public function proveedores(Request $req)
 	{
-		$compras  = Shopping::all();
-		$category = Category::all();
+		$compras  	 = Shopping::all();
+		$category 	 = Category::all();
+		$products    = Product::all();
 		$proveedores = Supplier::all();
 
 		return view('admin.proveedores')
 			->with('compras', $compras)
 			->with('proveedores', $proveedores)
-			->with('categorias', $category);
+			->with('categorias', $category)
+			->with('products', $products);
 	}
 
 	public function marcarcomodespachado(Request $req)
@@ -150,7 +156,7 @@ class AdminController extends Controller
 
 		$oldfile = $product->image;
 
-		dd($oldfile);
+		// dd($oldfile);
 
 		$product->product 	  = $req->input('producto');
 		$product->quantity 	  = $req->input('cantidad');
@@ -200,7 +206,6 @@ class AdminController extends Controller
 
 	public function newsale(Request $req)
 	{
-
 		$productos  = $req->all();
 		$keys 		= array_keys($productos);
 		$array_keys = array_combine($keys, $keys);
@@ -208,13 +213,16 @@ class AdminController extends Controller
 		$filtered   = preg_grep("/(precio.?)|(producto.?)/", $array_keys);
 		$productosc = collect($productos);
 
+		dd($productos);
+
 		// insertar el cliente si es nuevo
 
 		if ( $req->newclient ) {
 
 			$client = Client::where('cedula', $req->cedula)->get();
 
-			if ( !$client ) {
+			if ( !$client->all())
+			{
 				$client = new Client();
 
 				$client->cedula 	= $req->cedula; 
@@ -224,52 +232,57 @@ class AdminController extends Controller
 				$client->address  	= $req->direccion;
 
 				$client->save();
+
+				$clientid = Client::where('cedula', $req->cedula)->get();
 			}
 			else {
+				$clientid = Client::where('cedula', $req->cedula)->get();
+				// REDIRECCIONAR CON UN MENSAJE FLASH
 				return redirect('admin');
 			}
 		}
 		else {
 			$clientid = Client::where('cedula', $req->cedula)->get();
-			echo "i love cheese";
-			dd($clientid);
 		}
 		
 		if ( count($filtered) > 1 )
 		{
-			// $productoi = ['producto', 'precio'];
 			$productoi = ['producto'];
-			for ( $i=1; $i <= count($filtered); $i++ ) {
+			$precioi   = ['precio'];
+
+			for ( $i=1; $i <= count($filtered); $i++ )
+			{
 				$productoi[] = "producto-$i";
-				// $productoi[] = "precio-$i";
+				$precioi[]   = "precio-$i";
 			}
-			$result = $productosc->only($productoi);
+			
+			$result  = $productosc->only($productoi);
+			$precios = $productosc->only($precioi);
 
 			// itrerar para insertar en la tabla pivote
-			foreach ($result as $key => $value) {
+			foreach ($result as $key => $value)
+			{
 				// insertar datos en al tabla pivote venta_clientes
-				$ventaclientes = new venta_cliente();
+				$ventaclientes 			   = new venta_cliente();
 				$ventaclientes->product_id = $value;
-				$ventaclientes->client_id = $clientid;
+				$ventaclientes->client_id  = $clientid[0]->id;
 				$ventaclientes->save();
 				
 				$lastidventacliente = DB::table('venta_clientes')->selectRaw('MAX(id) as lastid')->get();
 
-				dd($lastidventacliente);
-
-				$venta = new Venta();
-				$venta->pay_method = 
-				$venta->total_price = 
-				$venta->venta_cliente_id = $lastidventacliente;
+				$venta 					 = new Venta();
+				$venta->pay_method 		 = $req->metpago;
+				$venta->total_price 	 = array_sum($precios->all());
+				$venta->venta_cliente_id = $lastidventacliente[0]->lastid;
 			}
 		}
 		else {
 			// $result = $productosc->only(['producto', 'precio']);
 			$result = $productosc->only(['producto']);
 
-			$ventaclientes = new venta_cliente();
+			$ventaclientes 			   = new venta_cliente();
 			$ventaclientes->product_id = $value;
-			$ventaclientes->client_id = $clientid;
+			$ventaclientes->client_id  = $clientid[0]->id;
 			$ventaclientes->save();
 		}
 
@@ -281,4 +294,11 @@ class AdminController extends Controller
 	{
 		return Client::where('cedula', $req->cedula)->get();
 	}
+
+	public function productos(Request $req)
+	{
+		return product::all();
+	}
+
+
 }

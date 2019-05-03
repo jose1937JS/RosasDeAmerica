@@ -142,3 +142,5 @@ Route::get('compra', 'AdminController@compra');
 
 Route::post('newsale', 'AdminController@newsale');
 Route::get('cedula', 'AdminController@cedula');
+
+Route::get('productos', 'AdminController@productos');

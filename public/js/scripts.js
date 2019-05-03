@@ -61,16 +61,11 @@ $(() => {
 		})
 	})
 
-	// Agragar otro producto que el cliente compro en modal del administrador
-	// if($('.precio').val().length > 0){
-	// 	sumarPrecioProductos()
-	// }
-
 
 	let i = 0
 
 	$('#dsa').click(() => {
-
+		
 		i = i + 1
 
 		$('#np').append(`
@@ -79,45 +74,51 @@ $(() => {
 					<label for="producto-${i}">Producto</label>
 					<select class="browser-default custom-select" name="producto-${i}" id="producto-${i}" required>
 						<option disabled selected>Producto(s)</option>
-						<option>Producto 1</option>
-						<option>Producto 2</option>
-						<option>Producto 3</option>
 					</select>
 				</div>
 				<div class="col">
 					<label for="precio-${i}">Precio</label>
-					<input type="text" class="form-control precio" name="precio-${i}" id="precio-${i}" placeholder="1234.56" pattern="^[0-9]+(\.[0-9]{2})?$" required>
+					<input type="text" class="form-control precio" name="precio-${i}" id="price-${i}" readonly required>
 				</div>
 			</div>
 		`)
 
-		// if($('.precio').val().length > 0){
-		// 	sumarPrecioProductos()
-		// }
+		$.get('http://127.0.0.1:8000/productos', (data) => {
+
+			for( d of data ){
+				$(`#producto-${i}`).append(`<option value="${d.id}" data-precio="${d.price}">${d.product}</option>`)
+			}
+		})
+
+		$(`#producto-${i}`).change((e) => {
+			console.log(`dentro del change producto-${i}`)
+			$(`#producto-${i} option:selected`).each((index, elem) => {
+				// Probar elem.dataset.precio en navegadores basados en chrome
+				$(`#price-${i}`).val(elem.dataset.precio)
+			})
+			sumarPrecioProductos()
+		})
 	})
 
+
+	// Poner en el campo del precio el precio del producto
+	$(`#producto-0`).change((e) => {
+		console.log('fuera del ciclo')
+		$(`#producto-0 option:selected`).each((index, elem) => {
+			// Probar elem.dataset.precio en navegadores basados en chrome
+			$(`#price-0`).val(elem.dataset.precio)
+		})
+		sumarPrecioProductos()
+	})
+
+
+	// Eliminar los ultimos inputs producto/precio
 	$('#elimelem').click(() => {
 		$('.precioo:last').remove()
 		sumarPrecioProductos()
 	})
 
-	// Poner en el campo del precio el precio del producto
-	$('#pro1').change((e) => {
-		$('#pro1 option:selected').each((index, elem) => {
-			// Probar elem.dataset.precio en navegadores basados en chrome
-			$('#price').val(elem.dataset.precio)
-			sumarPrecioProductos()
-			console.log($('#precio'))
-		})
-	})
 
-/*
-
-	@foreach( $categorias as $p )
-		<option value="{{ $p->id }}">{{ $p->category }}</option>
-	@endforeach
-
-*/
 
 	$('#addpbtn').click(() => {
 		$('#addpmdl').modal()
