@@ -26,7 +26,7 @@
 					<!-- user -->
 					<div class="md-form">
 						<i class="fas fa-user prefix"></i>
-						<input type="text" name="user" id="user" class="form-control" required>
+						<input type="text" name="user" id="user" class="form-control" autofocus required>
 						<label for="user">Usuario</label>
 					</div>
 					@if ($errors->has('user'))

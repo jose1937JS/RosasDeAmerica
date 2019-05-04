@@ -20,7 +20,7 @@
 								<th>ID</th>
 								<th>PRODUCTO</th>
 								<th>CANTIDAD</th>
-								<th>PRECIO</th>
+								<th>PRECIO (Bs)</th>
 								<th>CATEGORIA</th>
 								<th class="text-center">EDITAR</th>
 							</tr>

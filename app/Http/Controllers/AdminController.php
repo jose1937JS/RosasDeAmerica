@@ -12,6 +12,9 @@ use App\Category;
 use App\Shopping;
 use App\Sale;
 use App\Supplier;
+use App\Client;
+use App\Venta;
+use App\venta_cliente;
 
 class AdminController extends Controller
 {
@@ -115,6 +118,8 @@ class AdminController extends Controller
 		$shopping->pay_method  = $req->input('pay_method');
 
 		$shopping->save();
+
+		return redirect('admin');
 	}
 
 	public function addproduct(Request $req)
@@ -193,4 +198,87 @@ class AdminController extends Controller
 		return $pdf->download("reporte-compra.pdf");
 	}
 
+	public function newsale(Request $req)
+	{
+
+		$productos  = $req->all();
+		$keys 		= array_keys($productos);
+		$array_keys = array_combine($keys, $keys);
+
+		$filtered   = preg_grep("/(precio.?)|(producto.?)/", $array_keys);
+		$productosc = collect($productos);
+
+		// insertar el cliente si es nuevo
+
+		if ( $req->newclient ) {
+
+			$client = Client::where('cedula', $req->cedula)->get();
+
+			if ( !$client ) {
+				$client = new Client();
+
+				$client->cedula 	= $req->cedula; 
+				$client->first_name = $req->nombre; 
+				$client->last_name  = $req->apellido; 
+				$client->phone  	= $req->telefono; 
+				$client->address  	= $req->direccion;
+
+				$client->save();
+			}
+			else {
+				return redirect('admin');
+			}
+		}
+		else {
+			$clientid = Client::where('cedula', $req->cedula)->get();
+			echo "i love cheese";
+			dd($clientid);
+		}
+		
+		if ( count($filtered) > 1 )
+		{
+			// $productoi = ['producto', 'precio'];
+			$productoi = ['producto'];
+			for ( $i=1; $i <= count($filtered); $i++ ) {
+				$productoi[] = "producto-$i";
+				// $productoi[] = "precio-$i";
+			}
+			$result = $productosc->only($productoi);
+
+			// itrerar para insertar en la tabla pivote
+			foreach ($result as $key => $value) {
+				// insertar datos en al tabla pivote venta_clientes
+				$ventaclientes = new venta_cliente();
+				$ventaclientes->product_id = $value;
+				$ventaclientes->client_id = $clientid;
+				$ventaclientes->save();
+				
+				$lastidventacliente = DB::table('venta_clientes')->selectRaw('MAX(id) as lastid')->get();
+
+				dd($lastidventacliente);
+
+				$venta = new Venta();
+				$venta->pay_method = 
+				$venta->total_price = 
+				$venta->venta_cliente_id = $lastidventacliente;
+			}
+		}
+		else {
+			// $result = $productosc->only(['producto', 'precio']);
+			$result = $productosc->only(['producto']);
+
+			$ventaclientes = new venta_cliente();
+			$ventaclientes->product_id = $value;
+			$ventaclientes->client_id = $clientid;
+			$ventaclientes->save();
+		}
+
+		dd($result);
+		return redirect('admin');
+	}
+
+	public function cedula(Request $req)
+	{
+		return Client::where('cedula', $req->cedula)->get();
+	}
 }

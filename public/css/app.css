@@ -3,8 +3,20 @@
 
 /* ESTILOS PROPIOS */
 
+
+html {
+	min-height: 100%;
+	position: relative;
+}
 body {
 	background-color: #f9f9f9;
+	margin: 0;
+	margin-bottom: 100px;
+}
+.page-footer{
+	width: 100%;
+	position: absolute;
+	bottom: 0;
 }
 
 /* Footer color for sake of consistency with Navbar */

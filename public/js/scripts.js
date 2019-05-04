@@ -10,6 +10,115 @@ $(() => {
 
 
 
+	function sumarPrecioProductos(){
+		let arr = [], acum = 0;
+
+		$('.precio').each((index, elem) => {
+			if ( isNaN(parseInt(elem.value)) ) {
+				arr.push(0)
+			}
+			else {
+				arr.push(parseInt(elem.value))
+			}	
+		})
+
+		for (let i = 0; i < arr.length; i++) {
+			acum = acum + arr[i]
+		}
+		
+		$('#preciototal').text(`${acum} Bs`)
+	}
+
+
+	// Verificar la existencia del comprador
+	$('#cedula').keyup(() => {
+		$.ajax({
+			method: 'get',
+			url : 'http://127.0.0.1:8000/cedula',
+			data : { cedula : $('#cedula').val() }
+		})
+
+		.done((data) => {
+			if (data.length > 0) {
+				$('#nombre').val(data[0].first_name)
+				$('#apellido').val(data[0].last_name)
+				$('#telefono').val(data[0].phone)
+				$('#direccion').val(data[0].address)
+				$('#nombre, #apellido, #telefono, #direccion').attr('readonly', '')
+
+				$('#newclient').removeAttr('value')
+				$('#newclient').attr('value', 0)
+			}
+			else {
+				$('#nombre, #apellido, #telefono, #direccion').removeAttr('readonly')
+				$('#newclient').removeAttr('value')
+				$('#newclient').attr('value', 1)
+			}
+		})
+
+		.fail((error) => {
+			console.error(error)
+		})
+	})
+
+	// Agragar otro producto que el cliente compro en modal del administrador
+	// if($('.precio').val().length > 0){
+	// 	sumarPrecioProductos()
+	// }
+
+
+	let i = 0
+
+	$('#dsa').click(() => {
+
+		i = i + 1
+
+		$('#np').append(`
+			<div class="form-row my-4 px-3 precioo">
+				<div class="col">
+					<label for="producto-${i}">Producto</label>
+					<select class="browser-default custom-select" name="producto-${i}" id="producto-${i}" required>
+						<option disabled selected>Producto(s)</option>
+						<option>Producto 1</option>
+						<option>Producto 2</option>
+						<option>Producto 3</option>
+					</select>
+				</div>
+				<div class="col">
+					<label for="precio-${i}">Precio</label>
+					<input type="text" class="form-control precio" name="precio-${i}" id="precio-${i}" placeholder="1234.56" pattern="^[0-9]+(\.[0-9]{2})?$" required>
+				</div>
+			</div>
+		`)
+
+		// if($('.precio').val().length > 0){
+		// 	sumarPrecioProductos()
+		// }
+	})
+
+	$('#elimelem').click(() => {
+		$('.precioo:last').remove()
+		sumarPrecioProductos()
+	})
+
+	// Poner en el campo del precio el precio del producto
+	$('#pro1').change((e) => {
+		$('#pro1 option:selected').each((index, elem) => {
+			// Probar elem.dataset.precio en navegadores basados en chrome
+			$('#price').val(elem.dataset.precio)
+			sumarPrecioProductos()
+			console.log($('#precio'))
+		})
+	})
+
+/*
+
+	@foreach( $categorias as $p )
+		<option value="{{ $p->id }}">{{ $p->category }}</option>
+	@endforeach
+
+*/
+
 	$('#addpbtn').click(() => {
 		$('#addpmdl').modal()
 	})

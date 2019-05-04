@@ -15,6 +15,11 @@
 
 	<!-- Links -->
 	<ul class="navbar-nav ml-auto">
+		<li class="nav-item mr-5">
+			<a class="nav-link" data-toggle="modal" href="#registrarventa">
+				<span><i class="fas fa-user-plus mr-2"></i>Nueva Venta</span>
+			</a>
+		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="{{ url('admin') }}">
 				<span><i class="fas fa-chart-bar mr-2"></i>Inventario</span>
@@ -61,7 +66,7 @@
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
 	<a class="btn-floating btn-md red">
-		<i class="fas fa-mouse-pointer"></i>
+		<i class="fas fa-bars"></i>
 	</a>
 
 	<ul class="list-unstyled">
@@ -71,8 +76,6 @@
 		<li><a id="addsupplierbtn" class="btn-floating blue" data-toggle="tooltip" data-placement="left" title="Registrar proveedor"><i class="fas fa-user-plus"></i></a></li>
 	</ul>
 </div>
-
-
 
 
 <!-- Modal añadir produco -->
@@ -338,6 +341,131 @@
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary btn-md">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- Modal registrar compra a cliente -->
+<div class="modal fade" id="registrarventa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Registrar Venta</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form  action="{{ url('newsale') }}" method="post" id="newsale">
+				@csrf
+				<input type="hidden" name="newclient" id="newclient" value="0">
+				<div class="modal-body">
+
+					<div class="form-row">
+						<div class="col-md-4 col-sm-6">
+							<div class="md-form">
+								<i class="fas fa-id-card prefix"></i>
+								<input type="text" name="cedula" class="form-control validate" id="cedula" maxlength="10" minlength="7" pattern="^[\d]{7,10}$" required>
+								<label for="cedula">Cédula cliente</label>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="md-form">
+								<i class="fas fa-user prefix"></i>
+								<input type="text" min="0" class="form-control validate" readonly name="nombre" id="nombre" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
+								<label for="nombre">Nombre del cliente</label>
+							</div>
+						</div>
+						<div class="col-md-4 col-sm-6">
+							<div class="md-form">
+								<i class="fas fa-user prefix"></i>
+								<input type="text" min="0" class="form-control validate" readonly name="apellido" id="apellido" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
+								<label for="apellido">Apellido del cliente</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="form-row mb-3">
+						<div class="col-md-3 col-sm-6">
+							<div class="md-form">
+								<i class="fas fa-phone prefix"></i>
+								<input type="text" name="telefono" class="form-control validate" readonly id="telefono" minlength="10" maxlength="11" pattern="^[\d]{10,11}$" readonly>
+								<label for="phone">Teléfono</label>
+							</div>
+						</div>
+						<div class="col-md-9 col-sm-6">
+							<div class="md-form">
+								<i class="fas fa-home prefix"></i>
+								<input type="text" class="form-control validate" name="direccion" readonly id="direccion" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
+								<label for="direccion">Dirección del cliente</label>
+							</div>
+						</div>
+					</div>
+
+					<!-- <div class="form-row">
+						<div class="col">
+							<div class="md-form">
+								<i class="fas fa-dollar prefix"></i>
+								<input type="text" class="form-control validate" name="precio" id="precio" placeholder="1234.56" pattern="^[\d]+(\.[\d]{2})?$" required>
+								<label for="precio">Precio total</label>
+							</div>
+						</div>
+					</div> -->
+
+					<div class="form-row mb-3	">
+						<div class="col-md-6 col-12">
+							<select class="mdb-select md-form" name="producto" id="pro1" required>
+								<option disabled selected>Producto</option>
+								@foreach( $categorias as $p )
+									<option value="{{ $p->id }}" data-precio="{{ $p->id }}">{{ $p->category }}</option>
+								@endforeach
+							</select>
+							<label>Producto</label>
+						</div>
+						<div class="col-md-4 col-9">
+							<div class="md-form">
+								<i class="fas fa-dollar prefix"></i>
+								<input type="text" class="form-control precio" placeholder="Precio" name="precio" readonly id="price"> <!--pattern="^[\d]+(\.[\d]{2})?$"  -->
+								<!-- <label for="precio">Precio</label> -->
+							</div>
+						</div>
+						<div class="col-1 d-flex align-items-center mr-xs-3">
+							<button class="btn btn-primary btn-sm" data-toggle="tooltip" title="Agregar otro producto" type="button" id="dsa">
+								<i class="fas fa-plus"></i>
+							</button>
+						</div>
+						<div class="col-1 d-flex align-items-center">
+							<button class="btn btn-sm btn-danger" type="button" id="elimelem">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+
+					<div id="np"></div>
+
+					<div class="form-row">
+						<div class="col">
+							<select class="mdb-select md-form" name="metpago" required>
+								<option selected>Tarjeta de Débito</option>
+								<option value="Transferencia">Transferecia</option>
+								<option value="PagoMovil">Pago Movil</option>
+								<option value="Efectivo">Efectivo</option>
+							</select>
+							<label>Método de pago</label>
+						</div>
+						<div class="col d-flex align-items-center">
+							<p class="text-center lead">
+								<i class="fas fa-dollar mr-2"></i>Precio Total: <code id="preciototal" class="text-dark ml-2">0 Bs</code>
+							</p>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary btn-md"><i class="fas fa-save mr-3"></i>Guardar</button>
 				</div>
 			</form>
 		</div>
