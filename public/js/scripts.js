@@ -72,7 +72,7 @@ $(() => {
 			<div class="form-row my-4 px-3 precioo">
 				<div class="col">
 					<label for="producto-${i}">Producto</label>
-					<select class="browser-default custom-select" name="producto-${i}" id="producto-${i}" required>
+					<select class="browser-default custom-select producto" data-num="${i}" name="producto-${i}" id="producto-${i}" required>
 						<option disabled selected>Producto(s)</option>
 					</select>
 				</div>
@@ -90,11 +90,19 @@ $(() => {
 			}
 		})
 
-		$(`#producto-${i}`).change((e) => {
-			console.log(`dentro del change producto-${i}`)
-			$(`#producto-${i} option:selected`).each((index, elem) => {
-				// Probar elem.dataset.precio en navegadores basados en chrome
-				$(`#price-${i}`).val(elem.dataset.precio)
+		// $(`#producto-${i}`).change((e) => {
+		// 	console.log(`dentro del change producto-${i}`)
+		// 	$(`#producto-${i} option:selected`).each((index, elem) => {
+		// 		$(`#price-${i}`).val(elem.dataset.precio)
+		// 	})
+		// 	sumarPrecioProductos()
+		// })
+
+		$(`select.producto`).change(function(e) {
+			console.log(i)
+			$(`#${e.target.id} option:selected`).each(function(index, elem) {
+				let num = e.target.dataset.num
+				$(`#price-${num}`).val(elem.dataset.precio)
 			})
 			sumarPrecioProductos()
 		})
@@ -114,6 +122,7 @@ $(() => {
 
 	// Eliminar los ultimos inputs producto/precio
 	$('#elimelem').click(() => {
+		i = i - 1
 		$('.precioo:last').remove()
 		sumarPrecioProductos()
 	})

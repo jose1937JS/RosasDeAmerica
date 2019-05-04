@@ -138,3 +138,15 @@
 </div>
 
 @include('inc.footer')
+
+
+@if( session('clienteregistrado') )
+	<script>
+		toastr.error('Éste cliente ya se encuentra registrado.', 'Abortando operación!')
+	</script>
+@endif
+@if( session('ventaclienterealizada') )
+	<script>
+		toastr.success('Venta realizada satisfactoriamente.', 'Operación Completada!')
+	</script>
+@endif

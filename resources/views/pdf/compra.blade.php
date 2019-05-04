@@ -123,7 +123,7 @@
 				<tr>
 					<td></td>
 					<td >TOTAL:</td>
-					<td>{{ $data->price }} BsS</td>
+					<td>{{ $data->price * $data->quantity }} BsS</td>
 				</tr>
 			</tbody>
 		</table>

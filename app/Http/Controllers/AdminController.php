@@ -213,10 +213,7 @@ class AdminController extends Controller
 		$filtered   = preg_grep("/(precio.?)|(producto.?)/", $array_keys);
 		$productosc = collect($productos);
 
-		dd($productos);
-
 		// insertar el cliente si es nuevo
-
 		if ( $req->newclient ) {
 
 			$client = Client::where('cedula', $req->cedula)->get();
@@ -237,8 +234,7 @@ class AdminController extends Controller
 			}
 			else {
 				$clientid = Client::where('cedula', $req->cedula)->get();
-				// REDIRECCIONAR CON UN MENSAJE FLASH
-				return redirect('admin');
+				return redirect('admin')->with('clienteregistrado', 'El cliente ya estaba registrado, abortando operación.');
 			}
 		}
 		else {
@@ -267,6 +263,11 @@ class AdminController extends Controller
 				$ventaclientes->product_id = $value;
 				$ventaclientes->client_id  = $clientid[0]->id;
 				$ventaclientes->save();
+
+				// Restar un producto del almacen
+				$p = Product::find($value);
+				$p->quantity = $p->quantity - 1;
+				$p->save();
 				
 				$lastidventacliente = DB::table('venta_clientes')->selectRaw('MAX(id) as lastid')->get();
 
@@ -274,6 +275,7 @@ class AdminController extends Controller
 				$venta->pay_method 		 = $req->metpago;
 				$venta->total_price 	 = array_sum($precios->all());
 				$venta->venta_cliente_id = $lastidventacliente[0]->lastid;
+				$venta->save();
 			}
 		}
 		else {
@@ -286,8 +288,7 @@ class AdminController extends Controller
 			$ventaclientes->save();
 		}
 
-		dd($result);
-		return redirect('admin');
+		return redirect('admin')->with('ventaclienterealizada', 'Venta realizada satisfactoriamente.');
 	}
 
 	public function cedula(Request $req)
@@ -297,7 +298,23 @@ class AdminController extends Controller
 
 	public function productos(Request $req)
 	{
-		return product::all();
+		$ps = product::all();
+		
+		$a = $ps->contains('quantity', 0);
+
+		if ($a) {
+			foreach ($ps as $key => $value) {
+				if ($value->quantity <= 0) {
+					$ids[] = $key;
+				}
+			}
+		}
+		else {
+			return $ps;
+		}
+
+		// BUG CON LA FUNCION EXCEPT DE LAREAVEL
+		return $ps->except($ids);
 	}
 
 

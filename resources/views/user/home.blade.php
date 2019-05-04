@@ -114,7 +114,7 @@
 								<div class="card wider card-ecommerce mb-4 hoverable">
 									<!-- Card image -->
 									<div class="view zoom overlay" style="height: 250px">
-										<img src='{{ $producto->image }}' class="card-img-top img-fluid" alt="sample photo" style="height: inherit;">
+										<img src='{{ asset("images/$producto->image") }}' class="card-img-top img-fluid" alt="404" style="height: inherit;">
 										<a href='{{ url("product/$producto->id") }}'>
 											<div class="mask rgba-white-slight waves-effect"></div>
 										</a>
@@ -162,11 +162,12 @@
 							</div>
 							<!-- Grid column -->
 						@endforeach
-
+					@else
 						<div class="col">
 							<h3 class="text-center my-4">No hay productos registrados.</h3>
-						</div>
+						</div>	
 					@endif
+					
 
 				</div>
 
