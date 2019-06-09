@@ -17,26 +17,26 @@
 						<thead>
 							<tr>
 								<th>ID</th>
-								<th>PRODUCTO</th>
-								<th>CANTIDAD</th>
 								<th>PROVEEDOR</th>
-								<th>PRECIO (BsS)</th>
+								<th>PRECIO TOTAL (BsS)</th>
 								<th>METODO DE PAGO</th>
-								{{-- <th class="text-center">EDITAR</th> --}}
+								<th>FECHA</th>
+								<th class="text-center">REPORTE</th>
 							</tr>
 						</thead>
 						<tbody>
 							@foreach( $compras as $p )
 								<tr>
 									<td>{{ $p->id }}</td>
-									<td>{{ $p->product }}</td>
-									<td>{{ $p->quantity }}</td>
 									<td>{{ $p->supplier->name }}</td>
-									<td>{{ $p->price }}</td>
+									<td>{{ $p->total_price }}</td>
 									<td>{{ $p->pay_method }}</td>
-									{{-- <td class="text-center">
-										<button class="btn btn-primary btn-sm p-2 dtbtn" data-toggle="modal" data-target="#editproduct"><i class="fas fa-cog"></i></button>
-									</td> --}}
+									<td>{{ $p->created_at }}</td>
+									<td class="text-center">
+										<a href='{{ url("compra/$p->id") }}' class="btn btn-primary btn-sm p-2 dtbtn">
+											<i class="fas fa-file-pdf"></i>
+										</a>
+									</td>
 								</tr>
 							@endforeach
 						</tbody>

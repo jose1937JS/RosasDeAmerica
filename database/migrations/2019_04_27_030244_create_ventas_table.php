@@ -17,9 +17,10 @@ class CreateVentasTable extends Migration
             $table->increments('id');
             $table->string('pay_method', 32);
             $table->string('total_price', 32);
-            $table->unsignedInteger('venta_cliente_id');
+            $table->string('details', 255);
+            $table->unsignedInteger('client_id');
 
-            $table->foreign('venta_cliente_id')->references('id')->on('venta_clientes');
+            $table->foreign('client_id')->references('id')->on('clients');
             $table->timestamps();
         });
     }

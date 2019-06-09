@@ -31,7 +31,7 @@ header p
 footer
 {
 	text-align:center;
-	margin-top: 10rem;
+	margin-top: 2rem;
 	font-size: 1.5rem;
 }
 
@@ -76,87 +76,121 @@ footer
 
 th { padding-left: 8px: }
 
+.info{
+	text-align: center;
+	margin-top: 20px
+}
+
+.qr {
+	text-align: center;
+	margin-top: 20px;
+}
+
 	</style>
 </head>
 <body>
 	<div class="container">
-		<!-- Datos principales de la empresa-->
-		<header>
-			<!-- <p>FACTURA:</p> -->
-			<p>FLORISTERIA ROSAS DE AMÉRICA C.A</p>
-			<p>Avenida Santa Isabel, Sector Cementerio</p>
-			<p>San Juan de los Morros, Edo Guárico</p>
-		</header>
+		@if( $data )
+			<!-- Datos principales de la empresa-->
+			<header>
+				<!-- <p>FACTURA:</p> -->
+				<p>FLORISTERIA ROSAS DE AMÉRICA C.A</p>
+				<p>Avenida Santa Isabel, Sector Cementerio</p>
+				<p>San Juan de los Morros, Edo Guárico</p>
+			</header>
 
-		<div class="table-container">
-			<!-- Datos principales de la factura parte 1-->
-			<table >
+			<div class="table-container">
+				<!-- Datos principales de la factura parte 1-->
+				<table >
+					<thead>
+						<tr>
+							<th>Facturar a:</th>
+							<th>Direccion de entrega:</th>
+							<th>Fecha:</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ $people[0]->pin.' - '.$people[0]->first_name.' '.$people[0]->last_name }}</td>
+							<td>{{ $people[0]->address.', '.$data[0]->sale->address_two }}</td>
+							<td>{{ $data[0]->created_at }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- Datos principales de la factura parte 2-->
+				<table>
+					<thead>
+						<tr>
+							<th>N° de factura:</th>
+							<th>Método de pago:</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>{{ $data[0]->sale->id }}</td>
+							<td>{{ $data[0]->sale->pay_method }}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- Datos del pedido -->
+			<table class="date-table">
 				<thead>
 					<tr>
-						<th>Facturar a:</th>
-						<th>Direccion de entrega:</th>
-						<th>Fecha:</th>
+						<th>CANT:</th>
+						<th>PRODUCTO:</th>
+						<th>DESCRIPCION:</th>
+						<th>PRECIO:</th>
+						<th>PRECIO TOTAL:</th>
 					</tr>
 				</thead>
 				<tbody>
+					@foreach( $data as $d )
+						<tr>
+							<td>{{ $d->quantity }}</td>
+							<td>{{ $d->product->product }}</td>
+							<td>{{ $d->product->description }}</td>
+							<td>{{ $d->product->price }}</td>
+							<td>{{ $d->product->price * $d->quantity }} Bs</td>
+						</tr>
+					@endforeach
+					<!-- Rows vacias para rellenar la tabla -->
 					<tr>
-						<td>{{ $people[0]->pin.' - '.$people[0]->first_name.' '.$people[0]->last_name }}</td>
-						<td>{{ $people[0]->address.', '.$data[0]->sale->address_two }}</td>
-						<td>{{ $data[0]->created_at }}</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<!-- Final de las rows vacias para rellenar la tabla -->
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td >IVA:</td>
+						<td>{{ $iva }} Bs</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td >TOTAL:</td>
+						<td>{{ $data[0]->sale->amount }} Bs</td>
 					</tr>
 				</tbody>
 			</table>
-			<!-- Datos principales de la factura parte 2-->
-			<table>
-				<thead>
-					<tr>
-						<th>N° de factura:</th>
-						<th>Método de pago:</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{ $data[0]->sale->id }}</td>
-						<td>{{ $data[0]->sale->pay_method }}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<!-- Datos del pedido -->
-		<table class="date-table">
-			<thead>
-				<tr>
-					<th>CANT:</th>
-					<th>DESCRIPCION:</th>
-					<th>PRECIO TOTAL:</th>
-				</tr>
-			</thead>
-			<tbody>
-				@foreach( $data as $d )
-					<tr>
-						<td>{{ $d->quantity }}</td>
-						<td>{{ $d->product->description }}</td>
-						<td>{{ $d->product->price }} BsS</td>
-					</tr>
-				@endforeach
-				<!-- Rows vacias para rellenar la tabla -->
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<!-- Final de las rows vacias para rellenar la tabla -->
-				<tr>
-					<td></td>
-					<td >TOTAL:</td>
-					<td>{{ $data[0]->sale->amount }} BsS</td>
-				</tr>
-			</tbody>
-		</table>
-		<!-- Final de la factura -->
-		<footer class="footer">
-			<p>¡Disfrute su compra!</p>
-		</footer>
+
+			<div class="qr">
+				<img src="./qrcodes/facturacliente.png" alt="404">
+			</div>
+
+			<!-- Final de la factura -->
+			<footer class="footer">
+				<p>¡Disfrute su compra!</p>
+			</footer>
+		@else
+			<h1 class="info">No hay data para mostrar</h1>
+		@endif
 	</div>
 </body>
 </html>

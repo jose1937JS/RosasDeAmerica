@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Barryvdh\DomPDF\Facade as PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -248,9 +249,12 @@ class HomeController extends Controller
 
 		$data['data']   = ProductSale::where('sale_id', $id)->get();
 		$data['people'] = People::where('id', $idpeople)->get();
+		$data['iva']    = ($data['data'][0]->product->price * $data['data'][0]->quantity) * 0.12;
 
 		$people = People::where('id', $idpeople)->get();
 		$cedula = $people[0]->pin;
+
+		QrCode::format('png')->size(150)->generate($cedula, "./qrcodes/facturacliente.png");
 
 		$pdf = PDF::loadView('pdf.factura', $data);
 

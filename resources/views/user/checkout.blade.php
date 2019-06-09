@@ -571,7 +571,7 @@
 									@csrf
 									<input type="hidden" name="rowid" value="{{ $producto->rowId }}">
 
-									<span class="text-muted">{{ number_format($producto->priceTax, 2, ',', '.') }} BsS</span>
+									<span class="text-muted">{{ number_format($producto->priceTax, 2, ',', '.') }} Bs</span>
 									<button class="btn p-0 btn-flat" data-toggle="tooltip" title="Eliminar producto" type="submit">
 										<span class="red-text ml-3"><i class="fas fa-times fa-2x"></i></span>
 									</button>
@@ -579,11 +579,11 @@
 							</li>
 						@endforeach
 						<li class="list-group-item d-flex justify-content-between">
-							<span class="font-weight-bold">IVA (BsS)</span>
+							<span class="font-weight-bold">IVA 12% (Bs)</span>
 							<span class="font-weight-bold">{{ $tax }}</span>
 						</li>
 						<li class="list-group-item d-flex justify-content-between">
-							<span class="font-weight-bold">Total (BsS)</span>
+							<span class="font-weight-bold">Total (Bs)</span>
 							<span class="font-weight-bold">{{ number_format($total, 2, ',', '.') }}</span>
 						</li>
 					</ul>

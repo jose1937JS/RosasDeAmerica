@@ -5,6 +5,7 @@ $(() => {
 	$('[data-toggle="tooltip"]').tooltip()
 	$('.mdb-select').materialSelect()
 	$('#dtBasicExample').DataTable()
+	$('#dt').DataTable()
 	// $('.dataTables_length').addClass('bs-select');
 	// console.log($('#dtBasicExample > label'))
 
@@ -90,14 +91,6 @@ $(() => {
 			}
 		})
 
-		// $(`#producto-${i}`).change((e) => {
-		// 	console.log(`dentro del change producto-${i}`)
-		// 	$(`#producto-${i} option:selected`).each((index, elem) => {
-		// 		$(`#price-${i}`).val(elem.dataset.precio)
-		// 	})
-		// 	sumarPrecioProductos()
-		// })
-
 		$(`select.producto`).change(function(e) {
 			console.log(i)
 			$(`#${e.target.id} option:selected`).each(function(index, elem) {
@@ -119,12 +112,55 @@ $(() => {
 		sumarPrecioProductos()
 	})
 
+// 192.168.55.220
 
-	// Eliminar los ultimos inputs producto/precio
+	// Eliminar los ultimos inputs producto/precio 
 	$('#elimelem').click(() => {
 		i = i - 1
 		$('.precioo:last').remove()
 		sumarPrecioProductos()
+	})
+
+
+
+	// resgistrar compra al proveedor
+
+	let acum = 0
+	$('#agcomprapro').click(() => {
+		
+		acum = acum + 1
+		
+		$('#compracampo').append(`
+			<div class="form-row my-4 provcampo">
+				<div class="col">
+					<div class="md-form">
+						<i class="fas fa-cubes prefix"></i>
+						<input type="text" name="producto-${acum}" id="producto-${acum}" class="form-control" required>
+						<label for="producto-${acum}">Producto</label>
+					</div> 
+				</div>
+				<div class="col-3">
+					<div class="md-form">
+						<i class="fas fa-cubes prefix"></i>
+						<input type="number" min="0" value="1" name="cantidad-${acum}" id="cantidad-${acum}" class="form-control" required>
+						<label for="cantidad-${acum}">Cantidad</label>
+					</div>
+				</div>
+				<div class="col-3">
+					<div class="md-form">
+						<i class="fas fa-dollar prefix"></i>
+						<input type="text" name="precio-${acum}" id="precio-${acum}" class="form-control validate" required pattern="^[0-9]+$">
+						<label for="precio-${acum}">Precio</label>
+					</div>
+				</div>
+			</div>
+		`)
+	})
+
+	// Eliminar los ultimos inputs de compra al proveedor
+	$('#elimcomprapro').click(() => {
+		acum = acum - 1
+		$('.provcampo:last').remove()
 	})
 
 

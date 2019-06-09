@@ -121,8 +121,10 @@ Route::post('editprofile', 'HomeController@editprofile');
 
 Route::get('admin', 'AdminController@index');
 Route::get('pedidos/{status}', 'AdminController@pedidos')->where('status', '^(pagado|despachado)$');
+Route::get('pedidos/local', 'AdminController@pedidoslocal');
 
 Route::get('compras', 'AdminController@proveedores');
+Route::get('compra/{id}', 'AdminController@compraproveedor')->where('id', '^[0-9]+$');
 Route::post('addcategoria', 'AdminController@addcategoria');
 Route::post('addcompraproveedor', 'AdminController@addcompraproveedor');
 Route::post('addproduct', 'AdminController@addproduct');

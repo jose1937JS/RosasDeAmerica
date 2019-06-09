@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Barryvdh\DomPDF\Facade as PDF;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 use App\Product;
 use App\Category;
@@ -14,7 +15,8 @@ use App\Sale;
 use App\Supplier;
 use App\Client;
 use App\Venta;
-use App\venta_cliente;
+use App\venta_productos;
+use App\Shopping_products;
 
 class AdminController extends Controller
 {
@@ -79,6 +81,29 @@ class AdminController extends Controller
 				->with('products', $products);
 	}
 
+	public function pedidoslocal()
+	{
+		$category    = Category::all();
+		$proveedores = Supplier::all();
+		$products 	 = DB::table('product_sales')
+						->select('product_sales.*', 'products.product', 'products.price')
+						->join('products', 'product_sales.product_id', '=', 'products.id')
+						->get();
+
+		$ventas      = DB::table('ventas')
+						->select('ventas.pay_method', 'ventas.client_id as id', 'ventas.total_price', 'clients.cedula', 'clients.first_name', 'clients.last_name', 'clients.phone', 'clients.address', 'products.product', 'products.price', 'venta_productos.product_id')
+						->join('venta_productos', 'ventas.id', '=', 'venta_productos.venta_id')
+						->join('products', 'venta_productos.product_id', '=', 'products.id')
+						->join('clients', 'ventas.client_id', '=', 'clients.id')
+						->get();
+
+		return view('admin.pedidoslocal')
+				->with('proveedores', $proveedores)
+				->with('categorias', $category)
+				->with('products', $products)
+				->with('ventas', $ventas);
+	}
+
 	public function proveedores(Request $req)
 	{
 		$compras  	 = Shopping::all();
@@ -91,6 +116,41 @@ class AdminController extends Controller
 			->with('proveedores', $proveedores)
 			->with('categorias', $category)
 			->with('products', $products);
+	}
+
+	public function compraproveedor($id)
+	{
+		$r = DB::table('shopping')
+				->join('shopping_products', 'shopping.id', '=', 'shopping_products.shopping_id')
+				->join('suppliers', 'suppliers.id', '=', 'shopping.supplier_id')
+				->select('suppliers.name','suppliers.email','suppliers.phone','suppliers.rif','shopping.id as idcompra','shopping.total_price','shopping.pay_method','shopping.created_at','shopping_products.product', 'shopping_products.quantity', 'shopping_products.price')
+				->where('shopping.id', $id)
+				->get();
+
+		$supplier = collect($r[0])->only('name', 'email','phone','rif', 'idcompra');
+		$shopping = collect($r[0])->only('created_at', 'idcompra');
+		
+		
+		for ($i=0; $i < count($r); $i++) { 
+
+			$products[] = collect($r[$i])->only('product','price','quantity');
+			$precios[]  = $products[$i]['price'] * $products[$i]['quantity'];
+		}
+
+
+		$price = array_sum($precios);
+
+		// return view('pdf.compra')
+		// 	->with('supplier', $supplier)
+		// 	->with('shopping', $shopping)
+		// 	->with('price', $price)
+		// 	->with('products', $products);
+
+		QrCode::format('png')->size(150)->generate($shopping['idcompra'], "./qrcodes/compraproveedor.png");
+
+		$pdf = PDF::loadView('pdf.compra', ['supplier' => $supplier, 'shopping' => $shopping, 'price' => $price, 'products' => $products]);
+
+		return $pdf->download("reporte-compra-proveedor.pdf");
 	}
 
 	public function marcarcomodespachado(Request $req)
@@ -115,17 +175,58 @@ class AdminController extends Controller
 
 	public function addcompraproveedor(Request $req)
 	{
-		$shopping = new Shopping();
+		$formdata   = $req->all();
+		$keys 		= array_keys($formdata);
+		$array_keys = array_combine($keys, $keys);
 
-		$shopping->product     = $req->input('producto');
-		$shopping->quantity    = $req->input('cantidad');
-		$shopping->supplier_id = $req->input('proveedor');// iddelproveedor
-		$shopping->price   	   = $req->input('precio');
-		$shopping->pay_method  = $req->input('pay_method');
+		$filtered   = preg_grep("/(precio.?)|(producto.?)|(cantidad.?)/", $array_keys);
+		$productosc = collect($formdata);
+
+		$productoi = ['producto-0'];
+		$precioi   = ['precio-0'];
+		$cantidadi = ['cantidad-0'];
+
+		for ( $i=1; $i <= (count($filtered) / 3) - 1; $i++ )
+		{
+			$productoi[] = "producto-$i";
+			$precioi[]   = "precio-$i";
+			$cantidadi[] = "cantidad-$i";
+		}
+		
+		$productos = $productosc->only($productoi);
+		$cantidads = $productosc->only($cantidadi);
+		$precios   = $productosc->only($precioi);
+
+		for ($i=0; $i < count($cantidads); $i++) { 
+			
+			$precio[] = $cantidads["cantidad-$i"] * $precios["precio-$i"];
+		}
+
+
+		$shopping = new Shopping();
+		
+		$shopping->total_price = array_sum($precio);
+		$shopping->pay_method  = $req->pay_method;
+		$shopping->supplier_id = $req->proveedor;
 
 		$shopping->save();
 
-		return redirect('admin');
+		$lastshopping = DB::table('shopping')->selectRaw('MAX(id) as lastid')->get();
+
+
+		for ($i=0; $i < count($productos); $i++)
+		{
+			$shoppingpro = new Shopping_products();
+			
+			$shoppingpro->product 	  = $productos["producto-$i"];
+			$shoppingpro->quantity 	  = $cantidads["cantidad-$i"];
+			$shoppingpro->price       = $precios["precio-$i"];
+			$shoppingpro->shopping_id = $lastshopping[0]->lastid;
+			
+			$shoppingpro->save();
+		}
+
+		return redirect('compras');
 	}
 
 	public function addproduct(Request $req)
@@ -255,36 +356,44 @@ class AdminController extends Controller
 			$result  = $productosc->only($productoi);
 			$precios = $productosc->only($precioi);
 
+
+			// insertar la venta
+			$venta 					 = new Venta();
+			$venta->pay_method 		 = $req->metpago;
+			$venta->total_price 	 = array_sum($precios->all());
+			$venta->details 		 = $req->descripcion;
+			$venta->client_id 		 = $clientid[0]->id;
+			$venta->save();
+
+
+			$lastidventa = DB::table('ventas')->selectRaw('MAX(id) as lastid')->get();
+
+
 			// itrerar para insertar en la tabla pivote
 			foreach ($result as $key => $value)
 			{
-				// insertar datos en al tabla pivote venta_clientes
-				$ventaclientes 			   = new venta_cliente();
-				$ventaclientes->product_id = $value;
-				$ventaclientes->client_id  = $clientid[0]->id;
-				$ventaclientes->save();
+				// insertar datos en al tabla pivote venta_productos
+				$ventaproducto 			   = new venta_productos();
+				$ventaproducto->product_id = $value;
+				$ventaproducto->venta_id   = $lastidventa[0]->lastid;
+				$ventaproducto->save();
 
 				// Restar un producto del almacen
 				$p = Product::find($value);
 				$p->quantity = $p->quantity - 1;
 				$p->save();
 				
-				$lastidventacliente = DB::table('venta_clientes')->selectRaw('MAX(id) as lastid')->get();
+				// $lastidventacliente = DB::table('venta_productos')->selectRaw('MAX(id) as lastid')->get();
 
-				$venta 					 = new Venta();
-				$venta->pay_method 		 = $req->metpago;
-				$venta->total_price 	 = array_sum($precios->all());
-				$venta->venta_cliente_id = $lastidventacliente[0]->lastid;
-				$venta->save();
 			}
 		}
 		else {
 			// $result = $productosc->only(['producto', 'precio']);
 			$result = $productosc->only(['producto']);
 
-			$ventaclientes 			   = new venta_cliente();
+			$ventaclientes 			   = new venta_productos();
 			$ventaclientes->product_id = $value;
-			$ventaclientes->client_id  = $clientid[0]->id;
+			$ventaclientes->venta_id   = $lastidventa[0]->lastid;
 			$ventaclientes->save();
 		}
 

@@ -37,16 +37,17 @@
 			<div class="dropdown-menu dropdown-primary dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item" href="{{ url('pedidos/despachado') }}">Listos (despachados)</a>
 				<a class="dropdown-item" href="{{ url('pedidos/pagado') }}">Pagados (por despachar)</a>
+				<a class="dropdown-item" href="{{ url('pedidos/local') }}">Pedidos (Local)</a>
 			</div>
 		</li>
 
 		<!-- Dropdown -->
-		<li class="nav-item dropdown">
+		<!-- <li class="nav-item dropdown">
 			<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-file-pdf mr-2"></i>Reportes</a>
 			<div class="dropdown-menu dropdown-primary dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item" href="{{ url('compra') }}">Compra</a>
 			</div>
-		</li>
+		</li> -->
 		<li class="nav-item">
 			<a class="nav-link" href="#"
 				onclick="event.preventDefault();document.getElementById('logout').submit();">
@@ -195,7 +196,7 @@
 
 <!-- Modal compra progveedor -->
 <div class="modal fade" id="addcompramdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog " role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Registrar compra al proveedor</h5>
@@ -207,23 +208,40 @@
 				@csrf
 				<div class="modal-body">
 
-					<div class="form-row">
-						<div class="col-md-8">
-							<div class="md-form">
-								<i class="fas fa-cubes prefix"></i>
-								<input type="text" name="producto" id="producto" class="form-control" required>
-								<label for="producto">Producto</label>
-							</div>
+					<div class="form-row mb-3">
+						<div class="col d-flex justify-content-end">
+							<button class="btn btn-sm btn-primary" id="agcomprapro" data-toggle="tooltip" data-title="Agregar otro producto" type="button"><i class="fas fa-plus"></i></button>
+							<button class="btn btn-sm btn-danger" id="elimcomprapro" type="button" data-toggle="tooltip" data-title="Eliminar producto"><i class="fas fa-times"></i></button>
 						</div>
+					</div>
+
+					<div class="form-row">
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-cubes prefix"></i>
-								<input type="number" min="0" value="0" name="cantidad" id="cantidad" class="form-control" required>
+								<input type="text" name="producto-0" id="producto" class="form-control" required>
+								<label for="producto">Producto</label>
+							</div>
+						</div>
+						<div class="col-3">
+							<div class="md-form">
+								<i class="fas fa-cubes prefix"></i>
+								<input type="number" min="0" value="0" name="cantidad-0" id="cantidad" class="form-control" required>
 								<label for="cantidad">Cantidad</label>
 							</div>
 						</div>
+						<div class="col-3">
+							<div class="md-form">
+								<i class="fas fa-dollar prefix"></i>
+								<input type="text" name="precio-0" id="precio" class="form-control" required pattern="^[\d]+$">
+								<label for="precio">Precio</label>
+							</div>
+						</div>
 					</div>
-					<div class="form-row">
+
+					<div id="compracampo"></div>
+
+					<div class="form-row my-3">
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-user-circle prefix"></i>
@@ -235,15 +253,6 @@
 								</select>
 							</div>
 						</div>
-						<div class="col">
-							<div class="md-form">
-								<i class="fas fa-dollar prefix"></i>
-								<input type="text" name="precio" id="precio" class="form-control" placeholder="1234.56" required pattern="^[\d]+(\.[\d]{2})?$">
-								<label for="precio">Precio</label>
-							</div>
-						</div>
-					</div>
-					<div class="form-row">
 						<div class="col">
 							<select class="mdb-select md-form" name="pay_method" id="pay_method" required>
 								<option selected disabled>Escoge un método de pago</option>
@@ -267,7 +276,7 @@
 
 <!-- Modal registrar proveedor-->
 <div class="modal fade" id="addsupplier" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Registrar Proveedor</h5>
@@ -406,6 +415,16 @@
 						</div>
 					</div>
 
+					<div class="form-row mb-3">
+						<div class="col-md-12">
+							<div class="md-form">
+								<i class="fas fa-edit mr-2 prefix"></i>
+								<textarea class="md-textarea form-control" id="descripcion" name="descripcion"></textarea>
+								<label for="descripcion">Descripción de la compra</label>
+							</div>
+						</div>
+					</div>
+
 					<!-- <div class="form-row">
 						<div class="col">
 							<div class="md-form">
@@ -419,7 +438,6 @@
 					<div class="form-row mb-3	">
 						<div class="col-md-6 col-12">
 							<select class="mdb-select md-form" name="producto" id="producto-0" required>
-								<option disabled selected>Producto</option>
 								@foreach( $products as $p )
 									<option value="{{ $p->id }}" data-precio="{{ $p->price }}">{{ $p->product }}</option>
 								@endforeach

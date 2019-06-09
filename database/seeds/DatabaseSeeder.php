@@ -33,15 +33,15 @@ class DatabaseSeeder extends Seeder
 
 		// llenado de categoria
 		DB::table('categories')->insert([
-			'category' => 'Lacteos',
+			'category' => 'Arreglos',
 			'created_at' => now()
 		]);
 
 		// llenado de productos
 		DB::table('products')->insert([
-			'product' => 'Leche',
-			'description' => 'LEche pasteurizada de cebra',
-			'image' => '404.jpg',
+			'product' => 'Flores',
+			'description' => 'CUestion con muchas flores de colores',
+			'image' => 'images/404.jpg',
 			'quantity' => '5',
 			'price' => '12000',
 			'category_id' => 1,
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
 		DB::table('products')->insert([
 			'product' => 'Queso',
 			'description' => 'queso llanero del lano plano',
-			'image' => '404.jpg',
+			'image' => 'images/404.jpg',
 			'quantity' => '9',
 			'price' => '19000',
 			'category_id' => 1,
@@ -60,18 +60,27 @@ class DatabaseSeeder extends Seeder
 
 		// llenado de clientes
 		DB::table('clients')->insert([
-			'cedula' => '23111111',
+			'cedula' 	 => '23111111',
 			'first_name' => 'Yessebel',
-			'last_name' => 'Avila',
-			'phone' => '00000000001',
-			'address' => 'sevtor 2 de brisas del valle',
+			'last_name'  => 'Avila',
+			'phone' 	 => '00000000001',
+			'address' 	 => 'sevtor 2 de brisas del valle',
 			'created_at' => now()
 		]);
 
-		// llenado de venta_clientes
-		DB::table('venta_clientes')->insert([
+		// venta
+		DB::table('ventas')->insert([
+			'pay_method'  => 'Transferencia',
+			'total_price' => '4000.00',
+			'details' 	  => 'Esto es un texto detallado de como el cliente quiere su producto',
+			'client_id'   => 1,
+			'created_at'  => now()
+		]);
+
+		// llenado de venta_producto
+		DB::table('venta_productos')->insert([
 			'product_id' => 2,
-			'client_id' => 1,
+			'venta_id' => 1,
 			'created_at' => now()
 		]);
 

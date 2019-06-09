@@ -54,6 +54,10 @@
 		/*background: #e3f2fd;*/
 	}
 
+	.qr {
+		float: right;
+	}
+
 	table
 	{
 		background-color: #90caf9;
@@ -78,59 +82,77 @@
 		margin-top: 4rem;
 		text-align: right;
 	}
+
+	.info {
+		text-align: center;
+		margin-top: 20px
+	}
 }
 	</style>
 </head>
 <body>
 	<div class="container">
-		<header class="header">
-			<div class="header-item-1">
-				<p class="date">Proveedor: {{ $data->supplier->name }}</p>
-				<p>Dirección: {{ $data->supplier->address }}</p>
-				<p>Telefono: {{ $data->supplier->phone }}</p>
-				<p>Email: {{ $data->supplier->email }}</p>
-				<p>Rif: {{ $data->supplier->rif }}</p>
-			</div>
-			<div class="header-item-2">
-				<p>Cliente: Rosas de América C.A.</p>
-				<p>Direccion: Avenida Santa Isabel, Sector Cementerio</p>
-				<p>Telefono: 0000-000-00-00</p>
-			</div>
-			<div class="header-item-3">
-				<p>Fecha: {{ $data->created_at }}</p>
-				<p>Factura: {{ $data->id }}</p>
-			</div>
-		</header>
-		<table>
-			<thead>
-				<tr>
-					<th>Cantidad:</th>
-					<th>Producto:</th>
-					<th>Total:</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>{{ $data->quantity }}</td>
-					<td>{{ $data->product }}</td>
-					<td>{{ $data->price }} BsS</td>
-				</tr>
-				<tr>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td >TOTAL:</td>
-					<td>{{ $data->price * $data->quantity }} BsS</td>
-				</tr>
-			</tbody>
-		</table>
-		<footer class="footer">
-			<p>N° control:</p>
-			<p>{{ random_int(10, 99).'-'.random_int(00001, 99999) }}</p>
-		</footer>
+		@if( $products && $supplier && $shopping )
+			<header class="header">
+				<div class="header-item-1">
+					<p class="date">Proveedor: {{ $supplier['name'] }}</p>
+					{{-- <p>Dirección: {{ $supplier->address }}</p> --}}
+					<p>Telefono: {{ $supplier['phone'] }}</p>
+					<p>Email: {{ $supplier['email'] }}</p>
+					<p>Rif: {{ $supplier['rif'] }}</p>
+				</div>
+				<div class="qr">
+					<img src='./qrcodes/compraproveedor.png' alt="404">
+				</div>
+				<div class="header-item-2">
+					<p>Cliente: Rosas de América C.A.</p>
+					<p>Direccion: Avenida Santa Isabel, Sector Cementerio</p>
+					<p>Telefono: 0000-000-00-00</p>
+				</div>
+				<div class="header-item-3">
+					<p>Fecha: {{ $shopping['created_at'] }}</p>
+					<p>Factura: {{ $shopping['idcompra'] }}</p>
+				</div>
+			</header>
+			<table>
+				<thead>
+					<tr>
+						<th>Cantidad:</th>
+						<th>Producto:</th>
+						<th>Precio:</th>
+						<th>Total:</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach( $products as $p )
+						<tr>
+							<td>{{ $p['quantity'] }}</td>
+							<td>{{ $p['product'] }}</td>
+							<td>{{ $p['price'] }} Bs</td>
+							<td>{{ $p['price'] * $p['quantity']}}</td>
+						</tr>
+					@endforeach
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td></td>
+						<td >TOTAL:</td>
+						<td>{{ $price }} BsS</td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- <footer class="footer">
+				<p>N° control:</p>
+				<p>{{ random_int(10, 99).'-'.random_int(00001, 99999) }}</p>
+			</footer> -->
+		@else
+			<h1 class="info">No hay data para mostrar</h1>
+		@endif
 	</div>
 </body>
 </html>
