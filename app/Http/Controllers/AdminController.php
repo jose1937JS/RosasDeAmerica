@@ -53,8 +53,9 @@ class AdminController extends Controller
 		$proveedores = Supplier::all();
 		$products    = Product::all();
 
+
 		$products = DB::table('product_sales')
-					->select('product_sales.*', 'products.product')
+					->select('product_sales.*', 'products.product', 'products.price')
 					->join('products', 'product_sales.product_id', '=', 'products.id')
 					->get();
 

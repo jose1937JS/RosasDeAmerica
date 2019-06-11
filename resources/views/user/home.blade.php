@@ -59,7 +59,7 @@
 	<main>
 		<div class="container">
 
-			<h2 class="text-center my-5">Desarrollo web para la gestión administrativa de procesos, productos y requerimientos de la Floristeria Rosas de América C.A, San Juan de los Morros</h2>
+			<h2 class="text-center my-5">Sistema web para la administración de compras y ventas de la floristeria ROSAS DE AMERICA C.A </h2>
 
 
 			<!--Navbar-->

@@ -13,8 +13,6 @@
 				</div>
 				<div class="card-body">
 
-					{{!! QrCode::size(200)->generate("jose") !!}}
-
 					@if ( count($ventas) > 0 )
 
 						<div class="card mb-3">

@@ -272,11 +272,12 @@ $(() => {
 
 		if (r != -1) {
 			// firefox
-			var idproducto = $(e.target).parent().parent()[0].firstElementChild.textContent
+			var idproducto = $(e.target).parent().parent().parent()[0].firstElementChild.textContent
 		}
 		else {
 			// otros
-			var idproducto = $(e.target).parent().parent().parent()[0].firstElementChild.textContent
+			var idproducto = $(e.target).parent().parent().parent().parent()[0].firstElementChild.textContent
+			console.log(idproducto)
 		}
 
 
