@@ -150,3 +150,9 @@
 		toastr.success('Venta realizada satisfactoriamente.', 'Operación Completada!')
 	</script>
 @endif
+
+@if( $cant > 0 )
+	<script>
+		toastr.warning('Tienes {{ $cant }} ventas nuevas', 'Información')
+	</script>
+@endif

@@ -26,6 +26,8 @@ use App\Sale;
 use App\ProductSale;
 use App\User;
 use App\People;
+use App\InfoPagoMovil;
+use App\InfoTransferencia;
 
 class HomeController extends Controller
 {
@@ -182,10 +184,10 @@ class HomeController extends Controller
 			'phone' 	  => 'nullable|digits_between:10,11',
 			'monto' 	  => 'required|numeric',
 			'pay_method'  => 'required|string',
-			'cc-number'   => 'nullable|digits_between:16,19',
-			'cvc'   	  => 'nullable|digits:3',
-			'nameincard'  => 'nullable|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
-			'vencimiento' => 'nullable|regex:/^[\d]{2}\/[\d]{2}$/',
+			// 'cc-number'   => 'nullable|digits_between:16,19',
+			// 'cvc'   	  => 'nullable|digits:3',
+			// 'nameincard'  => 'nullable|regex:/^[a-zA-Z]+(?:\s?[a-zA-Z]\s?)+$/',
+			// 'vencimiento' => 'nullable|regex:/^[\d]{2}\/[\d]{2}$/',
 			'referencia'  => 'nullable|numeric'
 		]);
 
@@ -260,5 +262,6 @@ class HomeController extends Controller
 
 		return $pdf->download("factura-$cedula.pdf");
 	}
+
 
 }

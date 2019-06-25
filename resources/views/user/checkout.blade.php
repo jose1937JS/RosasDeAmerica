@@ -39,21 +39,21 @@
 						<div class="card-body">
 
 							<ul class="nav nav-tabs" id="myTab" role="tablist">
-								<li class="nav-item">
+								{{-- <li class="nav-item">
 									<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
 									aria-selected="true"><i class="fas fa-credit-card mr-2"></i>Tarjeta de crédito</a>
-								</li>
+								</li> --}}
 								<li class="nav-item">
-									<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+									<a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
 									aria-selected="false"><i class="fas fa-exchange-alt mr-2"></i>Transferencia</a>
 								</li>
-								<!--<li class="nav-item">
+								<li class="nav-item">
 									<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
 									aria-selected="false"><i class="fas fa-mobile-alt mr-2"></i>Pago movil</a>
-								</li> -->
+								</li>
 							</ul>
 							<div class="tab-content" id="myTabContent">
-								<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+								{{-- <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
 
 									<form id="checkout_form" method="post" action="{{ url('tarjeta') }}">
 										@csrf
@@ -94,7 +94,7 @@
 										<div class="form-row">
 											<div class="col-md-6">
 												<div class="md-form">
-													<input type="text" name="phone" class="form-control validate" id="telefono" value="{{ $user->people->phone }}" maxlength="11" pattern="^[0-9]+$">
+													<input type="text" name="phone" class="form-control validate" id="telefono" value="{{ $user->people->phone }}" >
 													<label for="telefono">Teléfono</label>
 													@if( $errors->has('phone') )
 														@foreach( $errors->get('phone') as $error )
@@ -139,7 +139,7 @@
 											@endif
 										</div>
 
-										<!-- <div class="form-row">
+										<div class="form-row">
 											<div class="col-lg-4 col-md-12 mb-4">
 
 												<select class="mdb-select md-form" required>
@@ -170,7 +170,7 @@
 
 											</div>
 
-										</div> -->
+										</div>
 
 										<h4 class="my-4">Información de la tarjeta de crédito</h4>
 
@@ -252,180 +252,79 @@
 											<img class="img-fluid" width="300px" src="{{ url('images/instapago.jpg') }}" alt="instapago image">
 										</div>
 									</form>
-								</div>
+								</div> --}}
 
-								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+								<div class="tab-pane fade show active " id="profile" role="tabpanel" aria-labelledby="profile-tab">
 
 									<h4 class="my-4">Información de la transferencia</h4>
 
 									<p>Aceptamos transferencias de los siguientes bancos:</p>
 
-									<!--Accordion wrapper-->
-									<div class="accordion mb-4" id="accordionEx" role="tablist" aria-multiselectable="true">
+									@foreach ($transferencias as $t)
 
-										<!-- Accordion card -->
-										<div class="card mb-3 hoverable">
+										<div class="accordion mb-4" id="accordionTrans{{ $t->id }}" role="tablist" aria-multiselectable="true">
 
-											<!-- Card header -->
-											<div class="card-header bg-primary" role="tab" id="headingOne">
-												<a data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-													<h5 class="mb-0 d-flex justify-content-between text-white">
-														<span>Banco de Venezuela</span><i class="fa fa-angle-down rotate-icon"></i>
-													</h5>
-												</a>
-											</div>
-											<!-- Card body -->
-											<div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordionEx">
-												<div class="card-body">
+											<div class="card mb-3 hoverable">
 
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Nro. de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>0102 0467 11 0000001234</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Tipo de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>Corriente</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Titular:</span>
-														</div>
-														<div class="col">
-															<span>Jessica del Carmen Lopez Ortiz</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Correo:</span>
-														</div>
-														<div class="col">
-															<span>jessica@lopez.com</span>
-														</div>
-													</div>
+												<!-- Card header -->
+												<div class="card-header bg-primary" role="tab" id="">
+													<a data-toggle="collapse" href="#idtrans{{ $t->id }}" aria-expanded="true" aria-controls="">
+														<h5 class="mb-0 d-flex justify-content-between text-white">
+															<span>{{ $t->banco }}</span><i class="fa fa-angle-down rotate-icon"></i>
+														</h5>
+													</a>
+												</div>
+												<!-- Card body -->
+												<div id="idtrans{{ $t->id }}" class="collapse" role="tabpanel" aria-labelledby="" data-parent="#accordionTrans{{ $t->id }}">
+													<div class="card-body">
 
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Nro. de cuenta:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->nro_cuenta }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Tipo de cuenta:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->tipo_cuenta }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Titular:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->titular }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Correo:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->correo }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Teléfono:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->telefono }}</span>
+															</div>
+														</div>
+
+													</div>
 												</div>
 											</div>
 										</div>
-										<!-- Accordion card -->
 
-										<!-- Accordion card -->
-										<div class="card mb-3 hoverable">
-
-											<!-- Card header -->
-											<div class="card-header bg-primary" role="tab" id="headingTwo">
-												<a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-													<h5 class="mb-0 d-flex justify-content-between text-white">
-														<span>Banco Occidental de Descuento</span><i class="fa fa-angle-down rotate-icon"></i>
-													</h5>
-												</a>
-											</div>
-
-											<!-- Card body -->
-											<div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordionEx">
-												<div class="card-body">
-
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Nro. de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>0102 0467 11 0000001234</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Tipo de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>Corriente</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Titular:</span>
-														</div>
-														<div class="col">
-															<span>Jessica del Carmen Lopez Ortiz</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Correo:</span>
-														</div>
-														<div class="col">
-															<span>jessica@lopez.com</span>
-														</div>
-													</div>
-
-												</div>
-											</div>
-										</div>
-										<!-- Accordion card -->
-
-										<!-- Accordion card -->
-										<div class="card hoverable">
-
-											<!-- Card header -->
-											<div class="card-header bg-primary" role="tab" id="headingThree">
-												<a class="collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-													<h5 class="mb-0 d-flex justify-content-between text-white">
-														<span>Banco Bicentenario</span><i class="fa fa-angle-down rotate-icon"></i>
-													</h5>
-												</a>
-											</div>
-
-											<!-- Card body -->
-											<div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordionEx">
-												<div class="card-body">
-
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Nro. de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>0102 0467 11 0000001234</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Tipo de cuenta:</span>
-														</div>
-														<div class="col">
-															<span>Corriente</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Titular:</span>
-														</div>
-														<div class="col">
-															<span>Jessica del Carmen Lopez Ortiz</span>
-														</div>
-													</div>
-													<div class="row mb-2">
-														<div class="col-md-3">
-															<span class="font-weight-bold">Correo:</span>
-														</div>
-														<div class="col">
-															<span>jessica@lopez.com</span>
-														</div>
-													</div>
-
-												</div>
-											</div>
-										</div>
-										<!-- Accordion card -->
-									</div>
-									<!--/.Accordion wrapper-->
-
+									@endforeach
 
 
 									<form action="{{ url('tarjeta') }}" method="post">
@@ -536,10 +435,146 @@
 
 
 								{{-- Pago movil --}}
-								<!--<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-									de igual manera con esta forma de pago. campo para el numero de referencia y esas cosas.
-									{{ csrf_token() }}
-								</div>-->
+								<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+									
+									<h4 class="my-4">Información del pago movil</h4>
+
+
+									@foreach ($pagoMovil as $pm)
+										
+										<!--Accordion wrapper-->
+										<div class="accordion mb-4" id="accordionEx{{ $pm->id }}" role="tablist" aria-multiselectable="true">
+											<!-- Accordion card -->
+											<div class="card mb-3 hoverable">
+												<!-- Card header -->
+												<div class="card-header bg-primary" role="tab" id="heading{{ $pm->id }}">
+													<a data-toggle="collapse" href="#id{{ $pm->id }}" aria-expanded="true" aria-controls="{{ $pm->id }}">
+														<h5 class="mb-0 d-flex justify-content-between text-white">
+															<span>{{ $pm->banco }}</span><i class="fa fa-angle-down rotate-icon"></i>
+														</h5>
+													</a>
+												</div>
+												<!-- Card body -->
+												<div id="id{{ $pm->id }}" class="collapse" role="tabpanel" aria-labelledby="heading{{ $pm->id }}" data-parent="#accordionEx{{ $pm->id }}">
+													<div class="card-body">
+
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Cédula:</span>
+															</div>
+															<div class="col">
+																<span>{{ $pm->cedula }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Código del banco:</span>
+															</div>
+															<div class="col">
+																<span>{{ $pm->cod_banco }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
+																<span class="font-weight-bold">Teléfono</span>
+															</div>
+															<div class="col">
+																<span>{{ $pm->telefono }}</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Accordion card -->
+										</div>
+										<!--/.Accordion wrapper-->
+
+									@endforeach
+
+
+
+									<form action="{{ url('tarjeta') }}" method="post">
+										@csrf
+
+										<input type="hidden" name="people_id" value="{{ Auth::user()->people_id }}">
+										<input type="hidden" name="cantidad" value="{{ $cantidad }}">
+										<input type="hidden" name="monto" value="{{ $total }}">
+										<input type="hidden" name="pay_method" value="Transferencia bancaria">
+
+										<input type="hidden" name="productos" value="{{ json_encode($productos) }}">
+
+										<h4 class="my-5">Información del cliente</h4>
+
+										<div class="form-row">
+											<div class="col-md-4 mb-2">
+												<div class="md-form ">
+													<input type="text" value="{{ $user->people->pin }}" disabled class="form-control">
+													<label for="firstName">Cédula</label>
+												</div>
+											</div>
+											<div class="col-md-4 mb-2">
+												<div class="md-form ">
+													<input type="text" value="{{ $user->people->first_name }}" disabled class="form-control">
+													<label for="firstName">Nombre</label>
+												</div>
+											</div>
+
+											<div class="col-md-4 mb-2">
+												<div class="md-form">
+													<input type="text" value="{{ $user->people->last_name }}" disabled class="form-control" required>
+													<label for="lastName">Apellido</label>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-row">
+											<div class="col-md-6">
+												<div class="md-form">
+													<input type="text" name="phone" class="form-control" id="telefono" value="{{ $user->people->phone }}" pattern="^[0-9]+$" maxlength="11">
+													<label for="telefono">Teléfono</label>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="md-form">
+													<input type="email" id="email" class="form-control validate" name="email" value="{{ $user->people->email }}" required>
+													<label for="email">Email *</label>
+												</div>
+											</div>
+										</div>
+
+										<h4 class="my-4">Información de la entrega</h4>
+
+										<div class="md-form my-5">
+											<input type="text" id="address" name="address_one" class="form-control" placeholder="1234 Main St" required>
+											<label for="address">Dirección *</label>
+											<small class="text-muted">Dirección de la entrega</small>
+										</div>
+
+										<div class="md-form mb-5">
+											<input type="text" id="address-2" name="address_two" class="form-control" placeholder="Apartment or suite">
+											<label for="address-2">Dirección 2</label>
+										</div>
+
+										<h4 class="my-4">Comprobante de la operación</h4>
+
+										<div class="form-row mb-5">
+											<div class="col">
+												<div class="md-form">
+													<input type="text" id="ref" name="referencia" maxlength="15" min="8" class="form-control validate" pattern="^\d+$" required>
+													<label for="ref">Número de referencia bancario</label>
+												</div>
+											</div>
+										</div>
+
+										@if( count($productos) > 0 )
+											<button class="btn btn-primary btn-lg btn-block" type="submit"><i class="fas fa-cart-arrow-down mr-3"></i>Continue to checkout</button>
+										@else
+											<button type="button" class="btn btn-light btn-lg btn-block" data-toggle="tooltip" title="No tienes ningún producto en el carrito."><i class="fas fa-cart-arrow-down mr-2"></i>Continue to checkout</button>
+										@endif
+
+									</form>
+
+								</div>
 							</div>
 
 						</div>

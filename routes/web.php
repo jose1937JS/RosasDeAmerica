@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Http\Middleware\isAdmin;
 
 use App\User;
+use App\InfoPagoMovil;
+use App\InfoTransferencia;
 
 
 // RUTA PARA AÑADIR UN ELEMENTO AL CARRITO.
@@ -75,7 +77,10 @@ Route::get('checkout', function(Request $req) {
 
 	$id = Auth::user()->id;
 	$user = User::find($id);
-
+	
+	$pagoMovil 		= InfoPagoMovil::all();
+	$transferencias = InfoTransferencia::all();
+	
 	$productos = Cart::content();
 	$total     = Cart::total(2, '.', '');
 	$tax 	   = Cart::tax(2, ',', '.');
@@ -87,6 +92,8 @@ Route::get('checkout', function(Request $req) {
 	foreach( $productos as $key => $item ) { $ids[] = Cart::get($key)->id; }
 
 	return view('user.checkout')
+		->with('pagoMovil', $pagoMovil)
+		->with('transferencias', $transferencias)
 		->with('user', $user)
 		->with('productos', $productos)
 		->with('cantidad', $cantidad)
@@ -146,3 +153,12 @@ Route::post('newsale', 'AdminController@newsale');
 Route::get('cedula', 'AdminController@cedula');
 
 Route::get('productos', 'AdminController@productos');
+
+
+Route::get('cuentas', 'AdminController@cuentas');
+
+Route::post('addCuentaTransferencia', 'AdminController@addCuentaTransferencia');
+Route::post('BorrarCuentaTransferencia/{id}', 'AdminController@BorrarCuentaTransferencia');
+
+Route::post('addCuentaPagoMovil', 'AdminController@addCuentaPagoMovil');
+Route::post('BorrarCuentaPagoMovil/{id}', 'AdminController@BorrarCuentaPagoMovil');

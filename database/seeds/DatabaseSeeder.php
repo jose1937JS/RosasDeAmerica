@@ -22,13 +22,49 @@ class DatabaseSeeder extends Seeder
 		// factory(App\Role::class, 1)->create();
 
 
+		// cuentas bancarias y pago movil
+
+		DB::table('info_transferencias')->insert([
+			[
+				'banco' 	  => 'Banco de Venezuela',
+				'nro_cuenta'  => '0102-0467-11-0000000000',
+				'tipo_cuenta' => 'Corriente',
+				'cedula' 	  => '240000001',
+				'titular' 	  => 'Maria Perez',
+				'correo' 	  => 'maria@perez.com',
+				'telefono' 	  => '04240000000',
+				'created_at'  => now()
+			],
+			[
+				'banco' 	  => 'Banco Mercantil',
+				'nro_cuenta'  => '0105-0098-26-0000000000',
+				'tipo_cuenta' => 'Corriente',
+				'cedula' 	  => '210000000',
+				'titular' 	  => 'Yessebel Avila',
+				'correo' 	  => 'yesse@avila.com',
+				'telefono' 	  => '04120001110',
+				'created_at'  => now()
+			],
+		]);
+		DB::table('info_pago_movils')->insert([
+			[
+				'cedula' 	  => '10000000',
+				'banco' 	  => 'Banco Mercantil',
+				'cod_banco'   => '0105',
+				'telefono' 	  => '04240000000',
+				'created_at'  => now()
+			],
+			
+		]);
+
 		DB::table('people')->insert([
 			'pin' => '00000001',
 			'first_name' => 'Admin',
 			'last_name' => 'Istrador',
 			'email' => 'admin@admin.com',
 			'phone' => '0011010011',
-			'address' => 'Without Location'
+			'address' => 'Without Location',
+			'created_at' => now()
 		]);
 
 		// llenado de categoria
@@ -88,16 +124,19 @@ class DatabaseSeeder extends Seeder
 			'user' => 'admin',
 			'password' => bcrypt('admin123'),
 			'people_id' => 1,
+			'created_at' => now()
 		]);
 
 		DB::table('roles')->insert([
 			'name' => 'admin',
-			'description' => 'Persona que puede hacer tareas administrativas'
+			'description' => 'Persona que puede hacer tareas administrativas',
+			'created_at' => now()
 		]);
 
 		DB::table('role_user')->insert([
 			'role_id' => 1,
-			'user_id' => 1
+			'user_id' => 1,
+			'created_at' => now()
 		]);
 	}
 }

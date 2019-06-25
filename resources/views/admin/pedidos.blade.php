@@ -8,9 +8,11 @@
 		<div class="col">
 
 			<div class="card z-depth-1">
-				<div class="card-header">
-					<h4>Ventas</h4>
-				</div>
+				@if ( count($ventas) > 0 )
+					<div class="card-header">
+						<h4>Ventas {{ $ventas[0]->state == 'despachado' ? 'por despachar' : 'pagadas' }}</h4>
+					</div>
+				@endif
 				<div class="card-body">
 
 

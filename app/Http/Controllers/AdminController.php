@@ -17,6 +17,8 @@ use App\Client;
 use App\Venta;
 use App\venta_productos;
 use App\Shopping_products;
+use App\InfoPagoMovil;
+use App\InfoTransferencia;
 
 class AdminController extends Controller
 {
@@ -39,8 +41,34 @@ class AdminController extends Controller
 						->select('products.id','products.product','products.price','products.quantity','categories.category')
 						->get();
 
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+
 			return view('admin.dashboard')
 					->with('productos', $productos)
+					->with('cant', $cant)
+					->with('proveedores', $proveedores)
+					->with('categorias', $category)
+					->with('products', $products);
+		}
+	}
+
+	public function cuentas(Request $request)
+	{
+		if ($request->user()->authorizeRoles(['admin']))
+		{
+			$category 	 = Category::all();
+			$products    = Product::all();
+			$proveedores = Supplier::all();
+
+			$pagomovil 	   = InfoPagoMovil::all();
+			$transferencias = InfoTransferencia::all();
+
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+
+			return view('admin.cuentasbanco')
+					->with('cant', $cant)
+					->with('pagomovil', $pagomovil)
+					->with('transferencias', $transferencias)
 					->with('proveedores', $proveedores)
 					->with('categorias', $category)
 					->with('products', $products);
@@ -65,6 +93,7 @@ class AdminController extends Controller
 					->where('sales.state', $status)
 					->get();
 
+		$cant = DB::table('sales')->where('state', 'pagado')->count();
 		foreach ($ventas as $k => $v)
 		{
 			foreach ($products as $key => $value)
@@ -77,6 +106,7 @@ class AdminController extends Controller
 
 		return view('admin.pedidos')
 				->with('ventas', $ventas)
+				->with('cant', $cant)
 				->with('proveedores', $proveedores)
 				->with('categorias', $category)
 				->with('products', $products);
@@ -97,9 +127,11 @@ class AdminController extends Controller
 						->join('products', 'venta_productos.product_id', '=', 'products.id')
 						->join('clients', 'ventas.client_id', '=', 'clients.id')
 						->get();
+		$cant = DB::table('sales')->where('state', 'pagado')->count();
 
 		return view('admin.pedidoslocal')
 				->with('proveedores', $proveedores)
+				->with('cant', $cant)
 				->with('categorias', $category)
 				->with('products', $products)
 				->with('ventas', $ventas);
@@ -112,8 +144,11 @@ class AdminController extends Controller
 		$products    = Product::all();
 		$proveedores = Supplier::all();
 
+		$cant = DB::table('sales')->where('state', 'pagado')->count();
+
 		return view('admin.proveedores')
 			->with('compras', $compras)
+			->with('cant', $cant)
 			->with('proveedores', $proveedores)
 			->with('categorias', $category)
 			->with('products', $products);
@@ -425,6 +460,53 @@ class AdminController extends Controller
 
 		// BUG CON LA FUNCION EXCEPT DE LAREAVEL
 		return $ps->except($ids);
+	}
+
+
+
+	public function addCuentaTransferencia(Request $req)
+	{
+		$transferencia = new InfoTransferencia;
+
+		$transferencia->banco 		= $req->banco;
+		$transferencia->nro_cuenta  = $req->nro_cuenta;
+		$transferencia->tipo_cuenta = $req->tipo_cuenta;
+		$transferencia->titular 	= $req->titular;
+		$transferencia->cedula 		= $req->cedula;
+		$transferencia->correo 		= $req->correo;
+		$transferencia->telefono  	= $req->telefono;
+
+		$transferencia->save();
+
+		return back();
+	}
+
+	public function BorrarCuentaTransferencia($id)
+	{
+		InfoTransferencia::find($id)->delete();
+
+		return back();
+	}
+
+	public function addCuentaPagoMovil(Request $req)
+	{
+		$pm = new InfoPagoMovil;
+
+		$pm->cedula 	= $req->cedula;
+		$pm->banco  	= $req->banco;
+		$pm->cod_banco  = $req->cod_banco;
+		$pm->telefono 	= $req->telefono;
+
+		$pm->save();
+
+		return back();	
+	}
+
+	public function BorrarCuentaPagoMovil($id)
+	{
+		InfoPagoMovil::find($id)->delete();
+
+		return back();
 	}
 
 

@@ -33,10 +33,12 @@
 		</li>
 		<!-- Dropdown -->
 		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" haspopup="true" aria-expanded="false"><i class="fas fa-cubes mr-2"></i> Pedidos</a>
+			<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" haspopup="true" aria-expanded="false"><i class="fas fa-cubes mr-2"></i>Pedidos</a>
 			<div class="dropdown-menu dropdown-primary dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
 				<a class="dropdown-item" href="{{ url('pedidos/despachado') }}">Listos (despachados)</a>
-				<a class="dropdown-item" href="{{ url('pedidos/pagado') }}">Pagados (por despachar)</a>
+				<a class="dropdown-item" href="{{ url('pedidos/pagado') }}">
+					Pagados (por despachar) @if($cant)<span class="badge red mr-1">{{ $cant }}</span>@endif
+				</a>
 				<a class="dropdown-item" href="{{ url('pedidos/local') }}">Pedidos (Local)</a>
 			</div>
 		</li>
