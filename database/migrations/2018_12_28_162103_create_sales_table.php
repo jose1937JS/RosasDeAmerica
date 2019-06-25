@@ -17,6 +17,7 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('people_id');
             $table->decimal('amount');
+            $table->string('description', 255);
             $table->string('pay_method', 32);
             $table->string('state', 16);
             $table->string('address_one', 255);

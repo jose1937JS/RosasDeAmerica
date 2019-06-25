@@ -183,6 +183,7 @@ class HomeController extends Controller
 			'email' 	  => 'required|email',
 			'phone' 	  => 'nullable|digits_between:10,11',
 			'monto' 	  => 'required|numeric',
+			'description' => 'required|string',
 			'pay_method'  => 'required|string',
 			// 'cc-number'   => 'nullable|digits_between:16,19',
 			// 'cvc'   	  => 'nullable|digits:3',
@@ -197,6 +198,7 @@ class HomeController extends Controller
 		$venta->customer_email = $req->input('email');
 		$venta->customer_phone = $req->input('phone');
 		$venta->amount 	       = $req->input('monto');
+		$venta->description    = $req->input('description');
 		$venta->pay_method     = $req->input('pay_method');
 		$venta->nro_referencia = $req->input('referencia');
 		$venta->state 	       = 'pagado';

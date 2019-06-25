@@ -296,6 +296,14 @@
 														</div>
 														<div class="row mb-2">
 															<div class="col-md-3">
+																<span class="font-weight-bold">Cédula:</span>
+															</div>
+															<div class="col">
+																<span>{{ $t->cedula }}</span>
+															</div>
+														</div>
+														<div class="row mb-2">
+															<div class="col-md-3">
 																<span class="font-weight-bold">Titular:</span>
 															</div>
 															<div class="col">
@@ -374,6 +382,13 @@
 													<label for="email">Email *</label>
 												</div>
 											</div>
+										</div>
+
+										<h4 class="my-4">Información del Producto</h4>
+
+										<div class="md-form my-5">
+											<input type="text" id="description" name="description" class="form-control" required>
+											<label for="description">Descripción de la compra *</label>
 										</div>
 
 										<h4 class="my-4">Información de la entrega</h4>

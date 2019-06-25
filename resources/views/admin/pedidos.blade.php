@@ -78,14 +78,16 @@
 														<span>{{ $v->phone }}</span>
 													</div>
 												</div>
-												<div class="row mb-3">
-													<div class="col-md-3">
-														<span class="font-weight-bold">Teléfono opcional:</span>
+												@if ( $v->customer_phone )
+													<div class="row mb-3">
+														<div class="col-md-3">
+															<span class="font-weight-bold">Teléfono opcional:</span>
+														</div>
+														<div class="col">
+															<span>{{ $v->customer_phone }}</span>
+														</div>
 													</div>
-													<div class="col">
-														<span>{{ $v->customer_phone }}</span>
-													</div>
-												</div>
+												@endif
 												<div class="row mb-3">
 													<div class="col-md-3">
 														<span class="font-weight-bold">Dirección:</span>
@@ -100,6 +102,14 @@
 													</div>
 													<div class="col">
 														<span>{{ $v->pay_method }}</span>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-md-3">
+														<span class="font-weight-bold">Fecha de compra:</span>
+													</div>
+													<div class="col">
+														<span>{{ $v->created_at }}</span>
 													</div>
 												</div>
 											</div>
@@ -129,6 +139,14 @@
 												</div>
 												<div class="row mb-3">
 													<div class="col-md-3">
+														<span class="font-weight-bold">Descripción:</span>
+													</div>
+													<div class="col">
+														<span>{{ $v->description }}</span>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<div class="col-md-3">
 														<span class="font-weight-bold">Precio Total:</span>
 													</div>
 													<div class="col">
@@ -151,19 +169,11 @@
 														<span>{{ $v->address_two }}</span>
 													</div>
 												</div>
-												<div class="row mb-3">
-													<div class="col-md-3">
-														<span class="font-weight-bold">Fecha de compra</span>
-													</div>
-													<div class="col">
-														<span>{{ $v->created_at }}</span>
-													</div>
-												</div>
 
 												@if( $v->nro_referencia != '')
 													<div class="row mb-3">
 														<div class="col-md-3">
-															<span class="font-weight-bold">Código de la transferencia</span>
+															<span class="font-weight-bold">Referencia de la operación:</span>
 														</div>
 														<div class="col">
 															<span>{{ $v->nro_referencia }}</span>

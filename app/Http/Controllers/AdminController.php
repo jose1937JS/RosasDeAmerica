@@ -75,83 +75,92 @@ class AdminController extends Controller
 		}
 	}
 
-	public function pedidos($status)
+	public function pedidos(Request $request, $status)
 	{
-		$category    = Category::all();
-		$proveedores = Supplier::all();
-		$products    = Product::all();
-
-
-		$products = DB::table('product_sales')
-					->select('product_sales.*', 'products.product', 'products.price')
-					->join('products', 'product_sales.product_id', '=', 'products.id')
-					->get();
-
-		$ventas = DB::table('sales')
-					->join('people', 'sales.people_id', '=', 'people.id')
-					->select('sales.state','sales.id','sales.amount','sales.pay_method','sales.address_one','sales.address_two','sales.customer_email','sales.customer_phone','sales.nro_referencia','sales.created_at','people.first_name', 'people.last_name', 'people.pin', 'people.address', 'people.phone', 'people.email')
-					->where('sales.state', $status)
-					->get();
-
-		$cant = DB::table('sales')->where('state', 'pagado')->count();
-		foreach ($ventas as $k => $v)
+		if ($request->user()->authorizeRoles(['admin']))
 		{
-			foreach ($products as $key => $value)
-			{
-				if ($v->id == $value->sale_id) {
-					$v->productos[] = $value;
-				}
-			}
-		}
+			$category    = Category::all();
+			$proveedores = Supplier::all();
+			$products    = Product::all();
 
-		return view('admin.pedidos')
-				->with('ventas', $ventas)
-				->with('cant', $cant)
-				->with('proveedores', $proveedores)
-				->with('categorias', $category)
-				->with('products', $products);
-	}
 
-	public function pedidoslocal()
-	{
-		$category    = Category::all();
-		$proveedores = Supplier::all();
-		$products 	 = DB::table('product_sales')
+			$products = DB::table('product_sales')
 						->select('product_sales.*', 'products.product', 'products.price')
 						->join('products', 'product_sales.product_id', '=', 'products.id')
 						->get();
 
-		$ventas      = DB::table('ventas')
-						->select('ventas.pay_method', 'ventas.client_id as id', 'ventas.total_price', 'clients.cedula', 'clients.first_name', 'clients.last_name', 'clients.phone', 'clients.address', 'products.product', 'products.price', 'venta_productos.product_id')
-						->join('venta_productos', 'ventas.id', '=', 'venta_productos.venta_id')
-						->join('products', 'venta_productos.product_id', '=', 'products.id')
-						->join('clients', 'ventas.client_id', '=', 'clients.id')
+			$ventas = DB::table('sales')
+						->join('people', 'sales.people_id', '=', 'people.id')
+						->select('sales.state','sales.description', 'sales.id','sales.amount','sales.pay_method','sales.address_one','sales.address_two','sales.customer_email','sales.customer_phone','sales.nro_referencia','sales.created_at','people.first_name', 'people.last_name', 'people.pin', 'people.address', 'people.phone', 'people.email')
+						->where('sales.state', $status)
 						->get();
-		$cant = DB::table('sales')->where('state', 'pagado')->count();
 
-		return view('admin.pedidoslocal')
-				->with('proveedores', $proveedores)
-				->with('cant', $cant)
-				->with('categorias', $category)
-				->with('products', $products)
-				->with('ventas', $ventas);
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+			foreach ($ventas as $k => $v)
+			{
+				foreach ($products as $key => $value)
+				{
+					if ($v->id == $value->sale_id) {
+						$v->productos[] = $value;
+					}
+				}
+			}
+
+			return view('admin.pedidos')
+					->with('ventas', $ventas)
+					->with('cant', $cant)
+					->with('proveedores', $proveedores)
+					->with('categorias', $category)
+					->with('products', $products);
+		}
+	}
+
+	public function pedidoslocal(Request $request)
+	{
+		if ($request->user()->authorizeRoles(['admin']))
+		{
+			$category    = Category::all();
+			$proveedores = Supplier::all();
+			$products 	 = DB::table('product_sales')
+							->select('product_sales.*', 'products.product', 'products.price')
+							->join('products', 'product_sales.product_id', '=', 'products.id')
+							->get();
+
+			$ventas      = DB::table('ventas')
+							->select('ventas.pay_method', 'ventas.client_id as id', 'ventas.total_price', 'clients.cedula', 'clients.first_name', 'clients.last_name', 'clients.phone', 'clients.address', 'products.product', 'products.price', 'venta_productos.product_id')
+							->join('venta_productos', 'ventas.id', '=', 'venta_productos.venta_id')
+							->join('products', 'venta_productos.product_id', '=', 'products.id')
+							->join('clients', 'ventas.client_id', '=', 'clients.id')
+							->get();
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+
+			return view('admin.pedidoslocal')
+					->with('proveedores', $proveedores)
+					->with('cant', $cant)
+					->with('categorias', $category)
+					->with('products', $products)
+					->with('ventas', $ventas);
+		}
 	}
 
 	public function proveedores(Request $req)
 	{
-		$compras  	 = Shopping::all();
-		$category 	 = Category::all();
-		$products    = Product::all();
-		$proveedores = Supplier::all();
+		if ($req->user()->authorizeRoles(['admin']))
+		{
+			$compras  	 = Shopping::all();
+			$category 	 = Category::all();
+			$products    = Product::all();
+			$proveedores = Supplier::all();
 
-		$cant = DB::table('sales')->where('state', 'pagado')->count();
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
 
-		return view('admin.proveedores')
-			->with('compras', $compras)
-			->with('cant', $cant)
-			->with('proveedores', $proveedores)
-			->with('categorias', $category)
-			->with('products', $products);
+			return view('admin.proveedores')
+				->with('compras', $compras)
+				->with('cant', $cant)
+				->with('proveedores', $proveedores)
+				->with('categorias', $category)
+				->with('products', $products);
+		}
 	}
 
 	public function compraproveedor($id)

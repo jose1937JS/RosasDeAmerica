@@ -75,22 +75,24 @@ class DatabaseSeeder extends Seeder
 
 		// llenado de productos
 		DB::table('products')->insert([
-			'product' => 'Flores',
-			'description' => 'CUestion con muchas flores de colores',
-			'image' => 'images/404.jpg',
-			'quantity' => '5',
-			'price' => '12000',
-			'category_id' => 1,
-			'created_at' => now()
-		]);
-		DB::table('products')->insert([
-			'product' => 'Queso',
-			'description' => 'queso llanero del lano plano',
-			'image' => 'images/404.jpg',
-			'quantity' => '9',
-			'price' => '19000',
-			'category_id' => 1,
-			'created_at' => now()
+			[
+				'product' => 'Flores',
+				'description' => 'CUestion con muchas flores de colores',
+				'image' => 'images/50405223_1731211286982880_2423251064145838080_n.jpg',
+				'quantity' => '5',
+				'price' => '12000',
+				'category_id' => 1,
+				'created_at' => now()
+			],
+			[
+				'product' => 'Rosas',
+				'description' => 'Rosas para evento social',
+				'image' => 'images/jxrqdedUC4pmCNFJ3PdQay8W9x0vwXdqNAZZVLgv.jpeg',
+				'quantity' => '9',
+				'price' => '19000',
+				'category_id' => 1,
+				'created_at' => now()
+			]
 		]);
 
 
