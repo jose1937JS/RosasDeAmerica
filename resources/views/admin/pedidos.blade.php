@@ -114,7 +114,12 @@
 												</div>
 											</div>
 
-											<div class="col">
+											<div class="col-6">
+												<div class="row mb-3">
+													<div class="col">
+														
+													</div>
+												</div>
 												<div class="row mb-3">
 
 													<div class="col-md-3">
@@ -131,6 +136,7 @@
 																	<tr>
 																		<td>{{ $producto->product }}</td>
 																		<td>{{ $producto->quantity }}</td>
+																		<td><img class="img-fluid" src='{{ asset("$producto->image") }}' alt="Not Found"></td>
 																	</tr>
 																@endforeach
 															</tbody>

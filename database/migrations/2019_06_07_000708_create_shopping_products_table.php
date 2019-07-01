@@ -18,6 +18,7 @@ class CreateShoppingProductsTable extends Migration
             $table->string('product');
             $table->string('quantity');
             $table->integer('price');
+            $table->integer('status')->default(1);
             $table->unsignedInteger('shopping_id');
             $table->timestamps();
 

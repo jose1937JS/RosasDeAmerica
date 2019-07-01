@@ -6,6 +6,7 @@ $(() => {
 	$('.mdb-select').materialSelect()
 	$('#dtBasicExample').DataTable()
 	$('#dt').DataTable()
+	$('#tablecat').DataTable()
 	// $('.dataTables_length').addClass('bs-select');
 	// console.log($('#dtBasicExample > label'))
 
@@ -101,6 +102,52 @@ $(() => {
 		})
 	})
 
+	// añadir campos para la resta de los materiales con lo q esta hecho un producto
+	let cont = 0
+	$('#addcantpro').click(() => {
+		cont = cont + 1
+
+		$('#cantidadproducto').append(`
+			<div class="form-row mt-3 mb-4 camposcant">
+				<div class="col-10 offset-1">
+					<div class="row">
+						<div class="col">
+							<label>Material para el producto</label>
+							<select class="custom-select browser-default" name="material-${cont}" id="material-${cont}">
+								<option disabled selected>Selecciona un material</option>
+							</select>
+						</div>
+						<div class="col-4">
+							<label for="cant-${cont}">Cant de material</label>
+							<input type="number" id="cant-${cont}" class="form-control" name="cantidad-${cont}" min="0">
+						</div>
+						<div class="col-1 d-flex align-items-end">
+							<button class="btn btn-sm p-2 btn-danger eliminame" data-toggle="tooltip" type="button">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		`)
+
+		// Llenar el select con los productos 
+		$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
+
+			for( d of data ){
+				console.log('El truco de los option dinamicos esta en agregar los campos nuevos calmadamente para q se pueda llenar sin ningun inconveniente')
+				$(`#material-${cont}`).append(`<option value="${d.id}">${d.product}</option>`)
+			}
+		})
+
+		// Eliminar los campos correspondientes
+		$('.eliminame').click(function() {
+			cont = cont - 1
+			$(this).parents('.camposcant').remove()
+		})
+
+	})
+
 
 	// Poner en el campo del precio el precio del producto
 	$(`#producto-0`).change((e) => {
@@ -112,7 +159,6 @@ $(() => {
 		sumarPrecioProductos()
 	})
 
-// 192.168.55.220
 
 	// Eliminar los ultimos inputs producto/precio 
 	$('#elimelem').click(() => {
@@ -121,6 +167,13 @@ $(() => {
 		sumarPrecioProductos()
 	})
 
+
+	// Eliminar el producto comprado a un proveedor por medio de ajax
+	$('.delproduct').click(function(){
+		let id = $(this).parents('tr').children('td').first().text()
+
+		$('#idproductocompra').val(id)
+	}) 
 
 
 	// resgistrar compra al proveedor

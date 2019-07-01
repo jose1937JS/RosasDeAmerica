@@ -9,7 +9,6 @@
 // * Alojamiento en servidor propio o terceros
 
 
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;

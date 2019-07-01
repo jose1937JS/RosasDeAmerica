@@ -132,10 +132,14 @@ Route::get('pedidos/local', 'AdminController@pedidoslocal');
 
 Route::get('compras', 'AdminController@proveedores');
 Route::get('compra/{id}', 'AdminController@compraproveedor')->where('id', '^[0-9]+$');
+
 Route::post('addcategoria', 'AdminController@addcategoria');
+// Route::post('delcat/{id}', 'AdminController@delcategoria');
+
 Route::post('addcompraproveedor', 'AdminController@addcompraproveedor');
 Route::post('addproduct', 'AdminController@addproduct');
 Route::post('editproduct/', 'AdminController@editproduct');
+Route::post('delproduct/{id}', 'AdminController@delproductcompraprov');
 Route::post('marcarcomodespachado', 'AdminController@marcarcomodespachado');
 
 Route::get('categoria/{category}', 'HomeController@categoria')->where('category', '^[a-zA-Z]+$');
@@ -144,6 +148,9 @@ Route::post('busqueda', 'HomeController@busqueda');
 Route::post('instapago', 'HomeController@instapago');
 
 Route::post('addsupplier', 'AdminController@addsupplier');
+Route::get('comprasProveedor', 'AdminController@comprasProveedor');
+
+Route::post('delproduct', 'AdminController@delproduct');
 
 
 Route::get('factura', 'HomeController@factura');
@@ -154,6 +161,7 @@ Route::get('cedula', 'AdminController@cedula');
 
 Route::get('productos', 'AdminController@productos');
 
+Route::get('inventario', 'AdminController@inventario');
 
 Route::get('cuentas', 'AdminController@cuentas');
 

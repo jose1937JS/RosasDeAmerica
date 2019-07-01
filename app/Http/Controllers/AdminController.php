@@ -52,6 +52,27 @@ class AdminController extends Controller
 		}
 	}
 
+	public function inventario(Request $request)
+	{
+		if ($request->user()->authorizeRoles(['admin']))
+		{
+			$category 	 = Category::all();
+			$products    = Product::all();
+			$proveedores = Supplier::all();
+
+			$productos   = Shopping_products::where('status', 1)->get();
+
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+
+			return view('admin.inventario')
+					->with('productos', $productos)
+					->with('cant', $cant)
+					->with('proveedores', $proveedores)
+					->with('categorias', $category)
+					->with('products', $products);
+		}
+	}
+
 	public function cuentas(Request $request)
 	{
 		if ($request->user()->authorizeRoles(['admin']))
@@ -85,7 +106,7 @@ class AdminController extends Controller
 
 
 			$products = DB::table('product_sales')
-						->select('product_sales.*', 'products.product', 'products.price')
+						->select('product_sales.*', 'products.product', 'products.price', 'products.image')
 						->join('products', 'product_sales.product_id', '=', 'products.id')
 						->get();
 
@@ -218,6 +239,13 @@ class AdminController extends Controller
 		return redirect('admin');
 	}
 
+	public function delcategoria($id)
+	{
+		Category::find($id)->delete();
+
+		return back();
+	}
+
 	public function addcompraproveedor(Request $req)
 	{
 		$formdata   = $req->all();
@@ -274,15 +302,51 @@ class AdminController extends Controller
 		return redirect('compras');
 	}
 
+	public function delproductcompraprov($id)
+	{
+		Shopping_products::find($id)->delete();
+		return back();
+	}
+
 	public function addproduct(Request $req)
 	{
-		$product = new Product();
+		$product = new Product;
 
 		$product->product 	  = $req->input('producto');
 		$product->quantity 	  = $req->input('cantidad');
 		$product->description = $req->input('descripcion');
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
+
+		// Restar la cantidad de materia prima usada para hacer el producto del inventario de compra al proveedor
+		$todo 		= $req->all();
+		$keys 		= array_keys($todo);
+		$array_keys = array_combine($keys, $keys);
+
+		$filtered   = preg_grep("/(cantidad-.?)/", $array_keys);
+
+		for ($i=1; $i <= count($filtered); $i++)
+		{ 
+			$materials[] = collect($todo)->only("material-$i");
+			$cantidads[] = collect($todo)->only("cantidad-$i");
+		}
+
+		for ($i=0; $i < count($materials); $i++)
+		{
+			$sp = Shopping_products::find($materials[$i]->first());
+
+			if ( ($cantidads[$i]->first() * $req->input('cantidad')) > $sp->quantity )
+			{
+				return redirect('admin')->with('resta', 'No tienes material suficiente para los productos.');
+			}
+
+			$sp->quantity = $sp->quantity - ($cantidads[$i]->first() * $req->input('cantidad'));
+			
+			$sp->save();
+		}
+
+		
+		// End resta
 
 		if ($req->file('image')) {
 			$path = Storage::disk('public')->put('images', $req->file('image'));
@@ -293,6 +357,17 @@ class AdminController extends Controller
 		$product->save();
 
 		return redirect('admin');
+	}
+
+	public function delproduct(Request $req)
+	{
+		$id = $req->input('idproducto');
+
+		$sp = Shopping_products::find($id);
+		$sp->status = 0;
+		$sp->save();
+		
+		return back();
 	}
 
 	public function editproduct(Request $req)
@@ -469,6 +544,11 @@ class AdminController extends Controller
 
 		// BUG CON LA FUNCION EXCEPT DE LAREAVEL
 		return $ps->except($ids);
+	}
+
+	public function comprasProveedor()
+	{
+		return Shopping_products::where('status', 1)->get();
 	}
 
 

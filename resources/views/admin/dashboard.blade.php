@@ -10,7 +10,7 @@
 
 			<div class="card z-depth-1">
 				<div class="card-header">
-					<h4>Productos</h4>
+					<h4>Productos para la venta</h4>
 				</div>
 				<div class="card-body">
 
@@ -154,5 +154,12 @@
 @if( $cant > 0 )
 	<script>
 		toastr.warning('Tienes {{ $cant }} ventas nuevas', 'Información')
+	</script>
+@endif
+
+
+@if( session('resta') )
+	<script>
+		toastr.error('{{ session('resta') }}', 'Abortando operación')
 	</script>
 @endif

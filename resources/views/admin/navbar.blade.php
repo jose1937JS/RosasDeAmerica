@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark primary-color sticky-top">
 
 	<!-- Navbar brand -->
-	<a class="navbar-brand" href="#">Admin</a>
+	<a class="navbar-brand" href="#"><i class="fas fa-user mr-2"></i> ADMINISTRADOR</a>
 
 	<!-- Collapse button -->
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
@@ -23,6 +23,11 @@
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="{{ url('admin') }}">
+				<span><i class="fas fa-chart-line mr-2"></i>Productos</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url('inventario') }}">
 				<span><i class="fas fa-chart-bar mr-2"></i>Inventario</span>
 			</a>
 		</li>
@@ -82,7 +87,7 @@
 </div>
 
 
-<!-- Modal añadir produco -->
+<!-- Modal añadir producTo -->
 <div class="modal fade" id="addpmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -123,7 +128,16 @@
 						</div>
 					</div>
 
-					<div class="form-row">
+					<div class="form-row mt-4">
+						<div class="col">
+							<button type="button" id="addcantpro" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
+							<small>Indique los materiales con lo que esta hecho este producto y la cantidad</small>
+						</div>
+					</div>
+
+					<div id="cantidadproducto"></div>
+
+					<div class="form-row mt-4">
 						<div class="col">
 							<div class="md-form">
 								<i class="fas fa-dollar prefix"></i>
@@ -170,7 +184,7 @@
 
 <!-- Modal añadir categoria -->
 <div class="modal fade" id="addcatmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Añadir Categoria</h5>
@@ -178,19 +192,43 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form action="{{ url('addcategoria') }}" method="post">
-				<div class="modal-body">
+			<div class="modal-body">
+				<form action="{{ url('addcategoria') }}" method="post">
 					@csrf
 					<div class="md-form">
 						<i class="fas fa-clipboard-list prefix"></i>
 						<label for="categoria">Categoria</label>
 						<input type="text" id="categoria" name="categoria" class="form-control" required>
 					</div>
+					<div class="d-flex justify-content-end">
+						<button type="submit" class="btn btn-primary btn-sm mt-4">Guardar</button>
+					</div>
+				</form>
+			</div>
+			{{-- @if ( count($categorias) > 0 )
+				<div class="modal-body">
+					<h5 class="mb-3">Categorias registradas</h5>
+					<table class="table table-bordered" id="tablecat">
+						<thead>
+							<th>Categoria</th>
+							<th class="text-center">Accion</th>
+						</thead>
+						<tbody>
+							@foreach ($categorias as $cat)
+								<tr>
+									<td>{{ $cat->category }}</td>
+									<td class="text-center">
+										<form action='{{ url("delcat/$cat->id") }}' method="post">
+											@csrf
+											<button disabled type="submit" class="btn btn-danger p-2"><i class="fas fa-trash"></i></button>
+										</form>
+									</td>
+								</tr>
+							@endforeach
+						</tbody>
+					</table>
 				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary btn-md">Guardar</button>
-				</div>
-			</form>
+			@endif --}}
 		</div>
 	</div>
 </div>
