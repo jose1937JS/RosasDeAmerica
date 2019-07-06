@@ -7,6 +7,7 @@ $(() => {
 	$('#dtBasicExample').DataTable()
 	$('#dt').DataTable()
 	$('#tablecat').DataTable()
+	$('.cuentabancoDT').DataTable()
 	// $('.dataTables_length').addClass('bs-select');
 	// console.log($('#dtBasicExample > label'))
 
@@ -103,13 +104,16 @@ $(() => {
 	})
 
 	// añadir campos para la resta de los materiales con lo q esta hecho un producto
-	let cont = 0
+	let bas = 0, sta = 0, pre = 0;
 	$('.addcantpro').click(function() {
-		cont = cont + 1
 
-		console.log($(this))
+		console.log('El truco de los option dinamicos esta en agregar los campos nuevos calmadamente para q se pueda llenar sin ningun inconveniente')
 
-		$(this)
+		if ( $(this).hasClass('basico') ) {
+			
+			bas = bas + 1
+			
+			$(this)
 			.parents('.idk')
 			.children('.cantidadproducto')
 			.append(`
@@ -118,13 +122,13 @@ $(() => {
 						<div class="form-row">
 							<div class="col">
 								<label>Material para el producto</label>
-								<select class="custom-select browser-default" name="material-${cont}" id="material-${cont}">
+								<select class="custom-select browser-default" name="basico-material-${bas}" id="material-${bas}">
 									<option disabled selected>Selecciona un material</option>
 								</select>
 							</div>
 							<div class="col-3">
-								<label for="cant-${cont}">Cant de material</label>
-								<input type="number" id="cant-${cont}" class="form-control" name="cantidad-${cont}" min="0">
+								<label for="cant-${bas}">Cant de material</label>
+								<input type="number" id="basico-cant-${bas}" class="form-control" name="cantidad-${bas}" min="0">
 							</div>
 							<div class="col-3">
 								<label for="">Precio del material</label>
@@ -155,21 +159,162 @@ $(() => {
 					</div>
 				</div>
 			`)
+			console.log('bas: '+ bas)
 
-		// Llenar el select con los productos 
-		$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
+			// Interactividad de los precios
+			$(`#material-${bas}`).change(function(){
 
-			for( d of data ){
-				console.log('El truco de los option dinamicos esta en agregar los campos nuevos calmadamente para q se pueda llenar sin ningun inconveniente')
-				$(`#material-${cont}`).append(`<option value="${d.id}">${d.product}</option>`)
-			}
-		})
+			})
 
-		// Eliminar los campos correspondientes
-		$('.eliminame').click(function() {
-			cont = cont - 1
-			$(this).parents('.camposcant').remove()
-		})
+			// Llenar el select con los productos 
+			$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
+
+				for( d of data ){
+					$(`#material-${bas}`).append(`<option value="${d.id}">${d.product}</option>`)
+				}
+			})
+
+			// Eliminar los campos correspondientes
+			$('.eliminame').click(function() {
+				bas = bas - 1
+				$(this).parents('.camposcant').remove()
+				console.log('bas: '+ bas)
+			})
+		}
+		else if( $(this).hasClass('standar') ){
+
+			sta = sta + 1
+
+			$(this)
+			.parents('.idk')
+			.children('.cantidadproducto')
+			.append(`
+				<div class="form-row mt-3 mb-4 camposcant">
+					<div class="col-10 offset-1">
+						<div class="form-row">
+							<div class="col">
+								<label>Material para el producto</label>
+								<select class="custom-select browser-default" name="standar-material-${sta}" id="material-${sta}">
+									<option disabled selected>Selecciona un material</option>
+								</select>
+							</div>
+							<div class="col-3">
+								<label for="cant-${sta}">Cant de material</label>
+								<input type="number" id="cant-${sta}" class="form-control" name="standar-cantidad-${sta}" min="0">
+							</div>
+							<div class="col-3">
+								<label for="">Precio del material</label>
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" disabled>
+									<div class="input-group-append">
+										<span class="input-group-text">$</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-1 d-flex align-items-center">
+								<button class="btn btn-sm p-2 btn-danger eliminame" data-toggle="tooltip" type="button">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-4">
+							<label for="">Precio del producto</label>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-dollar"></i></span>
+									</div>
+									<input type="text" class="form-control" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			`)
+			console.log('sta: '+ sta)
+
+			// Llenar el select con los productos 
+			$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
+
+				for( d of data ){
+					$(`#material-${sta}`).append(`<option value="${d.id}">${d.product}</option>`)
+				}
+			})
+
+			// Eliminar los campos correspondientes
+			$('.eliminame').click(function() {
+				sta = sta - 1
+				$(this).parents('.camposcant').remove()
+				console.log('sta: '+ sta)
+			})
+		}
+		else if( $(this).hasClass('premium') ){
+
+			pre = pre + 1
+
+			$(this)
+			.parents('.idk')
+			.children('.cantidadproducto')
+			.append(`
+				<div class="form-row mt-3 mb-4 camposcant">
+					<div class="col-10 offset-1">
+						<div class="form-row">
+							<div class="col">
+								<label>Material para el producto</label>
+								<select class="custom-select browser-default" name="premium-material-${pre}" id="material-${pre}">
+									<option disabled selected>Selecciona un material</option>
+								</select>
+							</div>
+							<div class="col-3">
+								<label for="cant-${pre}">Cant de material</label>
+								<input type="number" id="cant-${pre}" class="form-control" name="premium-cantidad-${pre}" min="0">
+							</div>
+							<div class="col-3">
+								<label for="">Precio del material</label>
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" disabled>
+									<div class="input-group-append">
+										<span class="input-group-text">$</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-1 d-flex align-items-center">
+								<button class="btn btn-sm p-2 btn-danger eliminame" data-toggle="tooltip" type="button">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-4">
+							<label for="">Precio del producto</label>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-dollar"></i></span>
+									</div>
+									<input type="text" class="form-control" disabled>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			`)
+			console.log('pre: '+ pre)
+
+			// Llenar el select con los productos 
+			$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
+
+				for( d of data ){
+					$(`#material-${pre}`).append(`<option value="${d.id}">${d.product}</option>`)
+				}
+			})
+
+			// Eliminar los campos correspondientes
+			$('.eliminame').click(function() {
+				pre = pre - 1
+				$(this).parents('.camposcant').remove()
+				console.log('pre: '+ pre)
+			})
+		}
 
 	})
 

@@ -15,9 +15,9 @@ class CreateShoppingProductsTable extends Migration
     {
         Schema::create('shopping_products', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('product');
-            $table->string('quantity');
-            $table->integer('price');
+            $table->string('product', 255);
+            $table->integer('quantity');
+            $table->decimal('price', 8,2);
             $table->integer('status')->default(1);
             $table->unsignedInteger('shopping_id');
             $table->timestamps();

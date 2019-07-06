@@ -13,7 +13,7 @@
 						<h3 class="font-weight-light">Datos para Pago Movil</h3>
 						<button class="btn btn-primary p-2" data-toggle="modal" data-target="#addpm"><i class="fas fa-plus mr-2"></i>Añadir</button>
 					</div>
-					<table class="table table-sm table-bordered text-center">
+					<table class="table table-sm table-bordered text-center cuentabancoDT">
 						<thead>
 							<th>BANCO</th>
 							<th>CODIGO DEL BANCO</th>
@@ -51,7 +51,7 @@
 						<h3 class="font-weight-light">Datos para las Transferencias</h3>
 						<button class="btn btn-primary p-2" data-toggle="modal" data-target="#addtrans"><i class="fas fa-plus mr-2"></i>Añadir</button>
 					</div>
-					<table class="table table-sm table-bordered text-center">
+					<table class="table table-sm table-bordered text-center cuentabancoDT">
 						<thead>
 							<th>BANCO</th>
 							<th>NUMERO DE CUENTA</th>

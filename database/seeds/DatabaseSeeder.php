@@ -73,25 +73,43 @@ class DatabaseSeeder extends Seeder
 			'created_at' => now()
 		]);
 
+		// llenado de shopping table
+		DB::table('shopping')->insert([
+			
+		]);
+
+		// llenado de shopping webona loca
+		DB::table('product_details')->insert([
+			
+		]);
+
+		// llenado de detalles de productos
+		DB::table('categories')->insert([
+			'category' => 'Arreglos',
+			'created_at' => now()
+		]);
+
 		// llenado de productos
 		DB::table('products')->insert([
 			[
-				'product' => 'Flores',
-				'description' => 'CUestion con muchas flores de colores',
-				'image' => 'images/50405223_1731211286982880_2423251064145838080_n.jpg',
-				'quantity' => '5',
-				'price' => '12000',
+				'product' 	  => 'Cañon de Flores',
+				'description' => 'CUestion con forma de cañon con muchas flores rosadas',
+				'image' 	  => 'images/50405223_1731211286982880_2423251064145838080_n.jpg',
+				'type' 		  => 'premium',
+				'quantity' 	  => '5',
+				'price' 	  => '190500',
 				'category_id' => 1,
-				'created_at' => now()
+				'created_at'  => now()
 			],
 			[
-				'product' => 'Rosas',
+				'product' 	  => 'Detalle de Gerberas',
 				'description' => 'Rosas para evento social',
-				'image' => 'images/jxrqdedUC4pmCNFJ3PdQay8W9x0vwXdqNAZZVLgv.jpeg',
-				'quantity' => '9',
-				'price' => '19000',
+				'image' 	  => 'images/jxrqdedUC4pmCNFJ3PdQay8W9x0vwXdqNAZZVLgv.jpeg',
+				'type' 		  => 'standar',
+				'quantity'    => '9',
+				'price' 	  => '19000',
 				'category_id' => 1,
-				'created_at' => now()
+				'created_at'  => now()
 			]
 		]);
 

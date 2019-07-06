@@ -338,6 +338,8 @@ class AdminController extends Controller
 		$product->price 	  = $req->input('precio');
 		$product->category_id = $req->input('categoria');
 
+		dd($req->all());
+
 		// Restar la cantidad de materia prima usada para hacer el producto del inventario de compra al proveedor
 		$todo 		= $req->all();
 		$keys 		= array_keys($todo);

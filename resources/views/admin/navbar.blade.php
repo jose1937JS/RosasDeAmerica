@@ -143,7 +143,7 @@
 					<div class="idk">
 						<div class="form-row mt-4">
 							<div class="col">
-								<button type="button" class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<button type="button" class="btn btn-sm btn-primary addcantpro basico"><i class="fas fa-plus"></i></button>
 								<small>Indique los materiales del paquete <b>básico</b></small>
 							</div>
 						</div>
@@ -154,7 +154,7 @@
 					<div class="idk">
 						<div class="form-row mt-4">
 							<div class="col">
-								<button type="button"class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<button type="button"class="btn btn-sm btn-primary addcantpro standar"><i class="fas fa-plus"></i></button>
 								<small>Indique los materiales del paquete <b>standar</b></small>
 							</div>
 						</div>
@@ -164,7 +164,7 @@
 					<div class="idk">
 						<div class="form-row mt-4">
 							<div class="col">
-								<button type="button" class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<button type="button" class="btn btn-sm btn-primary addcantpro premium"><i class="fas fa-plus"></i></button>
 								<small>Indique los materiales del paquete <b>premium</b></small>
 							</div>
 						</div> 
