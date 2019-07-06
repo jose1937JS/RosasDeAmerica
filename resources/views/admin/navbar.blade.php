@@ -23,7 +23,7 @@
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="{{ url('admin') }}">
-				<span><i class="fas fa-chart-line mr-2"></i>Productos</span>
+				<span><i class="fas fa-cubes mr-2"></i>Productos</span>
 			</a>
 		</li>
 		<li class="nav-item">
@@ -32,8 +32,18 @@
 			</a>
 		</li>
 		<li class="nav-item">
+			<a class="nav-link" href="{{ url('cuentas') }}">
+				<span><i class="fas fa-bank mr-2"></i>Cuentas</span>
+			</a>
+		</li>
+		<li class="nav-item">
 			<a class="nav-link" href="{{ url('compras') }}">
 				<span><i class="fas fa-chart-line mr-2"></i>Compras</span>
+			</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="{{ url('ventas') }}">
+				<span><i class="fas fa-chart-line mr-2"></i>Ventas</span>
 			</a>
 		</li>
 		<!-- Dropdown -->
@@ -89,7 +99,7 @@
 
 <!-- Modal añadir producTo -->
 <div class="modal fade" id="addpmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Añadir Producto</h5>
@@ -106,7 +116,7 @@
 							<div class="md-form">
 								<i class="fas fa-cubes prefix"></i>
 								<input type="text" name="producto" class="form-control validate" id="producto" maxlength="64" pattern="^[a-zA-Záéíóúñ]+(?:\s?[a-zA-Záéíóúñ]\s?)+$" required>
-								<label for="producto">Producto</label>
+								<label for="producto">Nombre del Producto</label>
 							</div>
 						</div>
 						<div class="col">
@@ -128,24 +138,42 @@
 						</div>
 					</div>
 
-					<div class="form-row mt-4">
-						<div class="col">
-							<button type="button" id="addcantpro" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></button>
-							<small>Indique los materiales con lo que esta hecho este producto y la cantidad</small>
-						</div>
-					</div>
+					<h5 class="mt-3">Detalles de los paquetes del producto</h5>
 
-					<div id="cantidadproducto"></div>
-
-					<div class="form-row mt-4">
-						<div class="col">
-							<div class="md-form">
-								<i class="fas fa-dollar prefix"></i>
-								<input type="text" class="form-control validate" name="precio" id="precio" placeholder="1234.56" pattern="^[\d]+(\.[\d]{2})?$" required>
-								<label for="precio">Precio por unidad</label>
+					<div class="idk">
+						<div class="form-row mt-4">
+							<div class="col">
+								<button type="button" class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<small>Indique los materiales del paquete <b>básico</b></small>
 							</div>
 						</div>
-						<div class="col">
+						<div class="cantidadproducto"></div>
+					</div>
+
+
+					<div class="idk">
+						<div class="form-row mt-4">
+							<div class="col">
+								<button type="button"class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<small>Indique los materiales del paquete <b>standar</b></small>
+							</div>
+						</div>
+						<div class="cantidadproducto"></div>
+					</div>
+
+					<div class="idk">
+						<div class="form-row mt-4">
+							<div class="col">
+								<button type="button" class="btn btn-sm btn-primary addcantpro"><i class="fas fa-plus"></i></button>
+								<small>Indique los materiales del paquete <b>premium</b></small>
+							</div>
+						</div> 
+						<div class="cantidadproducto"></div>
+					</div>
+
+
+					<div class="form-row mt-4">
+						<div class="col-6">
 							<select class="mdb-select md-form" name="categoria" id="categoria" required>
 								<option disabled selected>Selecciona una categoria</option>
 								@foreach( $categorias as $cat )
@@ -154,10 +182,7 @@
 							</select>
 							<label>Categoria</label>
 						</div>
-					</div>
-
-					<div class="form-row">
-						<div class="col">
+						<div class="col-6">
 							<div class="md-form">
 								<div class="file-field">
 									<div class="btn btn-primary btn-sm float-left">
@@ -171,6 +196,7 @@
 							</div>
 						</div>
 					</div>
+
 
 				</div>
 				<div class="modal-footer">

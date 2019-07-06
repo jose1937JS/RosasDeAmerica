@@ -335,7 +335,7 @@
 									@endforeach
 
 
-									<form action="{{ url('tarjeta') }}" method="post">
+									<form action="{{ url('tarjeta') }}" method="post" class="tarjeta">
 										@csrf
 
 										<input type="hidden" name="people_id" value="{{ Auth::user()->people_id }}">
@@ -508,13 +508,13 @@
 
 
 
-									<form action="{{ url('tarjeta') }}" method="post">
+									<form action="{{ url('tarjeta') }}" method="post" class="tarjeta">
 										@csrf
 
 										<input type="hidden" name="people_id" value="{{ Auth::user()->people_id }}">
 										<input type="hidden" name="cantidad" value="{{ $cantidad }}">
 										<input type="hidden" name="monto" value="{{ $total }}">
-										<input type="hidden" name="pay_method" value="Transferencia bancaria">
+										<input type="hidden" name="pay_method" value="Pago Movil">
 
 										<input type="hidden" name="productos" value="{{ json_encode($productos) }}">
 
@@ -555,6 +555,13 @@
 													<label for="email">Email *</label>
 												</div>
 											</div>
+										</div>
+
+										<h4 class="my-4">Información del Producto</h4>
+
+										<div class="md-form my-5">
+											<input type="text" id="description" name="description" class="form-control" required>
+											<label for="description">Descripción de la compra *</label>
 										</div>
 
 										<h4 class="my-4">Información de la entrega</h4>
@@ -629,7 +636,7 @@
 							</li>
 						@endforeach
 						<li class="list-group-item d-flex justify-content-between">
-							<span class="font-weight-bold">IVA 12% (Bs)</span>
+							<span class="font-weight-bold">IVA 16% (Bs)</span>
 							<span class="font-weight-bold">{{ $tax }}</span>
 						</li>
 						<li class="list-group-item d-flex justify-content-between">

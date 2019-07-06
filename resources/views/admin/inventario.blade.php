@@ -21,6 +21,7 @@
 								<th>PRODUCTO</th>
 								<th>CANTIDAD</th>
 								<th>PRECIO (Bs)</th>
+								<th>PRECIO PROMEDIO (Bs)</th>
 								<th class="text-center">BORRAR</th>
 							</tr>
 						</thead>
@@ -31,6 +32,7 @@
 									<td>{{ $p->product }}</td>
 									<td>{{ $p->quantity }}</td>
 									<td>{{ $p->price }}</td>
+									<td>{{ round(($p->price / $p->quantity) * 2, 2) }}</td>
 									<td class="text-center">
 										<button class="btn btn-danger btn-sm p-2 delproduct" data-toggle="modal" data-target="#delproduct">
 											<i class="fas fa-trash"></i>

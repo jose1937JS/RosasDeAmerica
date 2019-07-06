@@ -4,6 +4,10 @@
 
 	@include('inc.navbar')
 
+
+
+
+
 <!--Main layout-->
 	<main class="mt-5 pt-4">
 		<div class="container dark-grey-text mt-5">
@@ -15,7 +19,7 @@
 				<div class="col-md-6 mb-4">
 
 					<div class="view overlay zoom">
-						<img src='{{ asset("storage/$product->image") }}' class="img-fluid" alt="">
+						<img src='{{ asset("$product->image") }}' class="img-fluid" alt="">
 					</div>
 
 				</div>
@@ -27,32 +31,35 @@
 					<!--Content-->
 					<div class="p-4">
 
-						<div class="mb-3">
-							<a href="">
-								<span class="badge purple mr-1">{{ $product->category->category }}</span>
-							</a>
-<!-- 							<a href="">
-								<span class="badge blue mr-1">New</span>
-							</a>
-							<a href="">
-								<span class="badge red mr-1">Bestseller</span>
-							</a> -->
+						<div class="d-flex justify-content-start">
+							<p class="h2 font-weight-bold mr-3">{{ $product->product }} </p>
+							<p class="h5"><span class="badge purple">{{ $product->category->category }}</span></p>
 						</div>
 
-						<p class="lead font-weight-bold">
-							{{ $product->product }}
+						<p class="h3 font-weight-light">
+							desde <span class="font-weight-bold">{{ $product->price }} Bs </span> hasta <span class="font-weight-bold">00000 Bs</span>
 						</p>
 
-						<p class="lead">
-							<span>{{ $product->price }} BsS </span>
-							<span class="mr-1">
-								<del>5200 BsS</del>
-							</span>
-						</p>
-
-						<p class="lead font-weight-bold">Descripción</p>
-
-						<p>{{ $product->description }}</p>
+						<p class="lead font-weight-bold mt-5">Tipo de detalle:</p>
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+								aria-selected="true">Básico</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+								aria-selected="false">Estandar</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
+								aria-selected="false">Premium</a>
+							</li>
+						</ul>
+						<div class="tab-content mb-4" id="myTabContent">
+							<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">basico</div>
+							<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">standar</div>
+							<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">premuin</div>
+						</div>
 
 						<form class="d-flex justify-content-left" id="add">
 
@@ -72,6 +79,9 @@
 								</button>
 							@endif
 						</form>
+
+						<p class="lead font-weight-bold mt-5">Descripción</p>
+						<p>{{ $product->description }}</p>
 
 					</div>
 					<!--Content-->

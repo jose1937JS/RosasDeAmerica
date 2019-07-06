@@ -104,32 +104,57 @@ $(() => {
 
 	// añadir campos para la resta de los materiales con lo q esta hecho un producto
 	let cont = 0
-	$('#addcantpro').click(() => {
+	$('.addcantpro').click(function() {
 		cont = cont + 1
 
-		$('#cantidadproducto').append(`
-			<div class="form-row mt-3 mb-4 camposcant">
-				<div class="col-10 offset-1">
-					<div class="row">
-						<div class="col">
-							<label>Material para el producto</label>
-							<select class="custom-select browser-default" name="material-${cont}" id="material-${cont}">
-								<option disabled selected>Selecciona un material</option>
-							</select>
+		console.log($(this))
+
+		$(this)
+			.parents('.idk')
+			.children('.cantidadproducto')
+			.append(`
+				<div class="form-row mt-3 mb-4 camposcant">
+					<div class="col-10 offset-1">
+						<div class="form-row">
+							<div class="col">
+								<label>Material para el producto</label>
+								<select class="custom-select browser-default" name="material-${cont}" id="material-${cont}">
+									<option disabled selected>Selecciona un material</option>
+								</select>
+							</div>
+							<div class="col-3">
+								<label for="cant-${cont}">Cant de material</label>
+								<input type="number" id="cant-${cont}" class="form-control" name="cantidad-${cont}" min="0">
+							</div>
+							<div class="col-3">
+								<label for="">Precio del material</label>
+								<div class="input-group mb-3">
+									<input type="text" class="form-control" disabled>
+									<div class="input-group-append">
+										<span class="input-group-text">$</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-1 d-flex align-items-center">
+								<button class="btn btn-sm p-2 btn-danger eliminame" data-toggle="tooltip" type="button">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
 						</div>
-						<div class="col-4">
-							<label for="cant-${cont}">Cant de material</label>
-							<input type="number" id="cant-${cont}" class="form-control" name="cantidad-${cont}" min="0">
-						</div>
-						<div class="col-1 d-flex align-items-end">
-							<button class="btn btn-sm p-2 btn-danger eliminame" data-toggle="tooltip" type="button">
-								<i class="fas fa-times"></i>
-							</button>
+						<div class="form-row">
+							<div class="col-4">
+							<label for="">Precio del producto</label>
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="fas fa-dollar"></i></span>
+									</div>
+									<input type="text" class="form-control" disabled>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-		`)
+			`)
 
 		// Llenar el select con los productos 
 		$.get('http://127.0.0.1:8000/comprasProveedor', (data) => {
@@ -147,6 +172,8 @@ $(() => {
 		})
 
 	})
+
+
 
 
 	// Poner en el campo del precio el precio del producto
@@ -209,6 +236,7 @@ $(() => {
 			</div>
 		`)
 	})
+
 
 	// Eliminar los ultimos inputs de compra al proveedor
 	$('#elimcomprapro').click(() => {
