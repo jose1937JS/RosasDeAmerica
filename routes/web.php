@@ -131,6 +131,7 @@ Route::get('pedidos/{status}', 'AdminController@pedidos')->where('status', '^(pa
 Route::get('pedidos/local', 'AdminController@pedidoslocal');
 
 Route::get('compras', 'AdminController@proveedores');
+Route::get('ventas', 'AdminController@ventas');
 Route::get('compra/{id}', 'AdminController@compraproveedor')->where('id', '^[0-9]+$');
 
 Route::post('addcategoria', 'AdminController@addcategoria');

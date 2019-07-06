@@ -136,6 +136,26 @@ class AdminController extends Controller
 		}
 	}
 
+	public function ventas(Request $request)
+	{
+		if ($request->user()->authorizeRoles(['admin']))
+		{
+			$compras  	 = Shopping::all();
+			$category 	 = Category::all();
+			$products    = Product::all();
+			$proveedores = Supplier::all();
+
+			$cant = DB::table('sales')->where('state', 'pagado')->count();
+
+			return view('admin.ventas')
+				->with('compras', $compras)
+				->with('cant', $cant)
+				->with('proveedores', $proveedores)
+				->with('categorias', $category)
+				->with('products', $products);
+		}
+	}
+
 	public function pedidoslocal(Request $request)
 	{
 		if ($request->user()->authorizeRoles(['admin']))
