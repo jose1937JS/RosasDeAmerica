@@ -147,10 +147,34 @@ class AdminController extends Controller
 
 			$cant = DB::table('sales')->where('state', 'pagado')->count();
 
+			$products = DB::table('product_sales')
+						->select('product_sales.*', 'products.product', 'products.price', 'products.image')
+						->join('products', 'product_sales.product_id', '=', 'products.id')
+						->get();
+
+			$ventas = DB::table('sales')
+						->join('people', 'sales.people_id', '=', 'people.id')
+						->select('sales.state','sales.created_at', 'sales.description', 'sales.id','sales.amount','sales.pay_method','sales.address_one','sales.address_two','sales.customer_email','sales.customer_phone','sales.nro_referencia','sales.created_at','people.first_name', 'people.last_name', 'people.pin', 'people.address', 'people.phone', 'people.email')
+						// ->where('sales.state', $status)
+						->get();
+
+
+			foreach ($ventas as $k => $v)
+			{
+				foreach ($products as $key => $value)
+				{
+					if ($v->id == $value->sale_id) {
+						$v->productos[] = $value;
+					}
+				}
+			}
+
+
 			return view('admin.ventas')
 				->with('compras', $compras)
 				->with('cant', $cant)
 				->with('proveedores', $proveedores)
+				->with('ventas', $ventas)
 				->with('categorias', $category)
 				->with('products', $products);
 		}
@@ -173,6 +197,7 @@ class AdminController extends Controller
 							->join('products', 'venta_productos.product_id', '=', 'products.id')
 							->join('clients', 'ventas.client_id', '=', 'clients.id')
 							->get();
+
 			$cant = DB::table('sales')->where('state', 'pagado')->count();
 
 			return view('admin.pedidoslocal')
@@ -313,6 +338,7 @@ class AdminController extends Controller
 			
 			$shoppingpro->product 	  = $productos["producto-$i"];
 			$shoppingpro->quantity 	  = $cantidads["cantidad-$i"];
+			$shoppingpro->restante 	  = $cantidads["cantidad-$i"];
 			$shoppingpro->price       = $precios["precio-$i"];
 			$shoppingpro->shopping_id = $lastshopping[0]->lastid;
 			
@@ -357,18 +383,18 @@ class AdminController extends Controller
 		{
 			$sp = Shopping_products::find($materials[$i]->first());
 
-			if ( ($cantidads[$i]->first() * $req->input('cantidad')) > $sp->quantity )
+			if ( ($cantidads[$i]->first() * $req->input('cantidad')) > $sp->restante )
 			{
 				return redirect('admin')->with('resta', 'No tienes material suficiente para los productos.');
 			}
 
-			$sp->quantity = $sp->quantity - ($cantidads[$i]->first() * $req->input('cantidad'));
+			$sp->restante = $sp->restante - ($cantidads[$i]->first() * $req->input('cantidad'));
 			
 			$sp->save();
 		}
 
-		
 		// End resta
+
 
 		if ($req->file('image')) {
 			$path = Storage::disk('public')->put('images', $req->file('image'));
@@ -445,6 +471,37 @@ class AdminController extends Controller
 		$pdf = PDF::loadView('pdf.compra', $data);
 
 		return $pdf->download("reporte-compra.pdf");
+	}
+
+	public function ventasDiariasPDF()
+	{
+		$products = DB::table('product_sales')
+						->select('product_sales.*', 'products.product', 'products.price', 'products.image')
+						->join('products', 'product_sales.product_id', '=', 'products.id')
+						->get();
+
+			$ventas['data'] = DB::table('sales')
+						->join('people', 'sales.people_id', '=', 'people.id')
+						->select('sales.state','sales.created_at', 'sales.description', 'sales.id','sales.amount','sales.pay_method','sales.address_one','sales.address_two','sales.customer_email','sales.customer_phone','sales.nro_referencia','sales.created_at','people.first_name', 'people.last_name', 'people.pin', 'people.address', 'people.phone', 'people.email')
+						->whereDate('sales.created_at', today())
+						->get();
+
+
+			foreach ($ventas['data'] as $k => $v)
+			{
+				foreach ($products as $key => $value)
+				{
+					if ($v->id == $value->sale_id) {
+						$v->productos[] = $value;
+					}
+				}
+			}
+
+		return view('pdf.ventasdiarias')->with($ventas);
+
+		// $pdf = PDF::loadView('pdf.ventasdiarias', $ventas);
+
+		return $pdf->download("ventas-diarias.pdf");
 	}
 
 	public function newsale(Request $req)

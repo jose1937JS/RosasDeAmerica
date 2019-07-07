@@ -17,6 +17,7 @@ class CreateShoppingProductsTable extends Migration
             $table->increments('id');
             $table->string('product', 255);
             $table->integer('quantity');
+            $table->integer('restante');
             $table->decimal('price', 8,2);
             $table->integer('status')->default(1);
             $table->unsignedInteger('shopping_id');

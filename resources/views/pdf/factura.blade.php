@@ -112,7 +112,7 @@ th { padding-left: 8px: }
 					<tbody>
 						<tr>
 							<td>{{ $people[0]->pin.' - '.$people[0]->first_name.' '.$people[0]->last_name }}</td>
-							<td>{{ $people[0]->address.', '.$data[0]->sale->address_two }}</td>
+							<td>{{ $people[0]->address.', '.$data[0]->sale->address_one.', '.$data[0]->sale->address_two }}</td>
 							<td>{{ $data[0]->created_at }}</td>
 						</tr>
 					</tbody>

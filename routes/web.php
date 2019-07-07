@@ -156,6 +156,7 @@ Route::post('delproduct', 'AdminController@delproduct');
 
 Route::get('factura', 'HomeController@factura');
 Route::get('compra', 'AdminController@compra');
+Route::get('ventasdiarias', 'AdminController@ventasDiariasPDF');
 
 Route::post('newsale', 'AdminController@newsale');
 Route::get('cedula', 'AdminController@cedula');

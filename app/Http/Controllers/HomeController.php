@@ -252,7 +252,7 @@ class HomeController extends Controller
 
 		$data['data']   = ProductSale::where('sale_id', $id)->get();
 		$data['people'] = People::where('id', $idpeople)->get();
-		$data['iva']    = ($data['data'][0]->product->price * $data['data'][0]->quantity) * 0.12;
+		$data['iva']    = ($data['data'][0]->product->price * $data['data'][0]->quantity) * 0.16;
 
 		$people = People::where('id', $idpeople)->get();
 		$cedula = $people[0]->pin;

@@ -73,43 +73,78 @@ class DatabaseSeeder extends Seeder
 			'created_at' => now()
 		]);
 
+		// llenado de suppliers
+		DB::table('suppliers')->insert([
+			'name' => 'Fernando',
+			'address' => 'Avenida Libertador Caracas',
+			'email' => 'fernando@gmail.com',
+			'phone' => '04240000000',
+			'rif' => 'J-12332100',
+			'created_at' => now()
+		]);
+
 		// llenado de shopping table
 		DB::table('shopping')->insert([
-			
+			'total_price' => '424995',
+			'pay_method'  => 'Pago Movil',
+			'supplier_id' => 1,
+			'created_at'  => now()
 		]);
 
 		// llenado de shopping webona loca
-		DB::table('product_details')->insert([
-			
+		DB::table('shopping_products')->insert([
+			[
+				'product' => 'Margaritas',
+				'quantity' => 2,
+				'restante' => 1,
+				'price' => '40000',
+				'status' => '1',
+				'shopping_id' => 1,
+				'created_at' => now()
+			],
+			[
+				'product' => 'Turpiales',
+				'quantity' => 5,
+				'restante' => 3,
+				'price' => '68999',
+				'status' => '1',
+				'shopping_id' => 1,
+				'created_at' => now()
+			]
 		]);
 
-		// llenado de detalles de productos
-		DB::table('categories')->insert([
-			'category' => 'Arreglos',
+		// llenado de priduct_detaeils
+		DB::table('product_details')->insert([
+			'quantity' => 2,
+			'client_price' => '25000',
+			'shopping_product_id' => 1,
 			'created_at' => now()
 		]);
+
 
 		// llenado de productos
 		DB::table('products')->insert([
 			[
-				'product' 	  => 'Cañon de Flores',
-				'description' => 'CUestion con forma de cañon con muchas flores rosadas',
-				'image' 	  => 'images/50405223_1731211286982880_2423251064145838080_n.jpg',
-				'type' 		  => 'premium',
-				'quantity' 	  => '5',
-				'price' 	  => '190500',
-				'category_id' => 1,
-				'created_at'  => now()
+				'product' 	  		=> 'Cañon de Flores',
+				'description' 		=> 'CUestion con forma de cañon con muchas flores rosadas',
+				'image' 	  		=> 'images/50405223_1731211286982880_2423251064145838080_n.jpg',
+				'type' 		  		=> 'premium',
+				'quantity' 	  		=> '5',
+				'price' 	  		=> '190500',
+				'category_id' 		=> 1,
+				'product_detail_id' => 1,
+				'created_at'  		=> now()
 			],
 			[
-				'product' 	  => 'Detalle de Gerberas',
-				'description' => 'Rosas para evento social',
-				'image' 	  => 'images/jxrqdedUC4pmCNFJ3PdQay8W9x0vwXdqNAZZVLgv.jpeg',
-				'type' 		  => 'standar',
-				'quantity'    => '9',
-				'price' 	  => '19000',
-				'category_id' => 1,
-				'created_at'  => now()
+				'product' 	  		=> 'Detalle de Gerberas',
+				'description' 		=> 'Rosas para evento social',
+				'image' 	  		=> 'images/jxrqdedUC4pmCNFJ3PdQay8W9x0vwXdqNAZZVLgv.jpeg',
+				'type' 		  		=> 'standar',
+				'quantity'    		=> '9',
+				'price' 	  		=> '19000',
+				'category_id' 		=> 1,
+				'product_detail_id' => 1,
+				'created_at'  		=> now()
 			]
 		]);
 

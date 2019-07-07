@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class venta_productos extends Model
 {
-    protected $fillable = ['product_id', 'client_id'];
+    protected $fillable = ['product_id', 'venta_id'];
     // protected $table = 'venta_clientes';
 
-    public function client()
+    public function product()
     {
-    	return $this->belongsTo(Client::class);
+    	return $this->belongsTo(Product::class);
     }
 
     public function venta()
     {
-    	return $this->hasMany(Venta::class);
+    	return $this->belongsTo(Venta::class);
     }
 }

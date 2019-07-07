@@ -20,6 +20,11 @@ class Product extends Model
 
     public function product_detail()
     {
-    	return $this->hasMany(Product_detail::class);
+    	return $this->belongsTo(Product_detail::class);
+    }
+
+    public function venta_producto()
+    {
+        return $this->hasOne(venta_productos::class);
     }
 }
